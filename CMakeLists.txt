@@ -30,6 +30,7 @@ add_executable(cxx_play_ground
 #    test/19_03_21.cpp
 #    test/19_04_02.cpp
 #    test/ProcessTest.cpp
+    test/FunctionReturnValueCauseCopy.cpp
 #    test/quiz/FileManipulationTest.cpp
 #    test/quiz/ExceptionSafeTest.cpp
 #    test/primer/C13/ActLikeValue.cpp
