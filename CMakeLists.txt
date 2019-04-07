@@ -35,8 +35,9 @@ add_executable(cxx_play_ground
 #    test/quiz/ExceptionSafeTest.cpp
 #    test/primer/C13/ActLikeValue.cpp
 #    test/primer/C13/ActLikePointer.cpp
-     test/concurency/Chp2.cpp
-     test/concurency/Chp2_L0208.cpp
+#     test/concurency/Chp2.cpp
+#     test/concurency/Chp2_L0208.cpp
+#     test/concurency/Chp4_L0401.cpp
     )
 target_compile_features(cxx_play_ground PRIVATE cxx_std_11)
 
