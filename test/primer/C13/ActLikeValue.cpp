@@ -6,7 +6,9 @@
 
 
 class ActLikeValue{
+	friend  void swap(ActLikeValue& o0,ActLikeValue& o1);
     public:
+	
 	ActLikeValue(int32_t value){
 	    this->value=new int32_t;
 	    *(this->value)=value;
@@ -18,10 +20,16 @@ class ActLikeValue{
 	    *(this->value)=other.getValue();
 	}
 
-	ActLikeValue& operator=(const ActLikeValue& other){
-	    *(this->value)=other.getValue();
+	// if a class defines a swap,then copy and swap(CAS) can come in handy
+	ActLikeValue& operator=(ActLikeValue other){
+		swap(*this,other);
 	    return *this;
 	}
+
+//	ActLikeValue& operator=(const ActLikeValue& other){
+//	    *(this->value)=other.getValue();
+//	    return *this;
+//	}
 
 
 
@@ -37,7 +45,13 @@ class ActLikeValue{
 	int32_t* value;
 };
 
-
+void swap(ActLikeValue& o0,ActLikeValue& o1){
+	using std::swap;
+	swap(o0.value,o1.value);
+//	int32_t * tmp=o0.value;
+//	o0.value=o1.value;
+//	o1.value=tmp;
+}
 
 TEST(ActLikeValueTest,test_use){
 
@@ -64,12 +78,19 @@ TEST(ActLikeValueTest,test_use){
 
     a2=a0;
 
-    a2.setValue(2);
 
-    EXPECT_EQ(a2.getValue(),2);
+    EXPECT_EQ(a2.getValue(),0);
     EXPECT_EQ(a0.getValue(),0);
 
-
-
-
 }
+
+TEST(ActLikeValueTest,test_swap){
+	ActLikeValue v0(0);
+	ActLikeValue v1(1);
+	swap(v0,v1);
+	EXPECT_EQ(v0.getValue(),1);
+	EXPECT_EQ(v1.getValue(),0);
+}
+
+
+

@@ -30,13 +30,13 @@ add_executable(cxx_play_ground
 #    test/19_03_21.cpp
 #    test/19_04_02.cpp
 #    test/ProcessTest.cpp
-    test/FunctionReturnValueCauseCopy.cpp
+#    test/FunctionReturnValueCauseCopy.cpp
 #    test/quiz/FileManipulationTest.cpp
 #    test/quiz/ExceptionSafeTest.cpp
-#    test/primer/C13/ActLikeValue.cpp
-#    test/primer/C13/ActLikePointer.cpp
-     test/concurency/Chp2.cpp
-     test/concurency/Chp2_L0208.cpp
+    test/primer/C13/ActLikeValue.cpp
+    test/primer/C13/ActLikePointer.cpp
+#     test/concurency/Chp2.cpp
+#     test/concurency/Chp2_L0208.cpp
     )
 target_compile_features(cxx_play_ground PRIVATE cxx_std_11)
 
