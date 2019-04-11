@@ -1,5 +1,6 @@
 #include "gtest/gtest.h"
 #include <iostream>
+#include <type_traits>
 
 
 template <typename It>
@@ -14,6 +15,19 @@ It high(It b,It e){
     return ret;
 } 
 
+template <typename It>
+auto high_value(It b,It e)->
+typename std::remove_reference<decltype(*b)>::type {
+
+    It ret=b;
+    for(It i=b;i!=e;++i){
+        if(*i>*ret){
+            ret=i;
+        }
+    }
+    return *ret;
+} 
+
 
 
 
@@ -21,20 +35,20 @@ It high(It b,It e){
 TEST(_15_3_1_Test,test_use){
 
    int32_t a[]{1,2,3};
-   int32_t ha=*high(std::begin(a),std::end(a));
-   std::cout<<"int arr's max is "<<ha<<std::endl;
+   int32_t ha=high_value(std::begin(a),std::end(a));
+   EXPECT_EQ(ha,3);
 
    std::vector<int32_t> b{1,2,3};
-   int32_t hb=*high(std::begin(b),std::end(b));
-   std::cout<<"int vector's max is "<<hb<<std::endl;
+   int32_t hb=high_value(std::begin(b),std::end(b));
+   EXPECT_EQ(hb,3);
 
    float fa[]{1,2,3};
-   float hfa=*high(std::begin(a),std::end(a));
-   std::cout<<"float arr's max is "<<hfa<<std::endl;
+   float hfa=high_value(std::begin(a),std::end(a));
+   EXPECT_EQ(hfa,3);
 
    std::vector<float> fb{1,2,3};
-   float hfb=*high(std::begin(b),std::end(b));
-   std::cout<<"float vector's max is "<<hfb<<std::endl;
+   float hfb=high_value(std::begin(b),std::end(b));
+   EXPECT_EQ(hfb,3);
 
 
 }
@@ -104,12 +118,12 @@ TEST(_15_3_1_Test,test_MyList){
     a.push_front(1);
     a.push_front(2);
     a.push_front(3);
-    for(auto it =a.begin();it!=a.end();++it){
-        std::cout<<*it<<std::endl;
-    }
-    for(auto& e:a){
-        std::cout<<e<<std::endl;
-    }
-    int32_t ha = *high(std::begin(a), std::end(a));
-    std::cout << "int32_t list's max is " << ha << std::endl;
+//    for(auto it =a.begin();it!=a.end();++it){
+//        std::cout<<*it<<std::endl;
+//    }
+//    for(auto& e:a){
+//        std::cout<<e<<std::endl;
+//    }
+    int32_t ha = high_value(std::begin(a), std::end(a));
+    EXPECT_EQ(ha,3);
 }
