@@ -9,9 +9,9 @@ HunterGate(
     SHA1 "1b0041a06357d2c9f1f1a7e93ff3132c36411719"
 )
 
-project(cxx_play_ground)
+project(think_in_cxx)
 
-add_executable(cxx_play_ground 
+add_executable(think_in_cxx 
     test/main.cpp
 #    test/WriteFile.cpp
 #    test/Pointer.cpp
@@ -40,10 +40,10 @@ add_executable(cxx_play_ground
 #     test/concurency/Chp2.cpp
 #     test/concurency/Chp2_L0208.cpp
     )
-target_compile_features(cxx_play_ground PRIVATE cxx_std_11)
+target_compile_features(think_in_cxx PRIVATE cxx_std_11)
 
 
 
 hunter_add_package(GTest)
 find_package(GTest CONFIG QUIET)
-target_link_libraries(cxx_play_ground PRIVATE GTest::gtest)
+target_link_libraries(think_in_cxx PRIVATE GTest::gtest)
