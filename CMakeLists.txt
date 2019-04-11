@@ -34,8 +34,9 @@ add_executable(cxx_play_ground
     test/BS/15_3_1.cpp
 #    test/quiz/FileManipulationTest.cpp
 #    test/quiz/ExceptionSafeTest.cpp
-    test/primer/C13/ActLikeValue.cpp
-    test/primer/C13/ActLikePointer.cpp
+#    test/primer/C13/ActLikeValue.cpp
+#    test/primer/C13/ActLikePointer.cpp
+    test/primer/C13/MessageAndFolder.cpp
 #     test/concurency/Chp2.cpp
 #     test/concurency/Chp2_L0208.cpp
     )
