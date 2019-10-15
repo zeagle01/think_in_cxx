@@ -12,6 +12,8 @@ HunterGate(
 
 project(think_in_cxx)
 
+message("c++ compiler: ${CMAKE_CXX_COMPILER}")
+
 add_executable(think_in_cxx 
     test/main.cpp
 #    test/WriteFile.cpp
