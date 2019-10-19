@@ -42,6 +42,7 @@ add_executable(think_in_cxx
     test/primer/C13/MessageAndFolder.cpp
 #     test/concurency/Chp2.cpp
 #     test/concurency/Chp2_L0208.cpp
+	test/qt/qtHello.cpp
     )
 target_compile_features(think_in_cxx PRIVATE cxx_std_11)
 
@@ -50,3 +51,26 @@ target_compile_features(think_in_cxx PRIVATE cxx_std_11)
 hunter_add_package(GTest)
 find_package(GTest CONFIG QUIET)
 target_link_libraries(think_in_cxx PRIVATE GTest::gtest)
+
+
+set(Qt5_DIR "D:/Qt/5.13.1/msvc2017_64/lib/cmake/Qt5/" CACHE PATH "qt5 cmake path")
+set(Qt5_components Core Widgets Gui)
+set(Qt5_link_components)
+foreach(c ${Qt5_components})
+	list(APPEND Qt5_link_components Qt5::${c})
+endforeach()
+
+find_package(Qt5 COMPONENTS ${Qt5_components} REQUIRED) 
+target_link_libraries(think_in_cxx PRIVATE ${Qt5_link_components})
+
+if(MSVC)
+	foreach(c ${Qt5_link_components})
+		add_custom_command(
+			TARGET think_in_cxx POST_BUILD
+			#COMMAND ${CMAKE_COMMAND} -E create_symlink
+			COMMAND ${CMAKE_COMMAND} -E copy_if_different
+				$<TARGET_FILE:${c}>
+				$<TARGET_FILE_DIR:think_in_cxx>
+		)
+	endforeach()
+endif()
