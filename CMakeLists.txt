@@ -42,7 +42,8 @@ add_executable(think_in_cxx
     test/primer/C13/MessageAndFolder.cpp
 #     test/concurency/Chp2.cpp
 #     test/concurency/Chp2_L0208.cpp
-	test/qt/qtHello.cpp
+#	test/qt/qtHello.cpp
+	test/EigenTest.cpp
     )
 target_compile_features(think_in_cxx PRIVATE cxx_std_11)
 
@@ -51,6 +52,11 @@ target_compile_features(think_in_cxx PRIVATE cxx_std_11)
 hunter_add_package(GTest)
 find_package(GTest CONFIG QUIET)
 target_link_libraries(think_in_cxx PRIVATE GTest::gtest)
+
+
+hunter_add_package(Eigen)
+find_package(Eigen3 CONFIG REQUIRED)
+target_link_libraries(think_in_cxx PRIVATE Eigen3::Eigen)
 
 
 set(Qt5_DIR "D:/Qt/5.13.1/msvc2017_64/lib/cmake/Qt5/" CACHE PATH "qt5 cmake path")
