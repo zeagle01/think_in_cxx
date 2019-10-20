@@ -20,3 +20,16 @@ TEST(EigenTest, test_std_vector) {
 	EXPECT_EQ(sum_act, sum_exp);
 
 }
+
+TEST(EigenTest, test_memory_is_continuous) {
+	std::vector<Eigen::Vector2f> x{ {1,2},{3,4} };
+
+	std::vector<float> x_act(&x[0][0], &x[0][0] + 4);
+
+	std::vector<float> x_exp{1,2,3,4 };
+
+
+
+	EXPECT_EQ(x_act, x_exp);
+
+}
