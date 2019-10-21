@@ -44,6 +44,7 @@ add_executable(think_in_cxx
 #     test/concurency/Chp2_L0208.cpp
 #	test/qt/qtHello.cpp
 	test/EigenTest.cpp
+	test/intro_2_alg/qsort_test.cpp
     )
 target_compile_features(think_in_cxx PRIVATE cxx_std_11)
 
