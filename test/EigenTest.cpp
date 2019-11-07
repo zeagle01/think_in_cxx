@@ -53,21 +53,21 @@ TEST(EigenTest, test_memory_is_continuous_std_vector_to_eigen) {
 	Eigen::Vector2f x2c0 = x2.col(0);
 
 
-	std::cout << x2.cols() << std::endl;
-
-	std::cout << x2c0 << std::endl;
-
-
-	std::cout << x2.col(0) << std::endl;
-	std::cout << x2.col(1) << std::endl;
-
-	std::cout << x2(0) << std::endl;
-	std::cout << x2(1) << std::endl;
-
-	std::cout << x2(2) << std::endl;
-	std::cout << x2(3) << std::endl;
-
-	std::cout << x2 << std::endl;
+//	std::cout << x2.cols() << std::endl;
+//
+//	std::cout << x2c0 << std::endl;
+//
+//
+//	std::cout << x2.col(0) << std::endl;
+//	std::cout << x2.col(1) << std::endl;
+//
+//	std::cout << x2(0) << std::endl;
+//	std::cout << x2(1) << std::endl;
+//
+//	std::cout << x2(2) << std::endl;
+//	std::cout << x2(3) << std::endl;
+//
+//	std::cout << x2 << std::endl;
 	
 
 	std::vector<Eigen::Vector2f> x_exp{ {1,2},{3,4} };
@@ -87,6 +87,53 @@ TEST(EigenTest, test_Matrix3Xf) {
 	m << 1, 2, 3, 4, 5, 6, 7, 8, 9;
 
 	EXPECT_EQ(m.size(), 9);
+
+
+
+}
+
+TEST(EigenTest, test_Matrix3Xf_colwise_sum) {
+
+	Eigen::Matrix3Xf m(3,3);
+	m << 1, 2, 3,
+		4, 5, 6,
+		7, 8, 9;
+	Eigen::Vector3f act_sum=m.colwise().sum();
+	Eigen::Vector3f exp_sum;
+	exp_sum << 12 , 15 , 18;
+
+	EXPECT_EQ(act_sum, exp_sum);
+
+
+
+}
+
+//namespace Eigen
+//{
+//  template <typename Derived, typename Function>
+//  void for_each_col(DenseBase<Derived>& D, Function f)
+//  {
+//    for (Eigen::DenseIndex i = 0; i < D.cols(); ++i)
+//      f(D.col(i));
+//  }
+//}
+
+TEST(EigenTest, test_Matrix3Xf_colwise_operate) {
+
+	Eigen::Matrix3Xf m(3,3);
+	m << 1, 2, 3,
+		4, 5, 6,
+		7, 8, 9;
+	Eigen::Vector3f act;
+
+	for (int i = 0; i < m.cols();i++) {
+		act[i] = m.col(i).sum();
+	}
+
+	Eigen::Vector3f exp;
+	exp << 12 , 15 , 18;
+
+	EXPECT_EQ(act, exp);
 
 
 
