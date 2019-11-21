@@ -87,3 +87,64 @@ TEST(MultiThreadTest, thread_id){
     t.join();
 
 }
+
+
+
+
+
+
+
+
+
+//condition variable
+
+#include <mutex>
+#include <condition_variable>
+#include <thread>
+
+std::condition_variable cv;
+std::mutex mt;
+bool work2_done=false;
+bool work1_done=false;
+
+void work1() {
+	std::unique_lock<std::mutex> lock(mt);
+	cv.wait(lock, [&]() {return work2_done; });
+	std::this_thread::sleep_for(std::chrono::milliseconds(50));
+	std::cout << "work1 done!" << std::endl;
+}
+
+void work2() {
+	std::this_thread::sleep_for(std::chrono::milliseconds(500));
+	std::cout << "work2 done!" << std::endl;
+
+	std::lock_guard<std::mutex> lock(mt);
+	work2_done = true;
+	cv.notify_one();
+}
+
+TEST(MultiThreadTest, condition_variable_test) {
+
+	std::thread  t1(work1);
+	std::thread  t2(work2);
+	t1.join();
+	t2.join();
+	std::cout << "main thread done" << std::endl;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
