@@ -27,7 +27,7 @@ add_executable(think_in_cxx
 #    test/UnwindingTest.cpp
 #    test/VariableTest.cpp
 #    test/MySharedPtr.cpp
-    test/MultiThreadTest.cpp
+#    test/MultiThreadTest.cpp
 #    test/OverloadTest.cpp
 #    test/19_03_21.cpp
 #    test/19_04_02.cpp
@@ -43,8 +43,9 @@ add_executable(think_in_cxx
 #     test/concurency/Chp2.cpp
 #     test/concurency/Chp2_L0208.cpp
 #	test/qt/qtHello.cpp
-	test/EigenTest.cpp
+#	test/EigenTest.cpp
 	test/intro_2_alg/qsort_test.cpp
+	test/StdVectorTest.cpp
     )
 target_compile_features(think_in_cxx PRIVATE cxx_std_11)
 
