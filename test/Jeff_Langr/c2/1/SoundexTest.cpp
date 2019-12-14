@@ -36,3 +36,15 @@ TEST_F(SoundexEncoding, ReplacesMultipleConsonantsWithDigits) {
 TEST_F(SoundexEncoding, LimitsLengthToFourCharacters) {
 	ASSERT_THAT(soundex.encode("Dcdlb").length(), Eq(4u));
 }
+
+TEST_F(SoundexEncoding, IgnoresVowelLikeLetters) {
+	ASSERT_THAT(soundex.encode("Baeiouhycdl"), Eq("B234"));
+}
+
+TEST_F(SoundexEncoding, CombinesDuplicateEncodings) {
+	ASSERT_THAT(soundex.encodedDigit('b'), soundex.encodedDigit('f'));
+	ASSERT_THAT(soundex.encodedDigit('c'), soundex.encodedDigit('g'));
+	ASSERT_THAT(soundex.encodedDigit('d'), soundex.encodedDigit('t'));
+
+	ASSERT_THAT(soundex.encode("Abfcgdt"), Eq("A123"));
+}
