@@ -49,14 +49,16 @@ add_executable(think_in_cxx
 
 #     test/concurency/Chp2.cpp
 #     test/concurency/Chp2_L0208.cpp
-
-
 #	test/GtestUsage.cpp
 
 ###Jeff Langr
 	test/Jeff_Langr/c2/1/SoundexTest.cpp
 	test/Jeff_Langr/c2/1/Soundex.h
 
+#	test/qt/qtHello.cpp
+#	test/EigenTest.cpp
+#	test/intro_2_alg/qsort_test.cpp
+#	test/StdVectorTest.cpp
     )
 target_compile_features(think_in_cxx PRIVATE cxx_std_11)
 
