@@ -44,16 +44,19 @@ add_executable(think_in_cxx
 #     test/concurency/Chp2_L0208.cpp
 #	test/qt/qtHello.cpp
 #	test/EigenTest.cpp
-	test/intro_2_alg/qsort_test.cpp
-	test/StdVectorTest.cpp
+#	test/intro_2_alg/qsort_test.cpp
+#	test/StdVectorTest.cpp
+	test/GtestUsage.cpp
     )
 target_compile_features(think_in_cxx PRIVATE cxx_std_11)
 
 
 
 hunter_add_package(GTest)
-find_package(GTest CONFIG QUIET)
-target_link_libraries(think_in_cxx PRIVATE GTest::gtest)
+#find_package(GTest CONFIG QUIET)
+find_package(GMock CONFIG QUIET)
+#target_link_libraries(think_in_cxx PRIVATE GTest::gtest GMock::gmock)
+target_link_libraries(think_in_cxx PRIVATE GMock::gmock)
 
 
 hunter_add_package(Eigen)
