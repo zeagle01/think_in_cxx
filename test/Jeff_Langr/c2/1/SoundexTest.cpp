@@ -20,3 +20,7 @@ TEST_F(SoundexEncoding, RetainsSoleLetterOfOneLetterWord) {
 TEST_F(SoundexEncoding, PadsWithZerosToEnsureThreeDigits) {
 	EXPECT_THAT(soundex.encode("I"), Eq("I000"));
 }
+
+TEST_F(SoundexEncoding, ReplacesConsonantsWithAppropriateDigits) {
+	EXPECT_THAT(soundex.encode("Ab"), Eq("A100"));
+}
