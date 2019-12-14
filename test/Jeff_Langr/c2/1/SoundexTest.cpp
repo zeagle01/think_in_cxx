@@ -1,33 +1,22 @@
 
 #include "gmock/gmock.h"
+#include  "Soundex.h"
 
 
-class Soundex {
-
-public:
-	std::string encode(const std::string& str) {
-		return zeroPad(str);
-	}
-private:
-	std::string zeroPad(const std::string& str) {
-		return str+"000";
-	}
-};
 
 using namespace  ::testing;
-
-TEST(SoundexEncoding, RetainsSoleLetterOfOneLetterWord) {
-	
+class SoundexEncoding :public Test {
+public:
 	Soundex soundex;
-	auto encoded=soundex.encode("A");
-	EXPECT_THAT(encoded, Eq("A000"));
-	
+
+};
+
+TEST_F(SoundexEncoding, RetainsSoleLetterOfOneLetterWord) {
+	EXPECT_THAT(soundex.encode("A"), Eq("A000"));
 }
 
 
 
-TEST(SoundexEncoding, PadsWithZerosToEnsureThreeDigits) {
-	Soundex soundex;
-	auto encoded = soundex.encode("I");
-	ASSERT_THAT(encoded, Eq("I000"));
+TEST_F(SoundexEncoding, PadsWithZerosToEnsureThreeDigits) {
+	EXPECT_THAT(soundex.encode("I"), Eq("I000"));
 }

@@ -55,6 +55,7 @@ add_executable(think_in_cxx
 
 ###Jeff Langr
 	test/Jeff_Langr/c2/1/SoundexTest.cpp
+	test/Jeff_Langr/c2/1/Soundex.h
 
     )
 target_compile_features(think_in_cxx PRIVATE cxx_std_11)
