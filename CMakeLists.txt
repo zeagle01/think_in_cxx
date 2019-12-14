@@ -37,16 +37,25 @@ add_executable(think_in_cxx
 #    test/BS/15_3_1.cpp
 #    test/quiz/FileManipulationTest.cpp
 #    test/quiz/ExceptionSafeTest.cpp
-#    test/primer/C13/ActLikeValue.cpp
-#    test/primer/C13/ActLikePointer.cpp
-#    test/primer/C13/MessageAndFolder.cpp
-#     test/concurency/Chp2.cpp
-#     test/concurency/Chp2_L0208.cpp
 #	test/qt/qtHello.cpp
 #	test/EigenTest.cpp
 #	test/intro_2_alg/qsort_test.cpp
 #	test/StdVectorTest.cpp
-	test/GtestUsage.cpp
+
+###c++ primer
+#    test/primer/C13/ActLikeValue.cpp
+#    test/primer/C13/ActLikePointer.cpp
+#    test/primer/C13/MessageAndFolder.cpp
+
+#     test/concurency/Chp2.cpp
+#     test/concurency/Chp2_L0208.cpp
+
+
+#	test/GtestUsage.cpp
+
+###Jeff Langr
+	test/Jeff_Langr/c2/1/SoundexTest.cpp
+
     )
 target_compile_features(think_in_cxx PRIVATE cxx_std_11)
 
