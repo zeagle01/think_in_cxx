@@ -37,7 +37,9 @@ private:
 		 {'m', "5"}, {'n', "5"},
 		 {'r', "6"}
 		};
-		return encodings.find(c)->second;
+		auto it = encodings.find(c);
+
+		return it == encodings.end() ? "" : it->second;
 	}
 
 	std::string zeroPad(const std::string& str) {
