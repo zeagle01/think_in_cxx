@@ -46,6 +46,7 @@ add_executable(think_in_cxx
 #	test/EigenTest.cpp
 	test/intro_2_alg/qsort_test.cpp
 	test/StdVectorTest.cpp
+	test/MyMatrixMath.cpp
     )
 target_compile_features(think_in_cxx PRIVATE cxx_std_11)
 
