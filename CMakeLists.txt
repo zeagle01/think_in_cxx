@@ -54,6 +54,8 @@ add_executable(think_in_cxx
 ###Jeff Langr
 	test/Jeff_Langr/c2/1/SoundexTest.cpp
 	test/Jeff_Langr/c2/1/Soundex.h
+	test/Jeff_Langr/c5/Http.h
+	test/Jeff_Langr/c5/PlaceDescriptionServiceTest.cpp
 
 #	test/qt/qtHello.cpp
 #	test/EigenTest.cpp
