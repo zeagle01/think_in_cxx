@@ -19,6 +19,7 @@ class A{
 
 };
 
+
 //using 
 void foward_with_pointer(fp_t f){
     std::cout<<"forwarding with function pointer"<<std::endl;
@@ -66,4 +67,62 @@ TEST(function_pointer_test,test_pass_fp_2_std_function){
     ////not the other way around!
     //std_f_t std_f=func;
     //foward_with_pointer(std_f);
+}
+
+
+
+
+/////////////////////member method////////////////////////////
+class A_With_Method_Pointer {
+
+public:
+	A_With_Method_Pointer(): 
+		f_t(&A_With_Method_Pointer::method)
+	{
+
+		std_f_t = std::bind(&A_With_Method_Pointer::method, this);
+		std_f_t_1 = [=]() {
+			this->method();
+		};
+	}
+	void fowarder() {
+		(this->*(this->f_t))();
+		std_f_t();
+		std_f_t_1();
+	}
+
+	void method() {
+		std::cout << " in method" << std::endl;
+	}
+private:
+	std::function<void()> std_f_t;
+	std::function<void()> std_f_t_1;
+	std::function<void()> std_f_t_2;
+	void (A_With_Method_Pointer::*f_t)();
+
+};
+
+//////////// use outside of a class//////////////
+void outside_fowarder() {
+
+	A_With_Method_Pointer a;
+
+	std::function<void()> std_f_t=std::bind(&A_With_Method_Pointer::method,&a);
+	std::function<void()> std_f_t_1=[&]() {
+		a.method();
+	};
+
+	std_f_t();
+	std_f_t_1();
+
+
+}
+
+TEST(method_pointer, test_foward_method_inside_class) {
+	A_With_Method_Pointer a;
+	a.fowarder();
+}
+
+TEST(method_pointer, test_foward_method_outside_class) {
+	outside_fowarder();
 }

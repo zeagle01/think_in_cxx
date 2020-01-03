@@ -32,8 +32,8 @@ add_executable(think_in_cxx
 #    test/19_03_21.cpp
 #    test/19_04_02.cpp
 #    test/ProcessTest.cpp
-#    test/FunctionReturnValueCauseCopy.cpp
-#    test/function_pointer.cpp
+    test/FunctionReturnValueCauseCopy.cpp
+    test/function_pointer.cpp
 #    test/BS/15_3_1.cpp
 #    test/quiz/FileManipulationTest.cpp
 #    test/quiz/ExceptionSafeTest.cpp
