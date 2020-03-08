@@ -45,7 +45,7 @@ TEST(Pointer,test_delete_class_with_data_member){
     A* a=new A();
     a->f();
     delete a;
-    a->f();
+    //a->f();
 
 }
 
@@ -69,9 +69,10 @@ TEST(Pointer,test_bad_access){
     a=new A();
     a->f();
     delete a;
-    int* i=new int;
-    a=(A*)i;
-    a->f();
+	
+//    int* i=new int;
+//    a=(A*)i;
+//    a->f();
 
 
 
