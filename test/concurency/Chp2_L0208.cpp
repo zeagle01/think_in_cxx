@@ -6,6 +6,7 @@
 #include <iostream>
 #include <thread>
 #include <numeric>
+#include <functional>
 
 template<typename iterator,typename T>
 void accumulate_block(iterator b,iterator e,T* ret){

@@ -16,50 +16,46 @@ message("c++ compiler: ${CMAKE_CXX_COMPILER}")
 
 add_executable(think_in_cxx 
     test/main.cpp
-#    test/WriteFile.cpp
-#    test/Pointer.cpp
-#    test/TestConstructor.cpp
-#    test/TestSharePointer.cpp
-#    test/ECSSystemTest.cpp
-#    test/Finally.cpp
-#    test/Volatile.cpp
-#    test/ExceptionTest.cpp
-#    test/UnwindingTest.cpp
-#    test/VariableTest.cpp
-#    test/MySharedPtr.cpp
-#    test/MultiThreadTest.cpp
-#    test/OverloadTest.cpp
-#    test/19_03_21.cpp
-#    test/19_04_02.cpp
-#    test/ProcessTest.cpp
+    test/WriteFile.cpp
+    test/Pointer.cpp
+    test/TestConstructor.cpp
+    test/TestSharePointer.cpp
+    test/ECSSystemTest.cpp
+    test/Finally.cpp
+    test/Volatile.cpp
+    test/ExceptionTest.cpp
+    test/UnwindingTest.cpp
+    test/VariableTest.cpp
+    test/MySharedPtr.cpp
+    test/MultiThreadTest.cpp
+    test/OverloadTest.cpp
+    test/19_03_21.cpp
+    test/19_04_02.cpp
+    test/ProcessTest.cpp
     test/FunctionReturnValueCauseCopy.cpp
     test/function_pointer.cpp
-#    test/BS/15_3_1.cpp
-#    test/quiz/FileManipulationTest.cpp
-#    test/quiz/ExceptionSafeTest.cpp
-#	test/qt/qtHello.cpp
-#	test/EigenTest.cpp
-#	test/intro_2_alg/qsort_test.cpp
-#	test/StdVectorTest.cpp
+    test/BS/15_3_1.cpp
+    test/quiz/FileManipulationTest.cpp
+    test/quiz/ExceptionSafeTest.cpp
+	test/qt/qtHello.cpp
+	test/EigenTest.cpp
+	test/intro_2_alg/qsort_test.cpp
+	test/StdVectorTest.cpp
 
 ###c++ primer
-#    test/primer/C13/ActLikeValue.cpp
-#    test/primer/C13/ActLikePointer.cpp
-#    test/primer/C13/MessageAndFolder.cpp
+    test/primer/C13/ActLikeValue.cpp
+    test/primer/C13/ActLikePointer.cpp
+    test/primer/C13/MessageAndFolder.cpp
 
-#     test/concurency/Chp2.cpp
-#     test/concurency/Chp2_L0208.cpp
-#	test/GtestUsage.cpp
+    test/concurency/Chp2.cpp
+    test/concurency/Chp2_L0208.cpp
+	test/GtestUsage.cpp
 
 ###Jeff Langr
 	test/Jeff_Langr/c2/1/SoundexTest.cpp
 	test/Jeff_Langr/c2/1/Soundex.h
-
-#	test/qt/qtHello.cpp
-#	test/EigenTest.cpp
-#	test/intro_2_alg/qsort_test.cpp
-	test/StdVectorTest.cpp
-#	test/MyMatrixMath.cpp
+	test/Jeff_Langr/c5/Http.h
+	test/Jeff_Langr/c5/PlaceDescriptionServiceTest.cpp
     )
 target_compile_features(think_in_cxx PRIVATE cxx_std_11)
 
@@ -98,3 +94,50 @@ if(MSVC)
 		)
 	endforeach()
 endif()
+
+
+source_group("cxx" FILES "test/WriteFile.cpp")
+source_group("cxx" FILES "test/Pointer.cpp")
+source_group("cxx" FILES "test/TestConstructor.cpp")
+source_group("cxx" FILES "test/TestSharePointer.cpp")
+source_group("cxx" FILES "test/Finally.cpp")
+source_group("cxx" FILES "test/Volatile.cpp")
+source_group("cxx" FILES "test/ExceptionTest.cpp")
+source_group("cxx" FILES "test/VariableTest.cpp")
+source_group("cxx" FILES "test/MySharedPtr.cpp")
+source_group("cxx" FILES "test/MultiThreadTest.cpp")
+source_group("cxx" FILES "test/OverloadTest.cpp")
+source_group("cxx" FILES "test/19_03_21.cpp")
+source_group("cxx" FILES "test/19_04_02.cpp")
+source_group("cxx" FILES "test/ProcessTest.cpp")
+source_group("cxx" FILES "test/FunctionReturnValueCauseCopy.cpp")
+source_group("cxx" FILES "test/function_pointer.cpp")
+source_group("cxx" FILES "test/15_3_1.cpp")
+source_group("cxx" FILES "test/FileManipulationTest.cpp")
+source_group("cxx" FILES "test/ExceptionSafeTest.cpp")
+source_group("cxx" FILES "test/ProcessTest.cpp")
+source_group("cxx" FILES "test/StdVectorTest.cpp")
+
+source_group("qt" FILES "test/qt/qtHello.cpp")
+
+source_group("eigen" FILES "test/EigenTest.cpp")
+
+source_group("intro_2_alg" FILES "test/intro_2_alg/qsort_test.cpp")
+
+source_group("primer" FILES "test/primer/C13/ActLikeValue.cpp")
+source_group("primer" FILES "test/primer/C13/ActLikePointer.cpp")
+source_group("primer" FILES "test/primer/C13/MessageAndFolder.cpp")
+
+source_group("concurency" FILES "test/concurency/Chp2.cpp")
+source_group("concurency" FILES "test/concurency/Chp2_L0208.cpp")
+
+source_group("gtest" FILES "test/GtestUsage.cpp")
+
+source_group("Jeff_Langr" FILES "test/c2/1/SoundexTest.cpp")
+source_group("Jeff_Langr" FILES "test/c2/1/Soundex.cpp")
+source_group("Jeff_Langr" FILES "test/c5/Http.cpp")
+source_group("Jeff_Langr" FILES "test/c5/PlaceDescriptionServiceTest.cpp")
+
+
+
+

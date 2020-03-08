@@ -35,8 +35,9 @@ class FileIO
         {
             std::cout << e.what();
             std::string newFileName;
-            std::cin >> newFileName;
-            connectFile(newFileName);
+			return;
+//            std::cin >> newFileName;
+//            connectFile(newFileName);
         }
     }
 

@@ -8,7 +8,7 @@ void f()
 {
     try
     {
-        int c = 1 / 0;
+        int c = 1 / 0.0001f;
         //此处指定要抛出的异常
         throw std::runtime_error("division by zero");
         //抛出后的逻辑将不再执行
