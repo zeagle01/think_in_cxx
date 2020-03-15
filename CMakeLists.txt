@@ -16,48 +16,49 @@ message("c++ compiler: ${CMAKE_CXX_COMPILER}")
 
 add_executable(think_in_cxx 
     test/main.cpp
-    test/WriteFile.cpp
-    test/Pointer.cpp
-    test/TestConstructor.cpp
-    test/TestSharePointer.cpp
-    test/ECSSystemTest.cpp
-    test/Finally.cpp
-    test/Volatile.cpp
-    test/ExceptionTest.cpp
-    test/UnwindingTest.cpp
-    test/VariableTest.cpp
-    test/MySharedPtr.cpp
-    test/MultiThreadTest.cpp
-    test/OverloadTest.cpp
-    test/19_03_21.cpp
-    test/19_04_02.cpp
-    test/ProcessTest.cpp
-    test/FunctionReturnValueCauseCopy.cpp
-    test/function_pointer.cpp
-    test/BS/15_3_1.cpp
-    test/quiz/FileManipulationTest.cpp
-    test/quiz/ExceptionSafeTest.cpp
-	test/qt/qtHello.cpp
-	test/EigenTest.cpp
-	test/intro_2_alg/qsort_test.cpp
-	test/StdVectorTest.cpp
+#    test/WriteFile.cpp
+#    test/Pointer.cpp
+#    test/TestConstructor.cpp
+#    test/TestSharePointer.cpp
+#    test/ECSSystemTest.cpp
+#    test/Finally.cpp
+#    test/Volatile.cpp
+#    test/ExceptionTest.cpp
+#    test/UnwindingTest.cpp
+#    test/VariableTest.cpp
+#    test/MySharedPtr.cpp
+#    test/MultiThreadTest.cpp
+#    test/OverloadTest.cpp
+#    test/19_03_21.cpp
+#    test/19_04_02.cpp
+#    test/ProcessTest.cpp
+#    test/FunctionReturnValueCauseCopy.cpp
+#    test/function_pointer.cpp
+#    test/BS/15_3_1.cpp
+#    test/quiz/FileManipulationTest.cpp
+#    test/quiz/ExceptionSafeTest.cpp
+#	 test/qt/qtHello.cpp
+#	 test/EigenTest.cpp
+#	 test/intro_2_alg/qsort_test.cpp
+#    test/StdVectorTest.cpp
+    test/Any_Optional_Variant_Test.cpp
 
 ###c++ primer
-    test/primer/C13/ActLikeValue.cpp
-    test/primer/C13/ActLikePointer.cpp
-    test/primer/C13/MessageAndFolder.cpp
+#    test/primer/C13/ActLikeValue.cpp
+#    test/primer/C13/ActLikePointer.cpp
+#    test/primer/C13/MessageAndFolder.cpp
 
-    test/concurency/Chp2.cpp
-    test/concurency/Chp2_L0208.cpp
-	test/GtestUsage.cpp
+#    test/concurency/Chp2.cpp
+#    test/concurency/Chp2_L0208.cpp
+#	test/GtestUsage.cpp
 
 ###Jeff Langr
-	test/Jeff_Langr/c2/1/SoundexTest.cpp
-	test/Jeff_Langr/c2/1/Soundex.h
-	test/Jeff_Langr/c5/Http.h
-	test/Jeff_Langr/c5/PlaceDescriptionServiceTest.cpp
+#	test/Jeff_Langr/c2/1/SoundexTest.cpp
+#	test/Jeff_Langr/c2/1/Soundex.h
+#	test/Jeff_Langr/c5/Http.h
+#	test/Jeff_Langr/c5/PlaceDescriptionServiceTest.cpp
     )
-target_compile_features(think_in_cxx PRIVATE cxx_std_11)
+target_compile_features(think_in_cxx PRIVATE cxx_std_17)
 
 
 
