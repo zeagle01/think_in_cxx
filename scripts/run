@@ -1,0 +1,18 @@
+echo "change dir to  `pwd`"
+wd=`pwd`
+
+buildDir=$wd/../build
+cd $buildDir
+echo "change dir to  `pwd`"
+#cmake ..
+cmake --build $buildDir
+targetDir=$buildDir/Debug
+
+cd $targetDir
+echo "change dir to  `pwd`"
+
+./think_in_cxx.exe
+
+
+
+
