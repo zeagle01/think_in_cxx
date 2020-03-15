@@ -41,7 +41,10 @@ add_executable(think_in_cxx
 #	 test/EigenTest.cpp
 #	 test/intro_2_alg/qsort_test.cpp
 #    test/StdVectorTest.cpp
-    test/Any_Optional_Variant_Test.cpp
+    test/Cxx_Any_Test.cpp
+    test/Cxx_Optional_Test.cpp
+    test/Cxx_Variant_Test.cpp
+
 
 ###c++ primer
 #    test/primer/C13/ActLikeValue.cpp
