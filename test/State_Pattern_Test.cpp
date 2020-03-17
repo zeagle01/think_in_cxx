@@ -52,14 +52,8 @@ namespace state_pattern {
 	{
 	public:
 
-		virtual std::shared_ptr<State> press_start() override 
-		{ 
-			return Running::get_singleton(); 
-		};
-		virtual std::shared_ptr<State> press_record() override 
-		{
-			return Recording::get_singleton(); 
-		};
+		virtual std::shared_ptr<State> press_start() override;
+		virtual std::shared_ptr<State> press_record() override;
 		virtual State::Status get_status() override 
 		{
 			return State::Status::Recording; 
@@ -130,13 +124,22 @@ namespace state_pattern {
 
 	std::shared_ptr<State> Running::press_start()  
 	{
-			return Running::get_singleton(); 
+			return Idle::get_singleton(); 
 	}
 
 	std::shared_ptr<State> Running::press_record()  
 	{
 			return Recording::get_singleton(); 
 	}
+
+	std::shared_ptr<State> Recording::press_start()
+	{
+		return Running::get_singleton();
+	};
+	std::shared_ptr<State> Recording::press_record()
+	{
+		return Idle::get_singleton();
+	};
 
 
 }
@@ -175,8 +178,16 @@ TEST_F(State_Pattern_Test, test_press_double_start_recording)
 
 	a_state->press_record();
 	a_state->press_record();
-	EXPECT_THAT(a_state->get_status(), Eq(state_pattern::State::Status::Recording));
+	EXPECT_THAT(a_state->get_status(), Eq(state_pattern::State::Status::Idle));
 
+}
+
+TEST_F(State_Pattern_Test, test_press_double_start_running)
+{
+
+	a_state->press_start();
+	a_state->press_start();
+	EXPECT_THAT(a_state->get_status(), Eq(state_pattern::State::Status::Idle));
 }
 
 
