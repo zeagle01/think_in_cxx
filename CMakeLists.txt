@@ -44,6 +44,7 @@ add_executable(think_in_cxx
     test/Cxx_Any_Test.cpp
     test/Cxx_Optional_Test.cpp
     test/Cxx_Variant_Test.cpp
+    test/State_Pattern_Test.cpp
 
 
 ###c++ primer
