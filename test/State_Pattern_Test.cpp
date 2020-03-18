@@ -100,7 +100,7 @@ namespace state_pattern {
 	class State_Holder :public State
 	{
 	private:
-		std::shared_ptr<State> m_state = std::make_shared<Idle>();
+		std::shared_ptr<State> m_state = Idle::get_singleton();
 
 	public:
 			virtual std::shared_ptr<State> press_start() override 
