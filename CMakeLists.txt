@@ -20,6 +20,7 @@ add_executable(think_in_cxx
 #    test/Pointer.cpp
 #    test/TestConstructor.cpp
 #    test/TestSharePointer.cpp
+#    test/TestUniquePointer.cpp
 #    test/ECSSystemTest.cpp
 #    test/Finally.cpp
 #    test/Volatile.cpp
@@ -41,10 +42,16 @@ add_executable(think_in_cxx
 #	 test/EigenTest.cpp
 #	 test/intro_2_alg/qsort_test.cpp
 #    test/StdVectorTest.cpp
-    test/Cxx_Any_Test.cpp
-    test/Cxx_Optional_Test.cpp
-    test/Cxx_Variant_Test.cpp
-    test/State_Pattern_Test.cpp
+#    test/Cxx_Any_Test.cpp
+#    test/Cxx_Optional_Test.cpp
+#    test/Cxx_Variant_Test.cpp
+
+
+### design pattern
+#    test/design_pattern/State_Pattern_Test.cpp
+#    test/design_pattern/Singleton_Test.cpp
+#    test/design_pattern/Factory_Test.cpp
+    test/design_pattern/Builder_Test.cpp
 
 
 ###c++ primer
