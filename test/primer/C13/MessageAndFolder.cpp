@@ -262,6 +262,11 @@ class A_Message_Saved_By_Two_Folders_Test : public testing::Test
     {
 		message = std::make_shared<messge_and_folder::Message>();
         message->set_content("hello world!");
+
+        folder1 = std::make_shared<messge_and_folder::Folder>();
+        folder2 = std::make_shared<messge_and_folder::Folder>();
+        folder3 = std::make_shared<messge_and_folder::Folder>();
+
         message->save(folder1);
         message->save(folder2);
         copy_message = message->get_shared_deep_copy();
