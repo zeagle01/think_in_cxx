@@ -35,34 +35,43 @@ add_executable(think_in_cxx
 #    test/ProcessTest.cpp
 #    test/FunctionReturnValueCauseCopy.cpp
 #    test/function_pointer.cpp
-#    test/BS/15_3_1.cpp
-#    test/quiz/FileManipulationTest.cpp
-#    test/quiz/ExceptionSafeTest.cpp
-#	 test/qt/qtHello.cpp
-#	 test/EigenTest.cpp
 #	 test/intro_2_alg/qsort_test.cpp
 #    test/StdVectorTest.cpp
 #    test/Cxx_Any_Test.cpp
 #    test/Cxx_Optional_Test.cpp
 #    test/Cxx_Variant_Test.cpp
 
+### BS book
+#    test/BS/15_3_1.cpp
+
+### qt
+#	 test/qt/qtHello.cpp
+
+### Eigen
+#	 test/EigenTest.cpp
+
+#    test/quiz/FileManipulationTest.cpp
+#    test/quiz/ExceptionSafeTest.cpp
+
+### gtest
+#	 test/gtest/GtestUsage.cpp
+#	 test/gtest/gmock_test.cpp
 
 ### design pattern
 #    test/design_pattern/State_Pattern_Test.cpp
 #    test/design_pattern/Singleton_Test.cpp
 #    test/design_pattern/Factory_Test.cpp
 #    test/design_pattern/Builder_Test.cpp
-    test/design_pattern/Visitor_Test.cpp
+#    test/design_pattern/Visitor_Test.cpp
 
 
 ###c++ primer
 #    test/primer/C13/ActLikeValue.cpp
 #    test/primer/C13/ActLikePointer.cpp
-#    test/primer/C13/MessageAndFolder.cpp
+    test/primer/C13/MessageAndFolder.cpp
 
 #    test/concurency/Chp2.cpp
 #    test/concurency/Chp2_L0208.cpp
-#	 test/GtestUsage.cpp
 
 ###Jeff Langr
 #	test/Jeff_Langr/c2/1/SoundexTest.cpp
@@ -97,6 +106,8 @@ FetchContent_MakeAvailable(googletest)
 #  FetchContent_Populate(googletest)
 #  add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR})
 #endif()
+
+set_target_properties(gmock_main PROPERTIES EXCLUDE_FROM_ALL TRUE)
 
 target_link_libraries(think_in_cxx PRIVATE gmock_main)
 ################### get newest gtest###################

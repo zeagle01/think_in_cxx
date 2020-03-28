@@ -84,8 +84,7 @@ TEST(Visitor_Test,test_use)
     a_visitor.delegate_to_fake();
 
     visitor_test::Circle circle;
-	EXPECT_CALL(a_visitor, visit)
-		.WillOnce(SetArgReferee<0>(circle));
+	EXPECT_CALL(a_visitor, visit(Ref(circle)));
 
     circle.accept(a_visitor);
 }

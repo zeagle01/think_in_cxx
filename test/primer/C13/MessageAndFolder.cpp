@@ -145,3 +145,13 @@ TEST(MessageAndFolderTest,test_destructor){
 //        expect_bind(m, folders[0]);
         //EXPECT_EQ(folders[0].get_message_num(),1);
 }
+
+
+namespace messge_and_folder
+{
+
+}
+
+
+
+
