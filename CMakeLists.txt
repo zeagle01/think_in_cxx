@@ -51,7 +51,8 @@ add_executable(think_in_cxx
 #    test/design_pattern/State_Pattern_Test.cpp
 #    test/design_pattern/Singleton_Test.cpp
 #    test/design_pattern/Factory_Test.cpp
-    test/design_pattern/Builder_Test.cpp
+#    test/design_pattern/Builder_Test.cpp
+    test/design_pattern/Visitor_Test.cpp
 
 
 ###c++ primer
@@ -61,7 +62,7 @@ add_executable(think_in_cxx
 
 #    test/concurency/Chp2.cpp
 #    test/concurency/Chp2_L0208.cpp
-#	test/GtestUsage.cpp
+#	 test/GtestUsage.cpp
 
 ###Jeff Langr
 #	test/Jeff_Langr/c2/1/SoundexTest.cpp
@@ -73,12 +74,32 @@ target_compile_features(think_in_cxx PRIVATE cxx_std_17)
 
 
 
-hunter_add_package(GTest)
-#find_package(GTest CONFIG QUIET)
-find_package(GMock CONFIG QUIET)
-#target_link_libraries(think_in_cxx PRIVATE GTest::gtest GMock::gmock)
-target_link_libraries(think_in_cxx PRIVATE GMock::gmock)
+#hunter_add_package(GTest)
+#find_package(GMock CONFIG QUIET)
+#target_link_libraries(think_in_cxx PRIVATE GMock::gmock)
 
+################### get newest gtest###################
+include(FetchContent)
+
+FetchContent_Declare(
+  googletest
+  GIT_REPOSITORY https://github.com/google/googletest.git
+  GIT_TAG        master
+)
+
+# this one is important for windows
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)  
+
+FetchContent_MakeAvailable(googletest)
+
+#FetchContent_GetProperties(googletest)
+#if(NOT googletest_POPULATED)
+#  FetchContent_Populate(googletest)
+#  add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR})
+#endif()
+
+target_link_libraries(think_in_cxx PRIVATE gmock_main)
+################### get newest gtest###################
 
 hunter_add_package(Eigen)
 find_package(Eigen3 CONFIG REQUIRED)
