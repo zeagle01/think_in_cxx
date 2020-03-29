@@ -6,6 +6,7 @@
 #include <unordered_set>
 #include <vector>
 #include <string>
+#include <optional>
 
 using namespace testing;
 namespace messge_and_folder
@@ -20,9 +21,8 @@ namespace messge_and_folder
     class Message 
     {
     public:
-        Message() 
-        {
-        };
+        Message() = default;
+        virtual ~Message() ;
         Message(const Message& other);
 
 
@@ -36,6 +36,9 @@ namespace messge_and_folder
     private:
         std::string m_content;
         std::vector<Folder*> m_folders;
+
+        void remove_from_folders();
+        void add_to_folders();
     };
 
     class Folder
@@ -82,21 +85,36 @@ namespace messge_and_folder
     {
         m_content = other.m_content;
         m_folders = other.m_folders;
-        for (auto it : m_folders)
-        {
-            it->add_message(*this);
-        }
+        add_to_folders();
+    }
+
+    Message::~Message()
+    {
+        remove_from_folders();
     }
 
     Message& Message::operator=(const Message &other)
     {
+        remove_from_folders();
         m_content = other.m_content;
         m_folders = other.m_folders;
+        add_to_folders();
+        return *this;
+    }
+
+    void Message::remove_from_folders()
+    {
+        for(auto it:m_folders)
+        {
+            it->remove_message(*this);
+        }
+    }
+    void Message::add_to_folders()
+    {
         for (auto it : m_folders)
         {
             it->add_message(*this);
         }
-        return *this;
     }
     void Message::save(Folder& folder)
     {
@@ -121,6 +139,7 @@ namespace messge_and_folder
 }
 
 ///////////////////////////////basic test/////////////////////////////////////////
+
 class A_Message_Saved_By_Two_Folders_Test : public testing::Test
 {
 
@@ -133,16 +152,13 @@ class A_Message_Saved_By_Two_Folders_Test : public testing::Test
 
     }
 
-    virtual void TearDown() override
-    {
-    }
 
     messge_and_folder::Folder folder1;
     messge_and_folder::Folder folder2;
     messge_and_folder::Folder folder3;
 
     messge_and_folder::Message message;
-    std::string init_content = "hello world!";
+    std::string init_content = "init content!";
     std::string new_content = "new content!";
 };
 
@@ -170,21 +186,29 @@ TEST_F(A_Message_Saved_By_Two_Folders_Test,test_content_is_the_same)
 TEST_F(A_Message_Saved_By_Two_Folders_Test,test_save_into_a_new_folder)
 {
     message.save(folder3);
-    EXPECT_THAT(folder3.get_all_contents(),Contains(message.get_content()));
+    EXPECT_THAT(folder3.get_all_contents(),Contains(init_content));
 }
 
 
 TEST_F(A_Message_Saved_By_Two_Folders_Test,test_delete_from_folder)
 {
     message.remove_from(folder1);
-    EXPECT_THAT(folder1.get_all_contents(),Not(Contains(message.get_content())));
+    EXPECT_THAT(folder1.get_all_contents(),Not(Contains(init_content)));
 }
 
 TEST_F(A_Message_Saved_By_Two_Folders_Test,test_set_new_content_will_sync_in_folders)
 {
     message.set_content(new_content);
-    EXPECT_THAT(folder1.get_all_contents(),Contains(message.get_content()));
-    EXPECT_THAT(folder2.get_all_contents(),Contains(message.get_content()));
+    EXPECT_THAT(folder1.get_all_contents(),Contains(new_content));
+    EXPECT_THAT(folder2.get_all_contents(),Contains(new_content));
+}
+
+
+TEST_F(A_Message_Saved_By_Two_Folders_Test,test_destroied_message_will_be_removed_from_folders)
+{
+    message.~Message();
+    EXPECT_THAT(folder1.get_all_contents(),Not(Contains(init_content)));
+    EXPECT_THAT(folder2.get_all_contents(),Not(Contains(init_content)));
 }
 
 
@@ -199,35 +223,61 @@ class A_Message_Saved_By_Two_Folders_That_Has_A_Copy_Test : public A_Message_Sav
         copy_message = message;
     }
 
-    virtual void TearDown() override
-    {
-    }
 
-    messge_and_folder::Message copy_message;
+    std::optional<messge_and_folder::Message> copy_message;
     std::string copy_content = "copy content!";
 };
 
 TEST_F(A_Message_Saved_By_Two_Folders_That_Has_A_Copy_Test,test_copied_message_has_same_content)
 {
-    EXPECT_THAT(copy_message.get_content(),Eq(message.get_content()));
+    EXPECT_THAT(copy_message->get_content(),Eq(message.get_content()));
 }
 
 TEST_F(A_Message_Saved_By_Two_Folders_That_Has_A_Copy_Test,test_copied_message_contained_in_same_folders)
 {
-    EXPECT_THAT(folder1.get_all_contents(),Contains(copy_message.get_content()));
-    EXPECT_THAT(folder2.get_all_contents(),Contains(copy_message.get_content()));
+    copy_message->set_content(copy_content);
+    EXPECT_THAT(folder1.get_all_contents(),Contains(copy_content));
+    EXPECT_THAT(folder2.get_all_contents(),Contains(copy_content));
 }
 
 
 TEST_F(A_Message_Saved_By_Two_Folders_That_Has_A_Copy_Test,test_copied_message_set_different_content_wont_affect_original)
 {
-    copy_message.set_content(copy_content);
+    copy_message->set_content(copy_content);
     EXPECT_THAT(message.get_content(),Ne(copy_content));
 }
 
 TEST_F(A_Message_Saved_By_Two_Folders_That_Has_A_Copy_Test,test_copied_message_set_different_content_will_sync_in_folders)
 {
-    copy_message.set_content(copy_content);
+    copy_message->set_content(copy_content);
     EXPECT_THAT(folder1.get_all_contents(),Contains(copy_content));
     EXPECT_THAT(folder2.get_all_contents(),Contains(copy_content));
+}
+
+class A_Message_Saved_By_Two_Folders_That_Has_A_Overrided_Copy_Test : public A_Message_Saved_By_Two_Folders_Test
+{
+
+    protected:
+    virtual void SetUp() override
+    {
+
+        copy_message.save(folder3);
+        A_Message_Saved_By_Two_Folders_Test::SetUp();
+        copy_message = message;
+    }
+
+    messge_and_folder::Message copy_message;
+};
+
+
+TEST_F(A_Message_Saved_By_Two_Folders_That_Has_A_Overrided_Copy_Test,test_copy_is_contained_in_the_same_folders_as_original)
+{
+    EXPECT_THAT(folder1.get_all_contents(),UnorderedElementsAre(init_content,init_content));
+    EXPECT_THAT(folder1.get_all_contents(),UnorderedElementsAre(init_content,init_content));
+}
+
+
+TEST_F(A_Message_Saved_By_Two_Folders_That_Has_A_Overrided_Copy_Test,test_copy_is_removed_from_its_original_folders)
+{
+    EXPECT_THAT(folder3.get_all_contents(),IsEmpty());
 }
