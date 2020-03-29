@@ -120,13 +120,14 @@ namespace messge_and_folder
     }
 }
 
+///////////////////////////////basic test/////////////////////////////////////////
 class A_Message_Saved_By_Two_Folders_Test : public testing::Test
 {
 
     protected:
     virtual void SetUp() override
     {
-        message.set_content("hello world!");
+        message.set_content(init_content);
         message.save(folder1);
         message.save(folder2);
 
@@ -141,22 +142,22 @@ class A_Message_Saved_By_Two_Folders_Test : public testing::Test
     messge_and_folder::Folder folder3;
 
     messge_and_folder::Message message;
+    std::string init_content = "hello world!";
+    std::string new_content = "new content!";
 };
 
 
 
-TEST_F(A_Message_Saved_By_Two_Folders_Test,test_content_is_not_equal_to_new_content)
+TEST_F(A_Message_Saved_By_Two_Folders_Test,test_new_content_is_not_equal_to_initial_content)
 {
-    std::string exp("new content!");
-    EXPECT_THAT(message.get_content(),Ne(exp));
+    EXPECT_THAT(message.get_content(),Ne(new_content));
 }
 
 
 TEST_F(A_Message_Saved_By_Two_Folders_Test,test_set_content_as_expected)
 {
-    std::string exp("new content!");
-    message.set_content(exp);
-    EXPECT_THAT(message.get_content(),Eq(exp));
+    message.set_content(new_content);
+    EXPECT_THAT(message.get_content(),Eq(new_content));
 }
 
 
@@ -164,6 +165,7 @@ TEST_F(A_Message_Saved_By_Two_Folders_Test,test_content_is_the_same)
 {
     EXPECT_THAT(folder1.get_all_contents(),Eq(folder2.get_all_contents()));
 }
+
 
 TEST_F(A_Message_Saved_By_Two_Folders_Test,test_save_into_a_new_folder)
 {
@@ -180,7 +182,7 @@ TEST_F(A_Message_Saved_By_Two_Folders_Test,test_delete_from_folder)
 
 TEST_F(A_Message_Saved_By_Two_Folders_Test,test_set_new_content_will_sync_in_folders)
 {
-    message.set_content("new content");
+    message.set_content(new_content);
     EXPECT_THAT(folder1.get_all_contents(),Contains(message.get_content()));
     EXPECT_THAT(folder2.get_all_contents(),Contains(message.get_content()));
 }
@@ -202,6 +204,7 @@ class A_Message_Saved_By_Two_Folders_That_Has_A_Copy_Test : public A_Message_Sav
     }
 
     messge_and_folder::Message copy_message;
+    std::string copy_content = "copy content!";
 };
 
 TEST_F(A_Message_Saved_By_Two_Folders_That_Has_A_Copy_Test,test_copied_message_has_same_content)
@@ -218,15 +221,13 @@ TEST_F(A_Message_Saved_By_Two_Folders_That_Has_A_Copy_Test,test_copied_message_c
 
 TEST_F(A_Message_Saved_By_Two_Folders_That_Has_A_Copy_Test,test_copied_message_set_different_content_wont_affect_original)
 {
-    std::string act("copy content");
-    copy_message.set_content(act);
-    EXPECT_THAT(message.get_content(),Ne(act));
+    copy_message.set_content(copy_content);
+    EXPECT_THAT(message.get_content(),Ne(copy_content));
 }
 
 TEST_F(A_Message_Saved_By_Two_Folders_That_Has_A_Copy_Test,test_copied_message_set_different_content_will_sync_in_folders)
 {
-    std::string act("copy content");
-    copy_message.set_content(act);
-    EXPECT_THAT(folder1.get_all_contents(),Contains(act));
-    EXPECT_THAT(folder2.get_all_contents(),Contains(act));
+    copy_message.set_content(copy_content);
+    EXPECT_THAT(folder1.get_all_contents(),Contains(copy_content));
+    EXPECT_THAT(folder2.get_all_contents(),Contains(copy_content));
 }
