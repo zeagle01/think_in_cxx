@@ -278,7 +278,7 @@ class A_Message_Saved_By_Two_Folders_That_Has_A_Overrided_Copy_Test : public A_M
 TEST_F(A_Message_Saved_By_Two_Folders_That_Has_A_Overrided_Copy_Test,test_copy_is_contained_in_the_same_folders_as_original)
 {
     EXPECT_THAT(folder1.get_all_contents(),UnorderedElementsAre(init_content,init_content));
-    EXPECT_THAT(folder1.get_all_contents(),UnorderedElementsAre(init_content,init_content));
+    EXPECT_THAT(folder2.get_all_contents(),UnorderedElementsAre(init_content,init_content));
 }
 
 
