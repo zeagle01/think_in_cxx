@@ -17,7 +17,7 @@ namespace messge_and_folder
 //2. can't use shared_from_this in copy_constructor 
 
     class Folder;
-    class Message: public std:: enable_shared_from_this<Message>
+    class Message 
     {
     public:
         Message() 
@@ -25,12 +25,9 @@ namespace messge_and_folder
         };
         Message(const Message& other);
 
-        Message &operator=(const Message &other) = default;
-        //        {
-        //            //TODO
-        //            m_content = other.m_content;
-        //            m_folders = other.m_folders;
-        //        }
+
+        //Message &operator=(const Message &other) = default; //this is the default copy assigment
+        Message &operator=(const Message &other) ;
 
         void save(Folder& folder);
         void remove_from(Folder& folder);
@@ -90,6 +87,17 @@ namespace messge_and_folder
             it->add_message(*this);
         }
     }
+
+    Message& Message::operator=(const Message &other)
+    {
+        m_content = other.m_content;
+        m_folders = other.m_folders;
+        for (auto it : m_folders)
+        {
+            it->add_message(*this);
+        }
+        return *this;
+    }
     void Message::save(Folder& folder)
     {
         folder.add_message(*this);
@@ -122,12 +130,10 @@ class A_Message_Saved_By_Two_Folders_Test : public testing::Test
         message.save(folder1);
         message.save(folder2);
 
-        copy_message = message;
     }
 
     virtual void TearDown() override
     {
-        //message.
     }
 
     messge_and_folder::Folder folder1;
@@ -135,8 +141,8 @@ class A_Message_Saved_By_Two_Folders_Test : public testing::Test
     messge_and_folder::Folder folder3;
 
     messge_and_folder::Message message;
-    messge_and_folder::Message copy_message;
 };
+
 
 
 TEST_F(A_Message_Saved_By_Two_Folders_Test,test_content_is_not_equal_to_new_content)
@@ -180,26 +186,44 @@ TEST_F(A_Message_Saved_By_Two_Folders_Test,test_set_new_content_will_sync_in_fol
 }
 
 
-TEST_F(A_Message_Saved_By_Two_Folders_Test,test_copied_message_has_same_content)
+//////////////////////copy test//////////////////////////////////////
+class A_Message_Saved_By_Two_Folders_That_Has_A_Copy_Test : public A_Message_Saved_By_Two_Folders_Test
+{
+
+    protected:
+    virtual void SetUp() override
+    {
+        A_Message_Saved_By_Two_Folders_Test::SetUp();
+        copy_message = message;
+    }
+
+    virtual void TearDown() override
+    {
+    }
+
+    messge_and_folder::Message copy_message;
+};
+
+TEST_F(A_Message_Saved_By_Two_Folders_That_Has_A_Copy_Test,test_copied_message_has_same_content)
 {
     EXPECT_THAT(copy_message.get_content(),Eq(message.get_content()));
 }
 
-TEST_F(A_Message_Saved_By_Two_Folders_Test,test_copied_message_contained_in_same_folders)
+TEST_F(A_Message_Saved_By_Two_Folders_That_Has_A_Copy_Test,test_copied_message_contained_in_same_folders)
 {
     EXPECT_THAT(folder1.get_all_contents(),Contains(copy_message.get_content()));
     EXPECT_THAT(folder2.get_all_contents(),Contains(copy_message.get_content()));
 }
 
 
-TEST_F(A_Message_Saved_By_Two_Folders_Test,test_copied_message_set_different_content_wont_affect_original)
+TEST_F(A_Message_Saved_By_Two_Folders_That_Has_A_Copy_Test,test_copied_message_set_different_content_wont_affect_original)
 {
     std::string act("copy content");
     copy_message.set_content(act);
     EXPECT_THAT(message.get_content(),Ne(act));
 }
 
-TEST_F(A_Message_Saved_By_Two_Folders_Test,test_copied_message_set_different_content_will_sync_in_folders)
+TEST_F(A_Message_Saved_By_Two_Folders_That_Has_A_Copy_Test,test_copied_message_set_different_content_will_sync_in_folders)
 {
     std::string act("copy content");
     copy_message.set_content(act);
