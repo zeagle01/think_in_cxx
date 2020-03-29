@@ -4,7 +4,6 @@
 #include "gmock/gmock.h"
 #include <memory>
 #include <unordered_set>
-#include <vector>
 #include <string>
 #include <optional>
 
@@ -35,7 +34,7 @@ namespace messge_and_folder
         void set_content(const std::string &content);
     private:
         std::string m_content;
-        std::vector<Folder*> m_folders;
+        std::unordered_set<Folder*> m_folders;
 
         void remove_from_folders();
         void add_to_folders();
@@ -49,23 +48,19 @@ namespace messge_and_folder
         void remove_message(Message& message);
 
     private:
-        std::vector<Message*> m_messages;
+        std::unordered_set<Message*> m_messages;
     };
 
     void Folder::add_message(Message& message)
     {
-        m_messages.push_back(&message);
+        m_messages.insert(&message);
     }
 
     void Folder::remove_message(Message& message)
     {
-        for(size_t i=0;i<m_messages.size();i++)
+        if(m_messages.count(&message))
         {
-            if (m_messages[i] == &message)
-            {
-                m_messages.erase(m_messages.begin() + i);
-                break;
-            }
+            m_messages.erase(&message);
         }
     }
 
@@ -104,10 +99,13 @@ namespace messge_and_folder
 
     void Message::remove_from_folders()
     {
-        for(auto it:m_folders)
-        {
-            it->remove_message(*this);
-        }
+		if (!m_folders.empty())
+		{
+			for (auto it : m_folders)
+			{
+				it->remove_message(*this);
+			}
+		}
     }
     void Message::add_to_folders()
     {
@@ -119,7 +117,7 @@ namespace messge_and_folder
     void Message::save(Folder& folder)
     {
         folder.add_message(*this);
-        m_folders.push_back(&folder);
+        m_folders.insert(&folder);
     }
 
     void Message::remove_from(Folder& folder)
@@ -206,9 +204,15 @@ TEST_F(A_Message_Saved_By_Two_Folders_Test,test_set_new_content_will_sync_in_fol
 
 TEST_F(A_Message_Saved_By_Two_Folders_Test,test_destroied_message_will_be_removed_from_folders)
 {
-    message.~Message();
-    EXPECT_THAT(folder1.get_all_contents(),Not(Contains(init_content)));
-    EXPECT_THAT(folder2.get_all_contents(),Not(Contains(init_content)));
+    //call destructor explicitly will cause undeifne behavior,don't do it
+    std::string to_be_destructed_content("to_be_destructed!");
+    {
+        messge_and_folder::Message to_be_destructed_copy;
+        to_be_destructed_copy.set_content(to_be_destructed_content);
+        to_be_destructed_copy.save(folder3);
+        EXPECT_THAT(folder3.get_all_contents(), Contains(to_be_destructed_content));
+    }
+    EXPECT_THAT(folder3.get_all_contents(),IsEmpty());
 }
 
 
@@ -254,6 +258,7 @@ TEST_F(A_Message_Saved_By_Two_Folders_That_Has_A_Copy_Test,test_copied_message_s
     EXPECT_THAT(folder2.get_all_contents(),Contains(copy_content));
 }
 
+////////////////////////override copy test/////////////////////////////////
 class A_Message_Saved_By_Two_Folders_That_Has_A_Overrided_Copy_Test : public A_Message_Saved_By_Two_Folders_Test
 {
 
