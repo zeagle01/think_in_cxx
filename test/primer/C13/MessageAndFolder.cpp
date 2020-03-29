@@ -154,56 +154,58 @@ using namespace testing;
 //
 namespace messge_and_folder
 {
+
+
+//smart pointer is complicated in dealing with mutual reference
+//1. enable_from_this
+//2. can't use shared_from_this in copy_constructor 
+
     class Folder;
     class Message: public std:: enable_shared_from_this<Message>
     {
     public:
-        Message() = default;
+        Message() 
+        {
+        };
         Message(const Message& other);
 
-        void operator=(const Message &other)
-        {
-            //TODO
-            //m_content = other.m_content;
-            //m_folders = other.m_folders;
-        }
+        Message &operator=(const Message &other) = default;
+        //        {
+        //            //TODO
+        //            m_content = other.m_content;
+        //            m_folders = other.m_folders;
+        //        }
 
-        void save(std::shared_ptr<Folder> folder);
-        void remove_from(std::shared_ptr<Folder> folder);
+        void save(Folder& folder);
+        void remove_from(Folder& folder);
         std::string get_content() const;
         void set_content(const std::string &content);
-
-        std::shared_ptr<Message> get_shared_deep_copy()
-        {
-            std::shared_ptr<Message> ret = std::make_shared<Message>(*this);
-            return ret;
-        }
     private:
         std::string m_content;
-        std::vector<std::shared_ptr<Folder>> m_folders;
+        std::vector<Folder*> m_folders;
     };
 
     class Folder
     {
         public:
         std::vector<std::string> Folder::get_all_contents() const;
-        void add_message(std::shared_ptr<Message> message);
-        void remove_message(std::shared_ptr<Message> message);
+        void add_message(Message& message);
+        void remove_message(Message& message);
 
     private:
-        std::vector<std::shared_ptr<Message>> m_messages;
+        std::vector<Message*> m_messages;
     };
 
-    void Folder::add_message(std::shared_ptr<Message> message)
+    void Folder::add_message(Message& message)
     {
-        m_messages.push_back(message);
+        m_messages.push_back(&message);
     }
 
-    void Folder::remove_message(std::shared_ptr<Message> message)
+    void Folder::remove_message(Message& message)
     {
         for(size_t i=0;i<m_messages.size();i++)
         {
-            if (m_messages[i] == message)
+            if (m_messages[i] == &message)
             {
                 m_messages.erase(m_messages.begin() + i);
                 break;
@@ -229,18 +231,18 @@ namespace messge_and_folder
         m_folders = other.m_folders;
         for (auto it : m_folders)
         {
-            it->add_message(shared_from_this());
+            it->add_message(*this);
         }
     }
-    void Message::save(std::shared_ptr<Folder> folder)
+    void Message::save(Folder& folder)
     {
-        folder->add_message(shared_from_this());
-        m_folders.push_back(folder);
+        folder.add_message(*this);
+        m_folders.push_back(&folder);
     }
 
-    void Message::remove_from(std::shared_ptr<Folder> folder)
+    void Message::remove_from(Folder& folder)
     {
-        folder->remove_message(shared_from_this());
+        folder.remove_message(*this);
     }
 
     std::string Message::get_content() const
@@ -260,16 +262,11 @@ class A_Message_Saved_By_Two_Folders_Test : public testing::Test
     protected:
     virtual void SetUp() override
     {
-		message = std::make_shared<messge_and_folder::Message>();
-        message->set_content("hello world!");
+        message.set_content("hello world!");
+        message.save(folder1);
+        message.save(folder2);
 
-        folder1 = std::make_shared<messge_and_folder::Folder>();
-        folder2 = std::make_shared<messge_and_folder::Folder>();
-        folder3 = std::make_shared<messge_and_folder::Folder>();
-
-        message->save(folder1);
-        message->save(folder2);
-        copy_message = message->get_shared_deep_copy();
+        copy_message = message;
     }
 
     virtual void TearDown() override
@@ -277,79 +274,79 @@ class A_Message_Saved_By_Two_Folders_Test : public testing::Test
         //message.
     }
 
-    std::shared_ptr<messge_and_folder::Folder> folder1;
-    std::shared_ptr<messge_and_folder::Folder> folder2;
-    std::shared_ptr<messge_and_folder::Folder> folder3;
+    messge_and_folder::Folder folder1;
+    messge_and_folder::Folder folder2;
+    messge_and_folder::Folder folder3;
 
-    std::shared_ptr<messge_and_folder::Message> message;
-    std::shared_ptr<messge_and_folder::Message> copy_message;
+    messge_and_folder::Message message;
+    messge_and_folder::Message copy_message;
 };
 
 
 TEST_F(A_Message_Saved_By_Two_Folders_Test,test_content_is_not_equal_to_new_content)
 {
     std::string exp("new content!");
-    EXPECT_THAT(message->get_content(),Ne(exp));
+    EXPECT_THAT(message.get_content(),Ne(exp));
 }
 
 
 TEST_F(A_Message_Saved_By_Two_Folders_Test,test_set_content_as_expected)
 {
     std::string exp("new content!");
-    message->set_content(exp);
-    EXPECT_THAT(message->get_content(),Eq(exp));
+    message.set_content(exp);
+    EXPECT_THAT(message.get_content(),Eq(exp));
 }
 
 
 TEST_F(A_Message_Saved_By_Two_Folders_Test,test_content_is_the_same)
 {
-    EXPECT_THAT(folder1->get_all_contents(),Eq(folder2->get_all_contents()));
+    EXPECT_THAT(folder1.get_all_contents(),Eq(folder2.get_all_contents()));
 }
 
 TEST_F(A_Message_Saved_By_Two_Folders_Test,test_save_into_a_new_folder)
 {
-    message->save(folder3);
-    EXPECT_THAT(folder3->get_all_contents(),Contains(message->get_content()));
+    message.save(folder3);
+    EXPECT_THAT(folder3.get_all_contents(),Contains(message.get_content()));
 }
 
 
 TEST_F(A_Message_Saved_By_Two_Folders_Test,test_delete_from_folder)
 {
-    message->remove_from(folder1);
-    EXPECT_THAT(folder1->get_all_contents(),Not(Contains(message->get_content())));
+    message.remove_from(folder1);
+    EXPECT_THAT(folder1.get_all_contents(),Not(Contains(message.get_content())));
 }
 
 TEST_F(A_Message_Saved_By_Two_Folders_Test,test_set_new_content_will_sync_in_folders)
 {
-    message->set_content("new content");
-    EXPECT_THAT(folder1->get_all_contents(),Contains(message->get_content()));
-    EXPECT_THAT(folder2->get_all_contents(),Contains(message->get_content()));
+    message.set_content("new content");
+    EXPECT_THAT(folder1.get_all_contents(),Contains(message.get_content()));
+    EXPECT_THAT(folder2.get_all_contents(),Contains(message.get_content()));
 }
 
 
 TEST_F(A_Message_Saved_By_Two_Folders_Test,test_copied_message_has_same_content)
 {
-    EXPECT_THAT(copy_message->get_content(),Eq(message->get_content()));
+    EXPECT_THAT(copy_message.get_content(),Eq(message.get_content()));
 }
 
 TEST_F(A_Message_Saved_By_Two_Folders_Test,test_copied_message_contained_in_same_folders)
 {
-    EXPECT_THAT(folder1->get_all_contents(),Contains(copy_message->get_content()));
-    EXPECT_THAT(folder2->get_all_contents(),Contains(copy_message->get_content()));
+    EXPECT_THAT(folder1.get_all_contents(),Contains(copy_message.get_content()));
+    EXPECT_THAT(folder2.get_all_contents(),Contains(copy_message.get_content()));
 }
 
 
 TEST_F(A_Message_Saved_By_Two_Folders_Test,test_copied_message_set_different_content_wont_affect_original)
 {
     std::string act("copy content");
-    copy_message->set_content(act);
-    EXPECT_THAT(message->get_content(),Ne(act));
+    copy_message.set_content(act);
+    EXPECT_THAT(message.get_content(),Ne(act));
 }
 
 TEST_F(A_Message_Saved_By_Two_Folders_Test,test_copied_message_set_different_content_will_sync_in_folders)
 {
     std::string act("copy content");
-    copy_message->set_content("copy content");
-    EXPECT_THAT(folder1->get_all_contents(),Contains(act));
-    EXPECT_THAT(folder2->get_all_contents(),Contains(act));
+    copy_message.set_content(act);
+    EXPECT_THAT(folder1.get_all_contents(),Contains(act));
+    EXPECT_THAT(folder2.get_all_contents(),Contains(act));
 }
