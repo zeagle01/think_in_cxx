@@ -68,7 +68,7 @@ add_executable(think_in_cxx
 ###c++ primer
 #    test/primer/C13/ActLikeValue.cpp
 #    test/primer/C13/ActLikePointer.cpp
-    test/primer/C13/MessageAndFolder.cpp
+#    test/primer/C13/MessageAndFolder.cpp
 
 #    test/concurency/Chp2.cpp
 #    test/concurency/Chp2_L0208.cpp
@@ -78,6 +78,11 @@ add_executable(think_in_cxx
 #	test/Jeff_Langr/c2/1/Soundex.h
 #	test/Jeff_Langr/c5/Http.h
 #	test/Jeff_Langr/c5/PlaceDescriptionServiceTest.cpp
+
+
+###dump state
+	test/dump_state/Dump_State_Test.cpp
+
     )
 target_compile_features(think_in_cxx PRIVATE cxx_std_17)
 
