@@ -44,6 +44,48 @@ namespace open_closed_principle{
         Color m_color;
     };
 
+    class By_Size:public Specification<Product>
+    {
+        public:
+        By_Size(Size size) : m_size(size) {}
+        virtual bool is_satisfied(Product *p)  override
+        {
+            if (p->size == m_size)
+            {
+                return true;
+            }else 
+            {
+                return false;
+            }
+
+        }
+        private:
+        Size m_size;
+    };
+
+    class And_Spec:public Specification<Product>
+    {
+        public:
+            And_Spec(Specification<Product> &left, Specification<Product> &right) :m_left(left),m_right(right){}
+
+        virtual bool is_satisfied(Product *p)  override
+        {
+            if(m_left.is_satisfied(p)&&m_right.is_satisfied(p))
+            {
+                return true;
+            }else
+            {
+                return false;
+            }
+        }
+        private:
+            Specification<Product>& m_left;
+            Specification<Product>& m_right;
+    };
+
+
+
+
     template <typename Item>
     class Filter
     {
@@ -85,6 +127,8 @@ class Some_Products_Filter_Test:public testing::Test
     Product p0;
     Product p1;
     Product p2;
+
+    Filter<Product> f;
     
 };
 
@@ -95,29 +139,25 @@ TEST_F(Some_Products_Filter_Test,test_init_poducts_size_is_three)
     EXPECT_THAT(products.size(),Eq(3));
 }
 
-
-
 TEST_F(Some_Products_Filter_Test,by_color)
 {
-    Filter<Product> f;
     By_Color by_color_is_red(Color::Red);
-
     auto ret = f.filter(products,by_color_is_red);
-    for(auto it:ret)
-    {
-        EXPECT_THAT(it->color, Eq(Color::Red));
-    }
+    EXPECT_THAT(ret[0]->name, StrEq("rl"));
 }
 
 TEST_F(Some_Products_Filter_Test,by_size)
 {
-    //TODO
-//    Filter f;
-//    Specification by_size;
-//    f.filter(by_size,products);
-//    auto ret = f.by_color(products,Color::Red);
-//    for(auto it:ret)
-//    {
-//        EXPECT_THAT(it->color, Eq(Color::Red));
-//    }
+    By_Size by_size(Size::Small);
+    auto ret = f.filter(products,by_size);
+    EXPECT_THAT(ret[0]->name, StrEq("bs"));
+}
+
+TEST_F(Some_Products_Filter_Test,by_size_and_color)
+{
+    By_Size by_size(Size::Small);
+    By_Color by_color(Color::Blue);
+    And_Spec by_size_and_color(by_size, by_color);
+    auto ret = f.filter(products, by_size_and_color);
+    EXPECT_THAT(ret[0]->name, StrEq("bs"));
 }
