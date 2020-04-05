@@ -19,10 +19,14 @@ namespace open_closed_principle{
     };
 
     template <typename Item>
+    class And_Spec;
+
+    template <typename Item>
     class Specification
     {
     public:
         virtual bool is_satisfied(Item *p) = 0;
+        And_Spec<Item> operator&&(Specification<Item> &other );
     };
 
     class By_Color:public Specification<Product>
@@ -63,12 +67,13 @@ namespace open_closed_principle{
         Size m_size;
     };
 
-    class And_Spec:public Specification<Product>
+    template <typename Item>
+    class And_Spec : public Specification<Item>
     {
         public:
-            And_Spec(Specification<Product> &left, Specification<Product> &right) :m_left(left),m_right(right){}
+            And_Spec(Specification<Item> &left, Specification<Item> &right) :m_left(left),m_right(right){}
 
-        virtual bool is_satisfied(Product *p)  override
+        virtual bool is_satisfied(Item *p)  override
         {
             if(m_left.is_satisfied(p)&&m_right.is_satisfied(p))
             {
@@ -79,10 +84,22 @@ namespace open_closed_principle{
             }
         }
         private:
-            Specification<Product>& m_left;
-            Specification<Product>& m_right;
+            Specification<Item>& m_left;
+            Specification<Item>& m_right;
     };
 
+    template <typename Item>
+    And_Spec<Item> Specification<Item>::operator&&(Specification<Item> &other)
+    {
+        return And_Spec<Item>(*this,other);
+    }
+
+    template <typename T>
+    static Specification<T> operator&&(Specification<T>& left, Specification<T>& right)
+    {
+        
+
+    }
 
 
 
@@ -157,7 +174,6 @@ TEST_F(Some_Products_Filter_Test,by_size_and_color)
 {
     By_Size by_size(Size::Small);
     By_Color by_color(Color::Blue);
-    And_Spec by_size_and_color(by_size, by_color);
-    auto ret = f.filter(products, by_size_and_color);
+    auto ret = f.filter(products, by_color && by_size);
     EXPECT_THAT(ret[0]->name, StrEq("bs"));
 }
