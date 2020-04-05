@@ -130,7 +130,7 @@ protected:
     std::istringstream in_stream;
 
     dump_state::State state;
-    std::string dump = "1 2 3\n4 5 6";
+    std::string dump = "3\n 1 2 3\n3\n4 5 6";
 };
 
 
@@ -142,6 +142,7 @@ TEST_F(A_State_That_Have_Two_Int_Vector,test_dump)
 
 }
 
+//TODO
 TEST_F(A_State_That_Have_Two_Int_Vector,test_load)
 {
     dump_state::State act;
