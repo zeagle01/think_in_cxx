@@ -63,6 +63,7 @@ add_executable(think_in_cxx
 #    test/design_pattern/Factory_Test.cpp
 #    test/design_pattern/Builder_Test.cpp
 #    test/design_pattern/Visitor_Test.cpp
+    test/design_pattern/Open_Closed_Principle_Test.cpp
 
 
 ###c++ primer
@@ -81,7 +82,7 @@ add_executable(think_in_cxx
 
 
 ###dump state
-	test/dump_state/Dump_State_Test.cpp
+#	test/dump_state/Dump_State_Test.cpp
 
     )
 target_compile_features(think_in_cxx PRIVATE cxx_std_17)
