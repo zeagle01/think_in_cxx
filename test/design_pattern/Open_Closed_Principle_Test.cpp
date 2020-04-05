@@ -9,6 +9,7 @@
 
 
 namespace open_closed_principle{
+    /////////////////// data
     enum class Color{Red,Green,Blue};
     enum class Size{Large,Medium,Small};
     struct Product
@@ -18,6 +19,8 @@ namespace open_closed_principle{
         Size size;
     };
 
+
+    /////////////////// specification
     template <typename Item>
     class And_Spec;
 
@@ -94,15 +97,8 @@ namespace open_closed_principle{
         return And_Spec<Item>(*this,other);
     }
 
-    template <typename T>
-    static Specification<T> operator&&(Specification<T>& left, Specification<T>& right)
-    {
-        
 
-    }
-
-
-
+    /////////////////// filter
     template <typename Item>
     class Filter
     {
