@@ -63,7 +63,8 @@ add_executable(think_in_cxx
 #    test/design_pattern/Factory_Test.cpp
 #    test/design_pattern/Builder_Test.cpp
 #    test/design_pattern/Visitor_Test.cpp
-    test/design_pattern/Open_Closed_Principle_Test.cpp
+#    test/design_pattern/Open_Closed_Principle_Test.cpp
+    test/design_pattern/Observer_Test.cpp
 
 
 ###c++ primer
