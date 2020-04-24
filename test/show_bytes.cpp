@@ -25,8 +25,21 @@ TEST(Show_Bytes,aaa)
     int i=1;
     show_bytes::show_bytes(&i);
 
+    float f=float(i);
+
+    show_bytes::show_bytes(&f);
+
     int *pi = &i;
     show_bytes::show_bytes(&pi);
 
+    float *pf = &f;
+    show_bytes::show_bytes(&pf);
 
+
+}
+
+TEST(Show_Bytes,show_int_bytes)
+{
+    int i=1;
+    show_bytes::show_bytes(&i);
 }
