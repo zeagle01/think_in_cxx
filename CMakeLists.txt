@@ -37,6 +37,8 @@ add_executable(think_in_cxx
 #    test/function_pointer.cpp
 #	 test/intro_2_alg/qsort_test.cpp
 #    test/StdVectorTest.cpp
+    test/StdMapTest.cpp
+    test/Std_Set_Test.cpp
 #    test/Cxx_Any_Test.cpp
 #    test/Cxx_Optional_Test.cpp
 #    test/Cxx_Variant_Test.cpp
@@ -66,7 +68,7 @@ add_executable(think_in_cxx
 #    test/design_pattern/Open_Closed_Principle_Test.cpp
 #    test/design_pattern/Observer_Test.cpp
 #    test/design_pattern/Type_Erasure_Test.cpp
-    test/show_bytes.cpp
+#    test/show_bytes.cpp
 
 
 ###c++ primer
