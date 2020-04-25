@@ -116,11 +116,11 @@ class A_Node_With_Two_Children_Test:public testing::Test
     public:
     virtual  void SetUp()
     {
-        r_child = std::make_shared<Node<std::string>>("r_child");
-        l_child = std::make_shared<Node<std::string>>("l_child");
-        the_node = std::make_shared<Node<std::string>>("a_node", l_child.get(), r_child.get());
+        r_child = std::make_shared<Node<std::string>>(r_child_value);
+        l_child = std::make_shared<Node<std::string>>(l_child_value);
+        the_node = std::make_shared<Node<std::string>>(the_node_value, l_child.get(), r_child.get());
 
-        other_node = std::make_shared<Node<std::string>>("other_child");
+        other_node = std::make_shared<Node<std::string>>(other_node_value);
 
     };
 
@@ -129,6 +129,11 @@ class A_Node_With_Two_Children_Test:public testing::Test
     std::shared_ptr<Node<std::string>> the_node;
 
     std::shared_ptr<Node<std::string>> other_node;
+
+    std::string l_child_value = "l_child";
+    std::string r_child_value = "l_child";
+    std::string the_node_value = "the_node";
+    std::string other_node_value = "other_node";
 
     void expect_the_node_and_children_in_tree(Binary_Tree<std::string>* tree)
     {
@@ -175,7 +180,7 @@ TEST_F(A_Node_With_Two_Children_Test,preorder_iteration_first_element_is_root)
     {
         act.push_back(it.value);
     }
-    EXPECT_THAT(act[0],Eq("l_child"));
+    EXPECT_THAT(act[0],Eq(l_child_value));
 }
 
 
