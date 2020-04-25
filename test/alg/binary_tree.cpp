@@ -9,7 +9,7 @@ namespace binary_tree
 
 
     template<typename T>
-    struct Binary_Tree;
+    class Binary_Tree;
 
     template<typename T>
     struct Node
@@ -35,9 +35,21 @@ namespace binary_tree
     template<typename T>
     class PreOrder_Iterator
     {
-        Node<T>* current;
     public:
+        Node<T>* current;
         PreOrder_Iterator(Node<T> *current) : current(current) {}
+        Node<T>& operator*()
+        {
+            return *current;
+        }
+        void operator++()
+        {
+            current = current->right;
+        }
+        bool operator!=(const PreOrder_Iterator &other)
+        {
+            return current != other.current;
+        }
     };
 
     template<typename T>
@@ -45,17 +57,33 @@ namespace binary_tree
     {
     private:
         Node<T> *root = nullptr;
-        PreOrder_Iterator<T> *iterator;
 
     public:
         explicit Binary_Tree(Node<T> *root) : root(root)
         {
             root->set_tree(this);
         }
-        Binary_Tree(Node<T> *root, PreOrder_Iterator<T> *iterator) : root(root) , iterator(iterator)
+        Binary_Tree(Node<T> *root, PreOrder_Iterator<T> *iterator) : root(root)
         {
             root->set_tree(this);
         }
+
+        using iterator = PreOrder_Iterator<T>;
+        iterator begin()
+        {
+            Node<T> *n = root;
+            while (n->left)
+            {
+                n = n->left;
+            }
+            return iterator{n};
+        }
+
+        iterator end()
+        {
+            return iterator{nullptr};
+        }
+
     };
 
 
@@ -88,8 +116,8 @@ class A_Node_With_Two_Children_Test:public testing::Test
     public:
     virtual  void SetUp()
     {
-        r_child = std::make_shared<Node<std::string>>("l_child");
-        l_child = std::make_shared<Node<std::string>>("r_child");
+        r_child = std::make_shared<Node<std::string>>("r_child");
+        l_child = std::make_shared<Node<std::string>>("l_child");
         the_node = std::make_shared<Node<std::string>>("a_node", l_child.get(), r_child.get());
 
         other_node = std::make_shared<Node<std::string>>("other_child");
@@ -138,11 +166,16 @@ TEST_F(A_Node_With_Two_Children_Test,new_a_tree_with_the_node)
 }
 
 
-TEST_F(A_Node_With_Two_Children_Test,preorder_iteration)
+TEST_F(A_Node_With_Two_Children_Test,preorder_iteration_first_element_is_root)
 {
     auto iterator = std::make_shared<PreOrder_Iterator<std::string>>(the_node.get());
     auto tree = std::make_shared<Binary_Tree<std::string>>(the_node.get(), iterator.get());
-    //    expect_the_node_and_children_in_tree(tree.get());
+    std::vector<std::string> act;
+    for (auto it : *tree)
+    {
+        act.push_back(it.value);
+    }
+    EXPECT_THAT(act[0],Eq("l_child"));
 }
 
 
