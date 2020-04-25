@@ -42,8 +42,16 @@ namespace binary_tree
         }
     };
 
+    template<typename T>
+    class PreOrder_Iterator
+    {
+        Node<T>* current;
+    public:
+        PreOrder_Iterator(Node<T> *current) : current(current) {}
+    };
 
-// imp node
+/////////////////////////////imp/////////////////////////////////
+// node
     template<typename T>
     void Node<T>::set_tree(Binary_Tree<T>* tree)
     {
@@ -57,11 +65,6 @@ namespace binary_tree
             right->set_tree(tree);
         }
     }
-
-
-
-
-
 
 
 }
@@ -114,16 +117,28 @@ TEST_F(A_Node_With_Two_Children_Test,left_child_s_parent_is_the_node)
 
 TEST_F(A_Node_With_Two_Children_Test,set_tree_affact_all_sub_nodes)
 {
-    auto tree = std::make_shared<binary_tree::Binary_Tree<std::string>>(other_node.get());
+    auto tree = std::make_shared<Binary_Tree<std::string>>(other_node.get());
     the_node->set_tree(tree.get());
     expect_the_node_and_children_in_tree(tree.get());
 }
 
 TEST_F(A_Node_With_Two_Children_Test,new_a_tree_with_the_node)
 {
-    auto tree = std::make_shared<binary_tree::Binary_Tree<std::string>>(the_node.get());
+    auto tree = std::make_shared<Binary_Tree<std::string>>(the_node.get());
     expect_the_node_and_children_in_tree(tree.get());
 }
+
+
+TEST_F(A_Node_With_Two_Children_Test,preorder_iteration)
+{
+    auto iterator = std::make_shared<PreOrder_Iterator<std::string>>(the_node.get());
+    //    auto tree = std::make_shared<Binary_Tree<std::string>>(the_node.get(),iterator);
+    //    expect_the_node_and_children_in_tree(tree.get());
+}
+
+
+
+
 
 
 
