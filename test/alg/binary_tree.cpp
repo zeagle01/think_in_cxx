@@ -63,10 +63,6 @@ namespace binary_tree
         {
             root->set_tree(this);
         }
-        Binary_Tree(Node<T> *root, PreOrder_Iterator<T> *iterator) : root(root)
-        {
-            root->set_tree(this);
-        }
 
         using iterator = PreOrder_Iterator<T>;
         iterator begin()
@@ -173,8 +169,7 @@ TEST_F(A_Node_With_Two_Children_Test,new_a_tree_with_the_node)
 
 TEST_F(A_Node_With_Two_Children_Test,preorder_iteration_first_element_is_root)
 {
-    auto iterator = std::make_shared<PreOrder_Iterator<std::string>>(the_node.get());
-    auto tree = std::make_shared<Binary_Tree<std::string>>(the_node.get(), iterator.get());
+    auto tree = std::make_shared<Binary_Tree<std::string>>(the_node.get());
     std::vector<std::string> act;
     for (auto it : *tree)
     {
