@@ -30,6 +30,8 @@ namespace binary_tree
         }
 
         void set_tree(Binary_Tree<T> *tree);
+        void set_left(Node<T> * left);
+        void set_right(Node<T> * right);
     };
 
     template<typename T>
@@ -47,10 +49,11 @@ namespace binary_tree
         {
             if(has_right())
             {
-                move_to_right_leaf();
+                move_to_right();
+                move_to_left_down_most();
             } else
             {
-                move_to_left_most_internal_node();
+                move_to_left_up_most();
                 move_to_parent();
             }
         }
@@ -64,11 +67,21 @@ namespace binary_tree
         {
             return bool(current->right);
         }
-        void move_to_right_leaf()
+        bool has_left()
         {
-            while (has_right())
+            return bool(current->left);
+        }
+
+        void move_to_right()
+        {
+            current = current->right;
+        }
+
+        void move_to_left_down_most()
+        {
+            while (has_left())
             {
-                current = current->right;
+                current = current->left;
             }
         }
         bool has_parent()
@@ -79,7 +92,7 @@ namespace binary_tree
         {
             return has_parent() && bool(current->parent->right == current);
         }
-        void move_to_left_most_internal_node()
+        void move_to_left_up_most()
         {
             while (is_right_child())
             {
@@ -139,7 +152,20 @@ namespace binary_tree
         }
     }
 
-
+    template<typename T>
+    void Node<T>::set_left(Node<T> *left)
+    {
+        this->left = left;
+        this->left->parent = this;
+        this->left->tree = tree;
+    }
+    template<typename T>
+    void Node<T>::set_right(Node<T> *right)
+    {
+        this->right = right;
+        this->right->parent = this;
+        this->right->tree = tree;
+    }
 }
 
 using namespace testing;
@@ -233,5 +259,61 @@ TEST_F(A_Node_With_Two_Children_Test,preorder_iteration)
 }
 
 
+class More_Nodes_Test:public testing::Test
+{
+protected:
+    virtual void SetUp()
+    {
+    }
+
+    void build_tree(int level)
+    {
+        max_level = level;
+        nodes.push_back(std::make_shared<Node<std::string>>("0"));
+        current_level++;
+        auto root = nodes.back().get();
+        add_child(root);
+        tree = std::make_shared<Binary_Tree<std::string>>(root);
+    }
+    void add_child(Node<std::string> *node){
+        if (current_level < max_level)
+        {
+            current_level++;
+            auto left_node = std::make_shared<Node<std::string>>(node->value + "0");
+            auto right_node = std::make_shared<Node<std::string>>(node->value + "1");
+            node->set_left(left_node.get());
+            node->set_right(right_node.get());
+            push_back_node(left_node);
+            push_back_node(right_node);
+            add_child(left_node.get());
+            add_child(right_node.get());
+            current_level--;
+        }
+    } 
+
+    void push_back_node(std::shared_ptr<Node<std::string>> node)
+    {
+        nodes.push_back(node);
+        values.push_back(node->value);
+    }
+
+
+    std::shared_ptr<Binary_Tree<std::string>> tree;
+    std::vector<std::shared_ptr<Node<std::string>>> nodes;
+    std::vector<std::string> values;
+    int max_level = -1;
+    int current_level = 0;
+};
+
+TEST_F(More_Nodes_Test, size_5)
+{
+    build_tree(3);
+    std::vector<std::string> act;
+    for(auto it:*tree)
+    {
+        act.push_back(it.value);
+    }
+    EXPECT_THAT(act,ElementsAre("000","00","001","0","010","01","011"));
+}
 
 
