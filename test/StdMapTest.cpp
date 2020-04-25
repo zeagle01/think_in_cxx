@@ -19,7 +19,8 @@ namespace std_map
         float f;
     };
 
-    std::vector<int> fill_map_and_get_order(std::map<int, std_map::A> &m, const std::vector<int> &key)
+    template <typename less>
+    std::vector<int> fill_map_and_get_order(std::map<int, std_map::A, less> &m, const std::vector<int> &key)
     {
         for (size_t i = 0; i < key.size(); i++)
         {
@@ -35,26 +36,11 @@ namespace std_map
 
     struct greater_than
     {
-        bool operator()(const int a,const int b) const
+        bool operator()(const int& a,const int& b) const
         {
             return a > b;
         }
     };
-
-    std::vector<int> fill_map_and_get_order(std::map<int, std_map::A, greater_than> &m, const std::vector<int> &key)
-    {
-        for (size_t i = 0; i < key.size(); i++)
-        {
-            m[key[i]] = A();
-        }
-        std::vector<int> map_order;
-        for (auto it : m)
-        {
-            map_order.push_back(it.first);
-        }
-        return map_order;
-    }
-
 
 
 }
