@@ -37,11 +37,15 @@ add_executable(think_in_cxx
 #    test/function_pointer.cpp
 #	 test/intro_2_alg/qsort_test.cpp
 #    test/StdVectorTest.cpp
-    test/StdMapTest.cpp
-    test/Std_Set_Test.cpp
+#    test/StdMapTest.cpp
+#    test/Std_Set_Test.cpp
 #    test/Cxx_Any_Test.cpp
 #    test/Cxx_Optional_Test.cpp
 #    test/Cxx_Variant_Test.cpp
+
+### alg
+    test/alg/binary_tree.cpp
+
 
 ### BS book
 #    test/BS/15_3_1.cpp
