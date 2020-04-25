@@ -3,7 +3,6 @@
 #include <string>
 #include <memory>
 
-using namespace testing;
 
 namespace binary_tree
 {
@@ -60,8 +59,15 @@ namespace binary_tree
     }
 
 
+
+
+
+
+
 }
 
+using namespace testing;
+using namespace binary_tree;
 
 
 class A_Node_With_Two_Children_Test:public testing::Test
@@ -70,21 +76,21 @@ class A_Node_With_Two_Children_Test:public testing::Test
     public:
     virtual  void SetUp()
     {
-        r_child = std::make_shared<binary_tree::Node<std::string>>("l_child");
-        l_child = std::make_shared<binary_tree::Node<std::string>>("r_child");
-        the_node = std::make_shared<binary_tree::Node<std::string>>("a_node", l_child.get(), r_child.get());
+        r_child = std::make_shared<Node<std::string>>("l_child");
+        l_child = std::make_shared<Node<std::string>>("r_child");
+        the_node = std::make_shared<Node<std::string>>("a_node", l_child.get(), r_child.get());
 
-        other_node = std::make_shared<binary_tree::Node<std::string>>("other_child");
+        other_node = std::make_shared<Node<std::string>>("other_child");
 
     };
 
-    std::shared_ptr<binary_tree::Node<std::string>> l_child;
-    std::shared_ptr<binary_tree::Node<std::string>> r_child;
-    std::shared_ptr<binary_tree::Node<std::string>> the_node;
+    std::shared_ptr<Node<std::string>> l_child;
+    std::shared_ptr<Node<std::string>> r_child;
+    std::shared_ptr<Node<std::string>> the_node;
 
-    std::shared_ptr<binary_tree::Node<std::string>> other_node;
+    std::shared_ptr<Node<std::string>> other_node;
 
-    void expect_the_node_and_children_in_tree(binary_tree::Binary_Tree<std::string>* tree)
+    void expect_the_node_and_children_in_tree(Binary_Tree<std::string>* tree)
     {
         EXPECT_THAT(the_node->tree, Eq(tree));
         EXPECT_THAT(l_child->tree, Eq(tree));
