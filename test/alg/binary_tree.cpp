@@ -33,22 +33,31 @@ namespace binary_tree
     };
 
     template<typename T>
-    struct Binary_Tree
-    {
-        Node<T> *root = nullptr;
-        explicit Binary_Tree(Node<T>* root):root(root)
-        {
-            root->set_tree(this);
-        }
-    };
-
-    template<typename T>
     class PreOrder_Iterator
     {
         Node<T>* current;
     public:
         PreOrder_Iterator(Node<T> *current) : current(current) {}
     };
+
+    template<typename T>
+    class Binary_Tree
+    {
+    private:
+        Node<T> *root = nullptr;
+        PreOrder_Iterator<T> *iterator;
+
+    public:
+        explicit Binary_Tree(Node<T> *root) : root(root)
+        {
+            root->set_tree(this);
+        }
+        Binary_Tree(Node<T> *root, PreOrder_Iterator<T> *iterator) : root(root) , iterator(iterator)
+        {
+            root->set_tree(this);
+        }
+    };
+
 
 /////////////////////////////imp/////////////////////////////////
 // node
@@ -132,7 +141,7 @@ TEST_F(A_Node_With_Two_Children_Test,new_a_tree_with_the_node)
 TEST_F(A_Node_With_Two_Children_Test,preorder_iteration)
 {
     auto iterator = std::make_shared<PreOrder_Iterator<std::string>>(the_node.get());
-    //    auto tree = std::make_shared<Binary_Tree<std::string>>(the_node.get(),iterator);
+    auto tree = std::make_shared<Binary_Tree<std::string>>(the_node.get(), iterator.get());
     //    expect_the_node_and_children_in_tree(tree.get());
 }
 
