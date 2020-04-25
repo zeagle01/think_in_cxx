@@ -42,13 +42,53 @@ namespace binary_tree
         {
             return *current;
         }
+
         void operator++()
         {
-            current = current->right;
+            if(has_right())
+            {
+                move_to_right_leaf();
+            } else
+            {
+                move_to_left_most_internal_node();
+                move_to_parent();
+            }
         }
         bool operator!=(const PreOrder_Iterator &other)
         {
             return current != other.current;
+        }
+
+    private:
+        bool has_right()
+        {
+            return bool(current->right);
+        }
+        void move_to_right_leaf()
+        {
+            while (has_right())
+            {
+                current = current->right;
+            }
+        }
+        bool has_parent()
+        {
+            return bool(current->parent);
+        }
+        bool is_right_child()
+        {
+            return has_parent() && bool(current->parent->right == current);
+        }
+        void move_to_left_most_internal_node()
+        {
+            while (is_right_child())
+            {
+                current = current->parent;
+            }
+        }
+        void move_to_parent()
+        {
+            current = current->parent;
         }
     };
 
@@ -181,6 +221,16 @@ TEST_F(A_Node_With_Two_Children_Test,preorder_iteration_first_element_is_root)
 
 
 
+TEST_F(A_Node_With_Two_Children_Test,preorder_iteration)
+{
+    auto tree = std::make_shared<Binary_Tree<std::string>>(the_node.get());
+    std::vector<std::string> act;
+    for (auto it : *tree)
+    {
+        act.push_back(it.value);
+    }
+    EXPECT_THAT(act,ElementsAre(l_child_value,the_node_value,r_child_value));
+}
 
 
 
