@@ -2,6 +2,7 @@
 #include "gmock/gmock.h"
 #include <string>
 #include <memory>
+#include <queue>
 
 
 namespace binary_tree
@@ -39,69 +40,175 @@ namespace binary_tree
     {
     public:
         Node<T>* current;
-        PreOrder_Iterator(Node<T> *current) : current(current) {}
+        Node<T> *root = nullptr;
+
+	private:
+		std::vector<Node<T>*>s;
+		std::queue<Node<T>*>out;
+	public:
+        void set_root(Node<T> *root)
+        {
+            this->root=root;
+        }
+
         Node<T>& operator*()
         {
             return *current;
         }
 
-        void operator++()
+        virtual PreOrder_Iterator<T>& begin()
         {
-            if(has_right())
-            {
-                move_to_right();
-                move_to_left_down_most();
-            } else
-            {
-                move_to_left_up_most();
-                move_to_parent();
-            }
+			s.push_back(root);
+			while (!s.empty())
+			{
+				current = s.back();
+				out.push(current);
+				s.pop_back();
+				if (current->right)
+				{
+
+					s.push_back(current->right);
+				}
+				if (current->left)
+				{
+					s.push_back(current->left);
+				}
+			}
+			current = out.front();
+            return *this;
         }
-        bool operator!=(const PreOrder_Iterator &other)
+        virtual PreOrder_Iterator<T>& end()
+        {
+			auto e = PreOrder_Iterator<T>();
+			e.current = nullptr;
+            return e;
+        }
+
+        virtual void operator++()
+        {
+			if (!out.empty())
+			{
+				out.pop();
+			}
+			if (!out.empty())
+			{
+				current = out.front();
+			}
+			else
+			{
+				current = nullptr;
+			}
+        }
+
+        virtual bool operator!=(const PreOrder_Iterator &other)
         {
             return current != other.current;
         }
 
+        PreOrder_Iterator<T>& set_current(Node<T>* n)
+        {
+            current = n;
+            return *this;
+        }
+
+    };
+
+    template<typename T>
+    class PostOrder_Iterator:public PreOrder_Iterator<T>
+    {
     private:
-        bool has_right()
+    std::vector<Node<T>* > out;
+    std::vector<Node<T>* > s;
+
+    public:
+
+        virtual PostOrder_Iterator<T>& begin() override
         {
-            return bool(current->right);
-        }
-        bool has_left()
-        {
-            return bool(current->left);
+            s.push_back(root);
+            while (!s.empty())
+            {
+                current = s.back();
+                out.push_back(current);
+                s.pop_back();
+
+                if (current->left)
+                {
+                    s.push_back(current->left);
+                }
+
+                if (current->right)
+                {
+                    s.push_back(current->right);
+                }
+
+            }
+			if (!out.empty())
+			{
+				current = out.back();
+			}
+            return *this;
         }
 
-        void move_to_right()
+        virtual void operator++() override
         {
-            current = current->right;
+			if (!out.empty())
+			{
+				out.pop_back();
+			}
+			if(out.empty())
+			{
+				current = nullptr;
+			}
+			else
+			{
+				current = out.back();
+			}
+        }
+    };
+
+    template<typename T>
+    class InOrder_Iterator:public PreOrder_Iterator<T>
+    {
+    private:
+    std::queue<Node<T>* > out;
+    std::vector<Node<T>* > s;
+
+    public:
+
+        virtual PreOrder_Iterator<T>& begin() override
+        {
+			current = root;
+			while (!s.empty() || current)
+            {
+				while (current)
+				{
+                    s.push_back(current);
+					current = current->left;
+				}
+
+				current = s.back();
+				out.push(current);
+				s.pop_back();
+				current = current->right;
+            }
+			current = out.front();
+            return *this;
         }
 
-        void move_to_left_down_most()
+        virtual void operator++() override
         {
-            while (has_left())
-            {
-                current = current->left;
-            }
-        }
-        bool has_parent()
-        {
-            return bool(current->parent);
-        }
-        bool is_right_child()
-        {
-            return has_parent() && bool(current->parent->right == current);
-        }
-        void move_to_left_up_most()
-        {
-            while (is_right_child())
-            {
-                current = current->parent;
-            }
-        }
-        void move_to_parent()
-        {
-            current = current->parent;
+			if (!out.empty())
+			{
+				out.pop();
+			}
+			if(out.empty())
+			{
+				current = nullptr;
+			}
+			else
+			{
+				current = out.front();
+			}
         }
     };
 
@@ -110,27 +217,31 @@ namespace binary_tree
     {
     private:
         Node<T> *root = nullptr;
+        std::unique_ptr<PreOrder_Iterator<T>> iterator;
 
     public:
-        explicit Binary_Tree(Node<T> *root) : root(root)
+        explicit Binary_Tree(Node<T> *root) : root(root), iterator(std::make_unique<PreOrder_Iterator<T>>())
         {
+            iterator->set_root(root);
             root->set_tree(this);
         }
 
-        using iterator = PreOrder_Iterator<T>;
-        iterator begin()
+        Binary_Tree(Node<T> *root, std::unique_ptr<PreOrder_Iterator<T>> iterator) : root(root), iterator(iterator.release())
         {
-            Node<T> *n = root;
-            while (n->left)
-            {
-                n = n->left;
-            }
-            return iterator{n};
+            this->iterator->set_root(root);
+            root->set_tree(this);
         }
 
-        iterator end()
+        //using iterator = PreOrder_Iterator<T>;
+        PreOrder_Iterator<T>& begin()
         {
-            return iterator{nullptr};
+			//auto& b = iterator->begin();
+            return iterator->begin();
+        }
+
+        PreOrder_Iterator<T>& end()
+        {
+            return iterator->end();
         }
 
     };
@@ -193,7 +304,7 @@ class A_Node_With_Two_Children_Test:public testing::Test
     std::shared_ptr<Node<std::string>> other_node;
 
     std::string l_child_value = "l_child";
-    std::string r_child_value = "l_child";
+    std::string r_child_value = "r_child";
     std::string the_node_value = "the_node";
     std::string other_node_value = "other_node";
 
@@ -237,11 +348,12 @@ TEST_F(A_Node_With_Two_Children_Test,preorder_iteration_first_element_is_root)
 {
     auto tree = std::make_shared<Binary_Tree<std::string>>(the_node.get());
     std::vector<std::string> act;
-    for (auto it : *tree)
+    //for (auto& it : *tree)
+	for (auto& it = tree->begin(); it != tree->end(); ++it)
     {
-        act.push_back(it.value);
+        act.push_back((*it).value);
     }
-    EXPECT_THAT(act[0],Eq(l_child_value));
+    EXPECT_THAT(act[0],Eq(the_node_value));
 }
 
 
@@ -251,14 +363,42 @@ TEST_F(A_Node_With_Two_Children_Test,preorder_iteration)
 {
     auto tree = std::make_shared<Binary_Tree<std::string>>(the_node.get());
     std::vector<std::string> act;
-    for (auto it : *tree)
+	for (auto& it = tree->begin(); it != tree->end(); ++it)
     {
-        act.push_back(it.value);
+        act.push_back((*it).value);
+    }
+    EXPECT_THAT(act,ElementsAre(the_node_value,l_child_value,r_child_value));
+}
+
+TEST_F(A_Node_With_Two_Children_Test,postrder_iteration)
+{
+    auto tree = std::make_shared<Binary_Tree<std::string>>(
+         the_node.get(), std::make_unique<PostOrder_Iterator<std::string>>());
+    std::vector<std::string> act;
+    //for (auto it : *tree)
+	for (auto& it = tree->begin(); it != tree->end(); ++it)
+	//for (auto& it = tree->begin(); ; ++it)
+    {
+        act.push_back((*it).value);
+    }
+    EXPECT_THAT(act,ElementsAre(l_child_value,r_child_value,the_node_value));
+}
+
+TEST_F(A_Node_With_Two_Children_Test,inorder_iteration)
+{
+    auto tree = std::make_shared<Binary_Tree<std::string>>(
+         the_node.get(), std::make_unique<InOrder_Iterator<std::string>>());
+    std::vector<std::string> act;
+    //for (auto it : *tree)
+	for (auto& it = tree->begin(); it != tree->end(); ++it)
+    {
+        act.push_back((*it).value);
     }
     EXPECT_THAT(act,ElementsAre(l_child_value,the_node_value,r_child_value));
 }
 
 
+//////////////////// more nodes test////////////////
 class More_Nodes_Test:public testing::Test
 {
 protected:
@@ -266,6 +406,7 @@ protected:
     {
     }
 
+	template<typename It>
     void build_tree(int level)
     {
         max_level = level;
@@ -273,7 +414,13 @@ protected:
         current_level++;
         auto root = nodes.back().get();
         add_child(root);
-        tree = std::make_shared<Binary_Tree<std::string>>(root);
+		tree = std::make_shared<Binary_Tree<std::string>>(root, std::make_unique<It>());
+
+		for (auto& it = tree->begin(); it != tree->end(); ++it)
+		{
+			values.push_back((*it).value);
+		}
+
     }
     void add_child(Node<std::string> *node){
         if (current_level < max_level)
@@ -294,7 +441,6 @@ protected:
     void push_back_node(std::shared_ptr<Node<std::string>> node)
     {
         nodes.push_back(node);
-        values.push_back(node->value);
     }
 
 
@@ -305,15 +451,22 @@ protected:
     int current_level = 0;
 };
 
-TEST_F(More_Nodes_Test, size_5)
+TEST_F(More_Nodes_Test, level_3_preorder)
 {
-    build_tree(3);
-    std::vector<std::string> act;
-    for(auto it:*tree)
-    {
-        act.push_back(it.value);
-    }
-    EXPECT_THAT(act,ElementsAre("000","00","001","0","010","01","011"));
+    build_tree<PreOrder_Iterator<std::string>>(3);
+    EXPECT_THAT(values,ElementsAre("0","00","000","001","01","010","011"));
 }
 
 
+
+TEST_F(More_Nodes_Test, level_3_postorder)
+{
+    build_tree<PostOrder_Iterator<std::string>>(3);
+    EXPECT_THAT(values,ElementsAre("000","001","00","010","011","01","0"));
+}
+
+TEST_F(More_Nodes_Test, level_3_inorder)
+{
+    build_tree<InOrder_Iterator<std::string>>(3);
+    EXPECT_THAT(values,ElementsAre("000","00","001","0","010","01","011"));
+}
