@@ -167,47 +167,6 @@ if(MSVC)
 endif()
 
 
-source_group("cxx" FILES "test/WriteFile.cpp")
-source_group("cxx" FILES "test/Pointer.cpp")
-source_group("cxx" FILES "test/TestConstructor.cpp")
-source_group("cxx" FILES "test/TestSharePointer.cpp")
-source_group("cxx" FILES "test/Finally.cpp")
-source_group("cxx" FILES "test/Volatile.cpp")
-source_group("cxx" FILES "test/ExceptionTest.cpp")
-source_group("cxx" FILES "test/VariableTest.cpp")
-source_group("cxx" FILES "test/MySharedPtr.cpp")
-source_group("cxx" FILES "test/MultiThreadTest.cpp")
-source_group("cxx" FILES "test/OverloadTest.cpp")
-source_group("cxx" FILES "test/19_03_21.cpp")
-source_group("cxx" FILES "test/19_04_02.cpp")
-source_group("cxx" FILES "test/ProcessTest.cpp")
-source_group("cxx" FILES "test/FunctionReturnValueCauseCopy.cpp")
-source_group("cxx" FILES "test/function_pointer.cpp")
-source_group("cxx" FILES "test/15_3_1.cpp")
-source_group("cxx" FILES "test/FileManipulationTest.cpp")
-source_group("cxx" FILES "test/ExceptionSafeTest.cpp")
-source_group("cxx" FILES "test/ProcessTest.cpp")
-source_group("cxx" FILES "test/StdVectorTest.cpp")
-
-source_group("qt" FILES "test/qt/qtHello.cpp")
-
-source_group("eigen" FILES "test/EigenTest.cpp")
-
-source_group("intro_2_alg" FILES "test/intro_2_alg/qsort_test.cpp")
-
-source_group("primer" FILES "test/primer/C13/ActLikeValue.cpp")
-source_group("primer" FILES "test/primer/C13/ActLikePointer.cpp")
-source_group("primer" FILES "test/primer/C13/MessageAndFolder.cpp")
-
-source_group("concurency" FILES "test/concurency/Chp2.cpp")
-source_group("concurency" FILES "test/concurency/Chp2_L0208.cpp")
-
-source_group("gtest" FILES "test/GtestUsage.cpp")
-
-source_group("Jeff_Langr" FILES "test/c2/1/SoundexTest.cpp")
-source_group("Jeff_Langr" FILES "test/c2/1/Soundex.cpp")
-source_group("Jeff_Langr" FILES "test/c5/Http.cpp")
-source_group("Jeff_Langr" FILES "test/c5/PlaceDescriptionServiceTest.cpp")
 
 
 
