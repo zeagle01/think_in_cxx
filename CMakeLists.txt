@@ -42,10 +42,11 @@ add_executable(think_in_cxx
 #    test/Cxx_Any_Test.cpp
 #    test/Cxx_Optional_Test.cpp
 #    test/Cxx_Variant_Test.cpp
-    test/Subclass_Visit_Supclass.cpp
+#    test/Subclass_Visit_Supclass.cpp
+    test/variadic_template.cpp
 
 ### alg
-    test/alg/binary_tree.cpp
+#    test/alg/binary_tree.cpp
 
 
 ### BS book
@@ -128,9 +129,19 @@ set_target_properties(gmock_main PROPERTIES EXCLUDE_FROM_ALL TRUE)
 target_link_libraries(think_in_cxx PRIVATE gmock_main)
 ################### get newest gtest###################
 
+##################eigen
+#FetchContent_Declare(
+#  eigen_repo
+#  GIT_REPOSITORY ${CMAKE_SOURCE_DIR}/3rdparties/eigen
+#  GIT_TAG        master
+#)
+#
+#FetchContent_MakeAvailable(eigen_repo)
+
 hunter_add_package(Eigen)
 find_package(Eigen3 CONFIG REQUIRED)
 target_link_libraries(think_in_cxx PRIVATE Eigen3::Eigen)
+##################eigen
 
 
 set(Qt5_DIR "D:/Qt/5.13.1/msvc2017_64/lib/cmake/Qt5/" CACHE PATH "qt5 cmake path")
