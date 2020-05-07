@@ -42,6 +42,7 @@ add_executable(think_in_cxx
 #    test/Cxx_Any_Test.cpp
 #    test/Cxx_Optional_Test.cpp
 #    test/Cxx_Variant_Test.cpp
+    test/Subclass_Visit_Supclass.cpp
 
 ### alg
     test/alg/binary_tree.cpp
