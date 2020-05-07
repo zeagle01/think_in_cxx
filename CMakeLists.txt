@@ -15,35 +15,36 @@ project(think_in_cxx)
 message("c++ compiler: ${CMAKE_CXX_COMPILER}")
 
 add_executable(think_in_cxx 
-    test/main.cpp
-#    test/WriteFile.cpp
-#    test/Pointer.cpp
-#    test/TestConstructor.cpp
-#    test/TestSharePointer.cpp
-#    test/TestUniquePointer.cpp
-#    test/ECSSystemTest.cpp
-#    test/Finally.cpp
-#    test/Volatile.cpp
-#    test/ExceptionTest.cpp
-#    test/UnwindingTest.cpp
-#    test/VariableTest.cpp
-#    test/MySharedPtr.cpp
-#    test/MultiThreadTest.cpp
-#    test/OverloadTest.cpp
-#    test/19_03_21.cpp
-#    test/19_04_02.cpp
-#    test/ProcessTest.cpp
-#    test/FunctionReturnValueCauseCopy.cpp
-#    test/function_pointer.cpp
-#	 test/intro_2_alg/qsort_test.cpp
-#    test/StdVectorTest.cpp
-#    test/StdMapTest.cpp
-#    test/Std_Set_Test.cpp
-#    test/Cxx_Any_Test.cpp
-#    test/Cxx_Optional_Test.cpp
-#    test/Cxx_Variant_Test.cpp
-#    test/Subclass_Visit_Supclass.cpp
-    test/variadic_template.cpp
+	test/main.cpp
+######language
+#    test/lang/WriteFile.cpp
+#    test/lang/Pointer.cpp
+#    test/lang/TestConstructor.cpp
+#    test/lang/TestSharePointer.cpp
+#    test/lang/TestUniquePointer.cpp
+#    test/lang/ECSSystemTest.cpp
+#    test/lang/Finally.cpp
+#    test/lang/Volatile.cpp
+#    test/lang/ExceptionTest.cpp
+#    test/lang/UnwindingTest.cpp
+#    test/lang/VariableTest.cpp
+#    test/lang/MySharedPtr.cpp
+#    test/lang/MultiThreadTest.cpp
+#    test/lang/OverloadTest.cpp
+#    test/lang/19_03_21.cpp
+#    test/lang/19_04_02.cpp
+#    test/lang/ProcessTest.cpp
+#    test/lang/FunctionReturnValueCauseCopy.cpp
+#    test/lang/function_pointer.cpp
+#	 test/inlang/tro_2_alg/qsort_test.cpp
+#    test/lang/StdVectorTest.cpp
+#    test/lang/StdMapTest.cpp
+#    test/lang/Std_Set_Test.cpp
+#    test/lang/Cxx_Any_Test.cpp
+#    test/lang/Cxx_Optional_Test.cpp
+#    test/lang/Cxx_Variant_Test.cpp
+#    test/lang/Subclass_Visit_Supclass.cpp
+    test/lang/variadic_template.cpp
 
 ### alg
 #    test/alg/binary_tree.cpp
