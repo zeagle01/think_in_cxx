@@ -39,6 +39,7 @@ add_executable(think_in_cxx
 #    test/lang/Cxx_Variant_Test.cpp
 #    test/lang/Subclass_Visit_Supclass.cpp
 #    test/lang/variadic_template.cpp
+    test/lang/template_concept.cpp
 
 
 ### template_meta
