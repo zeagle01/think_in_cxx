@@ -44,7 +44,11 @@ add_executable(think_in_cxx
 #    test/lang/Cxx_Optional_Test.cpp
 #    test/lang/Cxx_Variant_Test.cpp
 #    test/lang/Subclass_Visit_Supclass.cpp
-    test/lang/variadic_template.cpp
+#    test/lang/variadic_template.cpp
+
+
+### template_meta
+    test/template_meta/compendium.cpp
 
 ### alg
 #    test/alg/binary_tree.cpp
