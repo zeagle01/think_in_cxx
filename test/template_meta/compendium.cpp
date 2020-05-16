@@ -90,6 +90,13 @@ namespace compendium
 	template<bool test,typename T,typename F>
 	using IF_t = typename  IF<test, T, F>::type;
 
+//------------------------------------------
+	template<bool test,typename T>
+	struct enable_if :public type_is<T> {};
+
+	template<typename T>
+	struct enable_if <false, T> :type_is<void> {};
+
 
 }
 
@@ -159,4 +166,14 @@ TEST(Compendium, template_if)
 	//std conterpart
 	type_string = get_type_string<std::conditional<true, int, unsigned int>::type>();
 	EXPECT_THAT(type_string, Eq("int"));
+}
+
+TEST(Compendium, my_enable_if)
+{
+	auto type_string = get_type_string<compendium::enable_if<true, int>::type>();
+	EXPECT_THAT(type_string, Eq("int"));
+
+	type_string = get_type_string<compendium::enable_if<false, int>::type>();
+	EXPECT_THAT(type_string, Eq("void"));
+
 }
