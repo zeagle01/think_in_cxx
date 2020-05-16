@@ -1,6 +1,7 @@
 
 #include "gmock/gmock.h"
 #include <type_traits>
+#include <typeinfo>
 
 // CppCon 14
 
@@ -51,12 +52,53 @@ namespace compendium
 	};
 
 
+//------------------------------------------
+
+	template<typename T>
+	struct remove_const
+	{
+		using type = T;
+	};
+
+	template<typename T>
+	struct remove_const<T const>
+	{
+		using type = T;
+	};
+
+//------------------------------------------
+
+	template<typename T>
+	struct type_is
+	{
+		using type = T;
+	};
+
+	template<typename T>
+	struct remove_volatile :public type_is<T> {};
+
+	template<typename T>
+	struct remove_volatile<T volatile> : public type_is<T> {};
+
+//------------------------------------------
+	template<bool ,typename T,typename >
+	struct IF :type_is<T> {};
+
+	template<typename T,typename F>
+	struct IF<false, T, F> :public type_is<F> {};
+
 
 }
 
 
 
 using namespace testing;
+
+template<typename T>
+std::string get_type_string()
+{
+	return std::string(typeid(T).name());
+}
 
 
 TEST(Compendium, call_abs)
@@ -89,7 +131,24 @@ TEST(Compendium, my_rank)
 
 	EXPECT_THAT(std::rank<int>::value, Eq(0));
 	EXPECT_THAT(std::rank<int[1]>::value, Eq(1));
-	EXPECT_THAT(std::rank<int[1][1]>::value, Eq(3));
+	EXPECT_THAT(std::rank<int[1][1]>::value, Eq(2));
 }
 
 
+TEST(Compendium, remove_const)
+{
+	EXPECT_THAT(get_type_string<compendium::remove_const<int const>::type>(), Eq("int"));
+	EXPECT_THAT(get_type_string<compendium::remove_const<int>::type>(), Eq("int"));
+}
+
+
+TEST(Compendium, remove_volatile)
+{
+	EXPECT_THAT(get_type_string<compendium::remove_volatile<int volatile>::type>(), Eq("int"));
+}
+
+TEST(Compendium, template_if)
+{
+	auto type_string = get_type_string<compendium::IF<true, int, unsigned int>::type>();
+	EXPECT_THAT(type_string, Eq("int"));
+}
