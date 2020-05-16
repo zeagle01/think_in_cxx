@@ -87,6 +87,9 @@ namespace compendium
 	template<typename T,typename F>
 	struct IF<false, T, F> :public type_is<F> {};
 
+	template<bool test,typename T,typename F>
+	using IF_t = typename  IF<test, T, F>::type;
+
 
 }
 
@@ -149,6 +152,11 @@ TEST(Compendium, remove_volatile)
 
 TEST(Compendium, template_if)
 {
-	auto type_string = get_type_string<compendium::IF<true, int, unsigned int>::type>();
+	auto type_string = get_type_string<compendium::IF_t<true, int, unsigned int>>();
+	EXPECT_THAT(type_string, Eq("int"));
+
+
+	//std conterpart
+	type_string = get_type_string<std::conditional<true, int, unsigned int>::type>();
 	EXPECT_THAT(type_string, Eq("int"));
 }
