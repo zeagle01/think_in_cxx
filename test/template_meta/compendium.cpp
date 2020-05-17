@@ -7,6 +7,31 @@
 
 namespace compendium
 {
+
+
+	class No_Copyable
+	{
+	public:
+		No_Copyable(const No_Copyable&) = delete;
+		No_Copyable& operator=(const No_Copyable&) = delete;
+
+	};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//------------------------------------------
 	template<int N>
 	struct my_abs
 	{
@@ -165,6 +190,23 @@ namespace compendium
 	struct is_one_of<T, T0, T1toN...> :public is_one_of<T, T1toN...> {};
 
 
+//------------------------------------------
+	template<typename T>
+	struct is_copy_assignable
+	{
+	private:
+		template< typename U, typename 
+			= decltype(std::declval<U&>()= std::declval<const U&>()) >
+
+		static true_type
+			try_assign(U&&);
+
+		static false_type
+			try_assign(...);
+
+	public:
+		using type = decltype(try_assign(std::declval<T>()));
+	};
 
 }
 
@@ -279,3 +321,10 @@ TEST(Compendium, is_one_of)
 
 }
 
+TEST(Compendium, is_copy_assignable)
+{
+
+	EXPECT_THAT(compendium::is_copy_assignable<int>::type::value, Eq(true));
+	EXPECT_THAT(compendium::is_copy_assignable<compendium::No_Copyable>::type::value, Eq(false));
+
+}
