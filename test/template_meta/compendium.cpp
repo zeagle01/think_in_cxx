@@ -98,6 +98,36 @@ namespace compendium
 	struct enable_if <false, T> :type_is<void> {};
 
 
+//------------------------------------------
+	template<typename T,T v>
+	struct integral_constant
+	{
+		static constexpr T value = v;
+
+		constexpr  operator T() const noexcept { return value; }
+		constexpr T operator()() const noexcept { return value; }
+
+	};
+
+	template<typename T>
+	struct rank1 :public integral_constant<size_t, 0> {};
+
+	template<typename T, int N>
+	struct rank1<T[N]> :public integral_constant<size_t, 1 + rank1<T>()> {};
+
+	template<typename T>
+	struct rank1<T[]> :public integral_constant<size_t, 1 + rank1<T>()> {};
+
+
+//------------------------------------------
+	template<bool B>
+	using bool_constant = integral_constant<bool, B>;
+	using true_type = bool_constant<true>;
+	using false_type = bool_constant<false>;
+
+
+
+
 }
 
 
@@ -176,4 +206,11 @@ TEST(Compendium, my_enable_if)
 	type_string = get_type_string<compendium::enable_if<false, int>::type>();
 	EXPECT_THAT(type_string, Eq("void"));
 
+}
+
+TEST(Compendium, value_meta_function)
+{
+
+	EXPECT_THAT(compendium::rank1<int[1][1]>::value, Eq(2));
+	EXPECT_THAT(compendium::rank1<int[]>::value, Eq(1));
 }
