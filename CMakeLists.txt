@@ -55,7 +55,7 @@ add_executable(think_in_cxx
 #	 test/qt/qtHello.cpp
 
 ### Eigen
-#	 test/EigenTest.cpp
+	 test/eigen/EigenTest.cpp
 
 #    test/quiz/FileManipulationTest.cpp
 #    test/quiz/ExceptionSafeTest.cpp
@@ -122,18 +122,17 @@ target_link_libraries(think_in_cxx PRIVATE gmock_main)
 ################### get newest gtest###################
 
 ##################eigen
-#FetchContent_Declare(
-#  eigen_repo
-#  GIT_REPOSITORY ${CMAKE_SOURCE_DIR}/3rdparties/eigen
-#  GIT_TAG        master
-#)
-#
-#FetchContent_MakeAvailable(eigen_repo)
+FetchContent_Declare(
+  eigen_repo
+  GIT_REPOSITORY ${CMAKE_SOURCE_DIR}/3rd/eigen
+  GIT_TAG        master
+)
+
+FetchContent_MakeAvailable(eigen_repo)
 
 
-#hunter_add_package(Eigen)
-#find_package(Eigen3 CONFIG REQUIRED)
-#target_link_libraries(think_in_cxx PRIVATE Eigen3::Eigen)
+## turn off build testing option in UI
+target_link_libraries(think_in_cxx PRIVATE Eigen3::Eigen)
 ##################eigen
 
 
