@@ -126,6 +126,44 @@ namespace compendium
 	using false_type = bool_constant<false>;
 
 
+//------------------------------------------
+	template<typename T>
+	struct is_void :public false_type {};
+
+	template<>
+	struct is_void<void> :public true_type {};
+
+	template<>
+	struct is_void<void const> :public true_type {};
+
+
+
+//------------------------------------------
+
+	template<typename T1,typename T2>
+	struct is_same:public false_type{};
+
+	template<typename T>
+	struct is_same<T,T>:public true_type{};
+
+
+	template<typename T>
+	struct is_void1 :public is_same<std::remove_cv_t<T>, void> {};
+
+
+//------------------------------------------
+	template<typename T,typename... T0toN>
+	struct is_one_of;
+
+	template<typename T>
+	struct is_one_of<T> :public false_type {};
+
+	template<typename T,typename... T1toN>
+	struct is_one_of<T,T,T1toN...> :public true_type {};
+
+	template<typename T,typename T0,typename... T1toN>
+	struct is_one_of<T, T0, T1toN...> :public is_one_of<T, T1toN...> {};
+
 
 
 }
@@ -210,7 +248,34 @@ TEST(Compendium, my_enable_if)
 
 TEST(Compendium, value_meta_function)
 {
-
 	EXPECT_THAT(compendium::rank1<int[1][1]>::value, Eq(2));
 	EXPECT_THAT(compendium::rank1<int[]>::value, Eq(1));
 }
+
+
+TEST(Compendium, is_void)
+{
+
+	EXPECT_THAT(compendium::is_void<void>(), Eq(true));
+	EXPECT_THAT(compendium::is_void<int>(), Eq(false));
+
+	EXPECT_THAT(compendium::is_void1<int>(), Eq(false));
+	EXPECT_THAT(compendium::is_void1<void>(), Eq(true));
+
+}
+
+TEST(Compendium, is_same)
+{
+	EXPECT_THAT((compendium::is_same<int, float>()), Eq(false));
+	EXPECT_THAT((compendium::is_same<int, int>()), Eq(true));
+}
+
+
+TEST(Compendium, is_one_of)
+{
+	EXPECT_THAT((compendium::is_one_of<int, float, int, double>()), Eq(true));
+	EXPECT_THAT((compendium::is_one_of<int, int,float>()), Eq(true));
+	EXPECT_THAT((compendium::is_one_of<int, double,float>()), Eq(false));
+
+}
+
