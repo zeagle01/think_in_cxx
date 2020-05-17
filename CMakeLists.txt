@@ -2,12 +2,6 @@
 
 cmake_minimum_required(VERSION 3.12)
 
-include(cmake/HunterGate.cmake)
-
-HunterGate(
-    URL "https://github.com/ruslo/hunter/archive/v0.23.214.tar.gz"
-    SHA1 "e14bc153a7f16d6a5eeec845fb0283c8fad8c358"
-)
 
 
 project(think_in_cxx)
@@ -114,7 +108,7 @@ include(FetchContent)
 
 FetchContent_Declare(
   googletest
-  GIT_REPOSITORY https://github.com/google/googletest.git
+  GIT_REPOSITORY ${CMAKE_SOURCE_DIR}/3rd/gtest
   GIT_TAG        master
 )
 
@@ -123,14 +117,7 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
 FetchContent_MakeAvailable(googletest)
 
-#FetchContent_GetProperties(googletest)
-#if(NOT googletest_POPULATED)
-#  FetchContent_Populate(googletest)
-#  add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR})
-#endif()
-
 set_target_properties(gmock_main PROPERTIES EXCLUDE_FROM_ALL TRUE)
-
 target_link_libraries(think_in_cxx PRIVATE gmock_main)
 ################### get newest gtest###################
 
@@ -143,9 +130,10 @@ target_link_libraries(think_in_cxx PRIVATE gmock_main)
 #
 #FetchContent_MakeAvailable(eigen_repo)
 
-hunter_add_package(Eigen)
-find_package(Eigen3 CONFIG REQUIRED)
-target_link_libraries(think_in_cxx PRIVATE Eigen3::Eigen)
+
+#hunter_add_package(Eigen)
+#find_package(Eigen3 CONFIG REQUIRED)
+#target_link_libraries(think_in_cxx PRIVATE Eigen3::Eigen)
 ##################eigen
 
 
