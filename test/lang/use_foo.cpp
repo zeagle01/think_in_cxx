@@ -4,7 +4,7 @@
 
 #include "gtest/gtest.h"
 
-#include "foo_lib/print_hello.h"
+#include "print_hello.h"
 
 
 
