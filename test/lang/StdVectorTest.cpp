@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <type_traits>
+#include <algorithm>
 
 
 
@@ -38,4 +39,41 @@ TEST(StdVectorTest, test_remove_extent) {
 	EXPECT_EQ(act, exp);
 
 
+}
+
+TEST(StdVectorTest, test_erase_given_index) 
+{
+	std::vector<int> act{ 1,2,3 };
+	//remove
+	act.erase(act.begin() + 1);
+	std::vector<int> exp{ 1,3 };
+	EXPECT_EQ(act, exp);
+}
+
+TEST(StdVectorTest, test_remove_given_element) 
+{
+	std::vector<int> act{ 1,2,3 };
+	//remove
+	std::remove(act.begin(), act.end(), 2);
+	std::vector<int> exp{ 1,3,3};
+	EXPECT_EQ(act, exp);
+}
+
+TEST(StdVectorTest, test_remove_two_given_element) 
+{
+	std::vector<int> act{ 1,2,3,2,4 };
+	//remove
+	std::remove(act.begin(), act.end(), 2);//unspecifed!
+	std::vector<int> exp{ 1,3,4,2,4 };
+	EXPECT_EQ(act, exp);
+}
+
+TEST(StdVectorTest, test_erase_given_element) 
+{
+	std::vector<int> act{ 1,2,3 };
+	//remove
+	auto it = std::remove(act.begin(), act.end(), 2);
+	act.erase(it, act.end());
+	std::vector<int> exp{ 1,3 };
+	EXPECT_EQ(act, exp);
 }

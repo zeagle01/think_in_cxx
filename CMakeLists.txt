@@ -31,7 +31,7 @@ add_executable(think_in_cxx
 #    test/lang/FunctionReturnValueCauseCopy.cpp
 #    test/lang/function_pointer.cpp
 #	 test/inlang/tro_2_alg/qsort_test.cpp
-#    test/lang/StdVectorTest.cpp
+    test/lang/StdVectorTest.cpp
 #    test/lang/StdMapTest.cpp
 #    test/lang/Std_Set_Test.cpp
 #    test/lang/Cxx_Any_Test.cpp
@@ -40,11 +40,12 @@ add_executable(think_in_cxx
 #    test/lang/Subclass_Visit_Supclass.cpp
 #    test/lang/variadic_template.cpp
 #    test/lang/template_concept.cpp
-    test/lang/template_crtp.cpp
+#    test/lang/template_crtp.cpp
+#    test/lang/show_bytes.cpp
 
 
 ### template_meta
-    test/template_meta/compendium.cpp
+#    test/template_meta/compendium.cpp
 
 ### alg
 #    test/alg/binary_tree.cpp
@@ -57,7 +58,7 @@ add_executable(think_in_cxx
 #	 test/qt/qtHello.cpp
 
 ### Eigen
-	 test/eigen/EigenTest.cpp
+#	 test/eigen/EigenTest.cpp
 
 #    test/quiz/FileManipulationTest.cpp
 #    test/quiz/ExceptionSafeTest.cpp
@@ -75,7 +76,6 @@ add_executable(think_in_cxx
 #    test/design_pattern/Open_Closed_Principle_Test.cpp
 #    test/design_pattern/Observer_Test.cpp
 #    test/design_pattern/Type_Erasure_Test.cpp
-#    test/show_bytes.cpp
 
 
 ###c++ primer
