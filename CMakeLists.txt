@@ -31,7 +31,7 @@ add_executable(think_in_cxx
 #    test/lang/FunctionReturnValueCauseCopy.cpp
 #    test/lang/function_pointer.cpp
 #	 test/inlang/tro_2_alg/qsort_test.cpp
-    test/lang/StdVectorTest.cpp
+#    test/lang/StdVectorTest.cpp
 #    test/lang/StdMapTest.cpp
 #    test/lang/Std_Set_Test.cpp
 #    test/lang/Cxx_Any_Test.cpp
@@ -42,6 +42,7 @@ add_executable(think_in_cxx
 #    test/lang/template_concept.cpp
 #    test/lang/template_crtp.cpp
 #    test/lang/show_bytes.cpp
+    test/lang/use_foo.cpp
 
 
 ### template_meta
@@ -161,6 +162,10 @@ if(MSVC)
 endif()
 
 
+
+target_link_libraries(think_in_cxx PRIVATE foo)
+
+add_subdirectory(foo_lib)
 
 
 
