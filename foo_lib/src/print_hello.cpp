@@ -1,14 +1,14 @@
 
 
 #include <iostream>
+#include "foo_export.h"
 
 
 namespace foo
 {
 
-	void print_hello()
+	void FOO_EXPORT print_hello()
 	{
-
 		printf("hello\n");
 	}
 

@@ -56,7 +56,7 @@ add_executable(think_in_cxx
 #    test/BS/15_3_1.cpp
 
 ### qt
-#	 test/qt/qtHello.cpp
+	 test/qt/qtHello.cpp
 
 ### Eigen
 #	 test/eigen/EigenTest.cpp
