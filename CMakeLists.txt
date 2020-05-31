@@ -42,7 +42,7 @@ add_executable(think_in_cxx
 #    test/lang/template_concept.cpp
 #    test/lang/template_crtp.cpp
 #    test/lang/show_bytes.cpp
-    test/lang/use_foo.cpp
+#    test/lang/use_foo.cpp
 
 
 ### template_meta
@@ -50,13 +50,14 @@ add_executable(think_in_cxx
 
 ### alg
 #    test/alg/binary_tree.cpp
+    test/alg/bvh.cpp
 
 
 ### BS book
 #    test/BS/15_3_1.cpp
 
 ### qt
-	 test/qt/qtHello.cpp
+#	 test/qt/qtHello.cpp
 
 ### Eigen
 #	 test/eigen/EigenTest.cpp

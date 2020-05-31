@@ -29,8 +29,6 @@ PRIVATE
 
 include(GNUInstallDirs)
 install(
-#    TARGETS <project>_<target>_1 <project>_<target>_2
-#    EXPORT <project>Targets
     TARGETS foo
     EXPORT foo_targets
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -66,7 +64,7 @@ write_basic_package_version_file(
 
 
 # This makes the project importable from the build directory
- export(TARGETS foo FILE foo_targets.cmake)
+ export(TARGETS foo FILE foo_targets_in_build.cmake)
 
 
 
