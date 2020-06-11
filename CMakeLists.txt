@@ -42,7 +42,9 @@ add_executable(think_in_cxx
 #    test/lang/template_concept.cpp
 #    test/lang/template_crtp.cpp
 #    test/lang/show_bytes.cpp
-#    test/lang/use_foo.cpp
+#    test/lang/use_foo.cpp #TO MOVE TO BUILD
+    test/lang/random.cpp 
+
 
 
 ### template_meta
@@ -50,7 +52,8 @@ add_executable(think_in_cxx
 
 ### alg
 #    test/alg/binary_tree.cpp
-    test/alg/bvh.cpp
+#    test/alg/bvh.cpp #TODO
+#    test/alg/sort.cpp #TODO
 
 
 ### BS book
