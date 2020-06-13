@@ -44,8 +44,11 @@ add_executable(think_in_cxx
 #    test/lang/show_bytes.cpp
 #    test/lang/use_foo.cpp #TO MOVE TO BUILD
 #    test/lang/random.cpp 
-    test/lang/chrono_test.cpp 
+#    test/lang/chrono_test.cpp 
 
+
+### tools
+    test/tools/profiler.cpp 
 
 
 ### template_meta
