@@ -48,7 +48,7 @@ add_executable(think_in_cxx
 
 
 ### tools
-    test/tools/profiler.cpp 
+#    test/tools/profiler.cpp 
 
 
 ### template_meta
@@ -57,7 +57,7 @@ add_executable(think_in_cxx
 ### alg
 #    test/alg/binary_tree.cpp
 #    test/alg/bvh.cpp #TODO
-#    test/alg/sort.cpp #TODO
+    test/alg/sort.cpp #TODO
 
 
 ### BS book
