@@ -170,8 +170,8 @@ namespace profiler_test
 		int n = 100000;
 		std::thread a( [=]() {sum(n); });
 		std::thread b( [=]() {sum_sqrt(n); });
-		sum_sqrt(n);
 		a.join();
+		sum_sqrt(n);
 		b.join();
 	}
 
