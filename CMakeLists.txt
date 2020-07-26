@@ -15,7 +15,7 @@ add_executable(think_in_cxx
 #    test/lang/Pointer.cpp
 #    test/lang/TestConstructor.cpp
 #    test/lang/TestSharePointer.cpp
-    test/lang/TestUniquePointer.cpp
+#    test/lang/TestUniquePointer.cpp
 #    test/lang/ECSSystemTest.cpp
 #    test/lang/Finally.cpp
 #    test/lang/Volatile.cpp
@@ -53,7 +53,7 @@ add_executable(think_in_cxx
 
 ### template_meta
 #    test/template_meta/compendium.cpp
-#    test/template_meta/static_loop.cpp
+    test/template_meta/static_loop.cpp
 #    test/template_meta/event_dispatch.cpp
 
 ### alg
