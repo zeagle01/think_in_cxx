@@ -21,6 +21,11 @@ public:
     }
 };
 
+std::unique_ptr<A> create_A()
+{
+	return std::make_unique<A>();
+}
+
 } // namespace uinique_pointer_test
 
 using namespace  testing;
@@ -62,3 +67,13 @@ TEST(Unique_Pointer_Test,test_costumed_deleter)
     auto p0 = std::unique_ptr<uinique_pointer_test::A,decltype(deleter)>(mockA,deleter);
     //p0.reset(mockA);
 }
+
+
+TEST(Unique_Pointer_Test, test_function_return_unique_pointer)
+{
+	auto a=uinique_pointer_test::create_A();
+	EXPECT_THAT(a->a, Eq(-1));
+
+}
+
+
