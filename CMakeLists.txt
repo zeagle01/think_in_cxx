@@ -53,8 +53,8 @@ add_executable(think_in_cxx
 
 ### template_meta
 #    test/template_meta/compendium.cpp
-    test/template_meta/static_loop.cpp
-#    test/template_meta/event_dispatch.cpp
+#    test/template_meta/static_loop.cpp
+    test/template_meta/event_dispatch.cpp
 
 ### alg
 #    test/alg/binary_tree.cpp
