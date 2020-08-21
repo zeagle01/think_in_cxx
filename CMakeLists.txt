@@ -46,6 +46,8 @@ add_executable(think_in_cxx
 #    test/lang/random.cpp 
 #    test/lang/chrono_test.cpp 
 
+### design
+    test/design/dispatch_member.cpp 
 
 ### tools
 #    test/tools/profiler.cpp 
