@@ -2,7 +2,13 @@
 
 cmake_minimum_required(VERSION 3.12)
 
-
+#include(cmake/HunterGate.cmake)
+#
+#HunterGate(
+#    URL "https://github.com/cpp-pm/hunter/archive/v0.23.265.tar.gz"
+#    SHA1 "eae0bb5b7b8aa968e0ff87ec51be51b4255db110"
+#	#LOCAL
+#)
 
 project(think_in_cxx)
 
@@ -45,6 +51,7 @@ add_executable(think_in_cxx
 #    test/lang/use_foo.cpp #TO MOVE TO BUILD
 #    test/lang/random.cpp 
 #    test/lang/chrono_test.cpp 
+    test/lang/static_reflection.cpp 
 
 ### design
     test/design/dispatch_member.cpp 
@@ -118,6 +125,10 @@ target_compile_features(think_in_cxx PRIVATE cxx_std_17)
 #find_package(GMock CONFIG QUIET)
 #target_link_libraries(think_in_cxx PRIVATE GMock::gmock)
 
+#hunter_add_package(Eigen)
+#find_package(Eigen3 CONFIG REQUIRED)
+#target_link_libraries(think_in_cxx Eigen3::Eigen)
+
 ################### get newest gtest###################
 include(FetchContent)
 
@@ -144,8 +155,6 @@ FetchContent_Declare(
 )
 
 FetchContent_MakeAvailable(eigen_repo)
-
-
 ## turn off build testing option in UI
 target_link_libraries(think_in_cxx PRIVATE Eigen3::Eigen)
 ##################eigen
