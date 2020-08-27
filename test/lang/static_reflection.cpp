@@ -149,11 +149,12 @@ struct st {                                                                   \
 };                                                                            \
 
 
-		DEFINE_STRUCT( AA,
-			(float) x,
-			(float) y,
-			(int) z
-			);
+/////////to be open when fixed
+//		DEFINE_STRUCT( AA,
+//			(float) x,
+//			(float) y,
+//			(int) z
+//			);
 
 
 

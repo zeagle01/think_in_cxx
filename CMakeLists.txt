@@ -40,7 +40,7 @@ add_executable(think_in_cxx
 #    test/lang/StdVectorTest.cpp
 #    test/lang/StdMapTest.cpp
 #    test/lang/Std_Set_Test.cpp
-#    test/lang/Cxx_Any_Test.cpp
+    test/lang/Cxx_Any_Test.cpp
 #    test/lang/Cxx_Optional_Test.cpp
 #    test/lang/Cxx_Variant_Test.cpp
 #    test/lang/Subclass_Visit_Supclass.cpp
@@ -51,7 +51,7 @@ add_executable(think_in_cxx
 #    test/lang/use_foo.cpp #TO MOVE TO BUILD
 #    test/lang/random.cpp 
 #    test/lang/chrono_test.cpp 
-    test/lang/static_reflection.cpp 
+#    test/lang/static_reflection.cpp  #TO BE VERIFY ,Not work in windows
 
 ### design
     test/design/dispatch_member.cpp 

@@ -6,7 +6,7 @@ cd $buildDir
 echo "change dir to  `pwd`"
 #cmake ..
 cmake --build $buildDir
-targetDir=$buildDir/Debug
+targetDir=$buildDir/out/bin/Debug/
 
 cd $targetDir
 echo "change dir to  `pwd`"
