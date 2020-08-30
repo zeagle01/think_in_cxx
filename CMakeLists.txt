@@ -40,7 +40,7 @@ add_executable(think_in_cxx
 #    test/lang/StdVectorTest.cpp
 #    test/lang/StdMapTest.cpp
 #    test/lang/Std_Set_Test.cpp
-    test/lang/Cxx_Any_Test.cpp
+#    test/lang/Cxx_Any_Test.cpp
 #    test/lang/Cxx_Optional_Test.cpp
 #    test/lang/Cxx_Variant_Test.cpp
 #    test/lang/Subclass_Visit_Supclass.cpp
@@ -54,7 +54,7 @@ add_executable(think_in_cxx
 #    test/lang/static_reflection.cpp  #TO BE VERIFY ,Not work in windows
 
 ### design
-    test/design/dispatch_member.cpp 
+#    test/design/dispatch_member.cpp 
 
 ### tools
 #    test/tools/profiler.cpp 
@@ -63,7 +63,7 @@ add_executable(think_in_cxx
 ### template_meta
 #    test/template_meta/compendium.cpp
 #    test/template_meta/static_loop.cpp
-    test/template_meta/event_dispatch.cpp
+#    test/template_meta/event_dispatch.cpp
 
 ### alg
 #    test/alg/binary_tree.cpp
@@ -111,6 +111,10 @@ add_executable(think_in_cxx
 #	test/Jeff_Langr/c2/1/Soundex.h
 #	test/Jeff_Langr/c5/Http.h
 #	test/Jeff_Langr/c5/PlaceDescriptionServiceTest.cpp
+
+
+###Packt fp
+	test/Packt/tic_tac_toe.cpp
 
 
 ###dump state
