@@ -85,7 +85,8 @@ add_executable(think_in_cxx
 
 ### gtest
 #	 test/gtest/GtestUsage.cpp
-#	 test/gtest/gmock_test.cpp
+	 test/gtest/gmock_test.cpp
+	 test/gtest/parameter_test.cpp
 
 ### design pattern
 #    test/design_pattern/State_Pattern_Test.cpp
@@ -114,7 +115,7 @@ add_executable(think_in_cxx
 
 
 ###Packt fp
-	test/Packt/tic_tac_toe.cpp
+#	test/Packt/tic_tac_toe.cpp
 
 
 ###dump state
