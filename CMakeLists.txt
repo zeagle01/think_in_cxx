@@ -52,6 +52,7 @@ add_executable(think_in_cxx
 #    test/lang/random.cpp 
 #    test/lang/chrono_test.cpp 
 #    test/lang/static_reflection.cpp  #TO BE VERIFY ,Not work in windows
+    test/lang/refer_class_member_data.cpp  
 
 ### design
 #    test/design/dispatch_member.cpp 

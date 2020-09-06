@@ -33,8 +33,8 @@ namespace gmock_test
 TEST(gmock_test,test_call)
 {
     std::shared_ptr<gmock_test::Mock_Derived> mock=std::make_shared<gmock_test::Mock_Derived>();
-    std::shared_ptr<gmock_test::Base> base= mock;
-    EXPECT_CALL(*(mock.get()),func())
+	std::shared_ptr<gmock_test::Base> base = mock;
+    EXPECT_CALL(*mock,func())
     .Times(1);
     base->func();
 }
@@ -44,7 +44,7 @@ TEST(gmock_test,test_call_strict)
 {
     std::shared_ptr<StrictMock<gmock_test::Mock_Derived>> mock = std::make_shared<StrictMock<gmock_test::Mock_Derived>>();
     std::shared_ptr<gmock_test::Base> base= mock;
-    EXPECT_CALL(*(mock.get()),func());
+    EXPECT_CALL(*mock,func());
     base->func();
 }
 
@@ -74,3 +74,9 @@ TEST(gmock_test,test_sequence)
     base->func();
     base->do_this(0);
 }
+
+
+
+
+
+
