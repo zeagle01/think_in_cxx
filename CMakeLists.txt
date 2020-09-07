@@ -54,6 +54,12 @@ add_executable(think_in_cxx
 #    test/lang/static_reflection.cpp  #TO BE VERIFY ,Not work in windows
     test/lang/refer_class_member_data.cpp  
 
+
+
+### tdd
+    test/little_projects/show_hand.cpp 
+
+
 ### design
 #    test/design/dispatch_member.cpp 
 
