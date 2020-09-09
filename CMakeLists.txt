@@ -95,6 +95,7 @@ add_executable(think_in_cxx
 #	 test/gtest/GtestUsage.cpp
 #	 test/gtest/gmock_test.cpp
 	 test/gtest/parameter_test.cpp
+	 test/gtest/type_parameter_test.cpp
 
 ### design pattern
 #    test/design_pattern/State_Pattern_Test.cpp
