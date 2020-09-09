@@ -3,6 +3,9 @@
 
 #include "gmock/gmock.h"
 
+#include <string>
+
+#include <memory>
 
 using namespace testing;
 
@@ -11,80 +14,144 @@ using namespace testing;
 namespace visitor_test
 {
 
-class Visitor;
-class Shape
-{
-public:
-    virtual void accept(Visitor &visitor) = 0;
-};
 
-class Circle : public Shape
-{
-public:
-    void Circle::accept(Visitor &visitor) override;
-};
+    ///cyclic visitor
+    //
 
-class Visitor
-{
-public:
-    virtual void visit(Circle &sh) = 0;
-};
+    class Visitor;
+    class Shape;
 
-
-
-///////////////concrete shape/////////////////////
-void Circle::accept(Visitor &visitor)
-{
-    visitor.visit(*this);
-}
-///////////////concrete shape/////////////////////
-
-
-
-///////////////concrete visitor/////////////////////
-
-class Print_Name_Visitor: public Visitor
-{
-    public:
-    virtual void visit(Circle& sh) override
+    struct Shape
     {
-        printf("this is circle \n");
-    }
-};
+	virtual void accept(Visitor*) {}
+    };
 
-
-class Visitor_Mock: public Visitor
-{
-    public:
-    MOCK_METHOD(void,visit,(Circle& ),(override));
-
-    void delegate_to_fake()
+    struct Square:public Shape
     {
-        ON_CALL(*this, visit).WillByDefault([this](Circle &sh) {
-            return fake.visit(sh);
-        });
+	virtual void accept(Visitor* visitor) override;
+    };
+
+    struct Triangle:public Shape
+    {
+	virtual void accept(Visitor* visitor) override;
+    };
+
+    struct Rectangle:public Square
+    {
+	virtual void accept(Visitor* visitor) override;
+    };
+
+
+
+    struct Visitor
+    {
+	virtual void visit(Square* s){}
+	virtual void visit(Triangle* s){}
+	virtual void visit(Rectangle* s){}
+    };
+
+    struct Printer :public Visitor
+    {
+	virtual void visit(Square* s) override
+	{
+	    m_print_string="square";
+	}
+
+	virtual void visit(Triangle* s) override
+	{
+	    m_print_string="triangle";
+	}
+
+	virtual void visit(Rectangle* s) override
+	{
+	    m_print_string="rectangle";
+	}
+
+	std::string get_print_string(){return m_print_string;}
+	std::string m_print_string;
+    };
+
+
+    //////////implement here ,because cyclic reference
+    void Square::accept(Visitor* visitor)  
+    { 
+	visitor->visit(this);
     }
 
-    private:
-    Print_Name_Visitor fake;
-};
+    void Triangle::accept(Visitor* visitor)  
+    { 
+	visitor->visit(this);
+    }
 
-///////////////concrete visitor/////////////////////
+    void Rectangle::accept(Visitor* visitor)  
+    { 
+	visitor->visit(this);
+    }
 
+
+
+
+    ///test
+    //
+    //
+
+
+
+    class Printer_Test:public Test  
+    {
+	public:
+
+	    Printer_Test()
+	    {
+
+		visitor=std::make_unique<Printer>();
+	    }
+
+	protected:
+
+	std::unique_ptr<Printer> visitor;
+
+    };
+
+
+    TEST_F(Printer_Test,square_print_square)
+    {
+
+	std::unique_ptr<Shape> e=std::make_unique<Square>();
+
+
+	e->accept(visitor.get());
+
+	EXPECT_THAT(visitor->get_print_string(),Eq("square"));
+
+
+    }
+
+    TEST_F(Printer_Test,triangle_print_triangle)
+    {
+
+	std::unique_ptr<Shape> e=std::make_unique<Triangle>();
+
+
+	e->accept(visitor.get());
+
+	EXPECT_THAT(visitor->get_print_string(),Eq("triangle"));
+
+    }
+
+    TEST_F(Printer_Test,rectangle_print_rectangle)
+    {
+
+	std::unique_ptr<Shape> e=std::make_unique<Rectangle>();
+
+
+	e->accept(visitor.get());
+
+	EXPECT_THAT(visitor->get_print_string(),Eq("rectangle"));
+
+    }
 
 
 
 } // namespace visitor_test
 
-TEST(Visitor_Test,test_use)
-{
-    //InSequence forceExpectationOrder;
-		
-    visitor_test::Visitor_Mock a_visitor;
-    a_visitor.delegate_to_fake();
-
-    visitor_test::Circle circle;
-	EXPECT_CALL(a_visitor, visit(Ref(circle)));
-
-    circle.accept(a_visitor);
-}
