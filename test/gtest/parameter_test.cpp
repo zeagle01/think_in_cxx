@@ -70,8 +70,8 @@ namespace  parameter_test
 			With_Draw_Data{ 0,10,0 },
 			With_Draw_Data{ 10,10,0 },
 			With_Draw_Data{ 20,10,10 },
-			With_Draw_Data{ -10,10,-10 },
-			With_Draw_Data{ -10,0,-11 }//this one is intentialy wrong
+			With_Draw_Data{ -10,10,-10 }
+			//With_Draw_Data{ -10,0,-11 }//this one is intentialy wrong
 		)
 	);
 
