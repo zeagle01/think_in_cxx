@@ -95,15 +95,15 @@ add_executable(think_in_cxx
 #	 test/gtest/GtestUsage.cpp
 #	 test/gtest/gmock_test.cpp
 	 test/gtest/parameter_test.cpp
-	 test/gtest/type_parameter_test.cpp
+#	 test/gtest/type_parameter_test.cpp
 
 ### design pattern
-#    test/design_pattern/State_Pattern_Test.cpp
+    test/design_pattern/State_Pattern_Test.cpp
 #    test/design_pattern/Singleton_Test.cpp
 #    test/design_pattern/Factory_Test.cpp
 #    test/design_pattern/Builder_Test.cpp
-    test/design_pattern/Visitor_Test.cpp
-    test/design_pattern/acyclic_visitor.cpp
+#    test/design_pattern/Visitor_Test.cpp 
+#    test/design_pattern/acyclic_visitor.cpp ##TODO
 #    test/design_pattern/Open_Closed_Principle_Test.cpp
 #    test/design_pattern/Observer_Test.cpp
 #    test/design_pattern/Type_Erasure_Test.cpp
