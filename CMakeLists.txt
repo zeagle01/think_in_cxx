@@ -54,16 +54,17 @@ add_executable(think_in_cxx
 #    test/lang/static_reflection.cpp  #TO BE VERIFY ,Not work in windows
 #    test/lang/refer_class_member_data.cpp  
 #    test/lang/virtual_non_virtual.cpp  
-    test/lang/concept_test.cpp  
+#    test/lang/concept_test.cpp  
 
 
 
 ### tdd
-    test/little_projects/show_hand.cpp 
+#    test/little_projects/show_hand.cpp  ##TODO
 
 
 ### design
 #    test/design/dispatch_member.cpp 
+    test/design/runtime_polymorphism.cpp  #sean parent demo
 
 ### tools
 #    test/tools/profiler.cpp 
@@ -95,11 +96,11 @@ add_executable(think_in_cxx
 ### gtest
 #	 test/gtest/GtestUsage.cpp
 #	 test/gtest/gmock_test.cpp
-	 test/gtest/parameter_test.cpp
+#	 test/gtest/parameter_test.cpp
 #	 test/gtest/type_parameter_test.cpp
 
 ### design pattern
-    test/design_pattern/State_Pattern_Test.cpp
+#    test/design_pattern/State_Pattern_Test.cpp
 #    test/design_pattern/Singleton_Test.cpp
 #    test/design_pattern/Factory_Test.cpp
 #    test/design_pattern/Builder_Test.cpp
