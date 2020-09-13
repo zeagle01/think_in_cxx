@@ -53,7 +53,8 @@ add_executable(think_in_cxx
 #    test/lang/chrono_test.cpp 
 #    test/lang/static_reflection.cpp  #TO BE VERIFY ,Not work in windows
 #    test/lang/refer_class_member_data.cpp  
-    test/lang/virtual_non_virtual.cpp  
+#    test/lang/virtual_non_virtual.cpp  
+    test/lang/concept_test.cpp  
 
 
 
@@ -132,7 +133,7 @@ add_executable(think_in_cxx
 #	test/dump_state/Dump_State_Test.cpp
 
     )
-target_compile_features(think_in_cxx PRIVATE cxx_std_17)
+target_compile_features(think_in_cxx PRIVATE cxx_std_20)
 
 
 
