@@ -245,12 +245,33 @@ namespace runtime_polymorphism
 
 	namespace _5
 	{
+
+
+		template<typename T>
+		void draw(const T& x, std::ostream& out, size_t position)
+		{
+			out << std::string(position, ' ') << x << std::endl;
+		}
+
+		template<typename T>
+		void draw(const std::vector<T>& x, std::ostream& out, size_t position)
+		{
+			out << "<document>" << std::endl;
+			for (const auto& e : x)
+			{
+				draw(e, out, position + 2);
+			}
+			out << "<document/>" << std::endl;
+		}
+
 		class object_t
 		{
 		public:
 			template<typename T>
 			object_t( T x) :self_(std::make_unique<model<T>>(std::move(x))) { }
-			object_t(const object_t& x) :self_(self_->copy_()) { }
+			object_t(const object_t& x) :
+				self_( x.self_->copy_() )
+			{ }
 			object_t(object_t&& x) noexcept = default;
 			object_t& operator=(const object_t& x) noexcept{ return *this = object_t(x); }
 			object_t& operator=(object_t&& x) noexcept = default;
@@ -277,7 +298,7 @@ namespace runtime_polymorphism
 
 
 				void draw_(std::ostream& out, size_t position) const override{ 
-					out << std::string(position, ' ') << data_ << std::endl;
+					draw(data_, out, position);
 				}
 
 				T data_;
@@ -287,18 +308,8 @@ namespace runtime_polymorphism
 			std::unique_ptr<concept_t> self_;
 		};
 
+
 		using document_t = std::vector<object_t>;
-
-		void draw(const document_t& x, std::ostream& out, size_t position)
-		{
-			out << "<document>" << std::endl;
-			for (const auto& e : x)
-			{
-				draw(e, out, position + 2);
-			}
-			out << "<document/>" << std::endl;
-		}
-
 
 		TEST(Runtime_Polymorphism, print_template_model)
 		{
@@ -310,6 +321,116 @@ namespace runtime_polymorphism
 			doc.emplace_back(2);
 
 			draw(doc, std::cout, 2);
+		}
+
+
+	}
+
+	namespace _6
+	{
+
+
+		template<typename T>
+		void draw(const T& x, std::ostream& out, size_t position)
+		{
+			out << std::string(position, ' ') << x << std::endl;
+		}
+
+		template<typename T>
+		void draw(const std::vector<T>& x, std::ostream& out, size_t position)
+		{
+			out << "<document>" << std::endl;
+			for (const auto& e : x)
+			{
+				draw(e, out, position + 2);
+			}
+			out << "<document/>" << std::endl;
+		}
+
+		class object_t
+		{
+		public:
+			template<typename T>
+			object_t( T x) :self_(std::make_shared<model<T>>(std::move(x))) { }
+
+			friend void draw(const object_t& x, std::ostream& out, size_t position)
+			{
+				x.self_->draw_(out, position);
+			}
+
+		private:
+			struct concept_t
+			{
+				virtual ~concept_t() {};
+				virtual void draw_(std::ostream& out, size_t position) const = 0;
+				virtual std::unique_ptr<concept_t>copy_() const = 0;
+			};
+
+			template<typename T>
+			struct model final :public concept_t
+			{
+				model(T x) :data_(std::move(x)) {}
+
+				std::unique_ptr<concept_t> copy_() const override { return std::make_unique<model>(*this); }
+
+
+				void draw_(std::ostream& out, size_t position) const override{ 
+					draw(data_, out, position);
+				}
+
+				T data_;
+
+			};
+
+			std::shared_ptr<concept_t const> self_;
+		};
+
+
+		using document_t = std::vector<object_t>;
+
+		using history_t = std::vector<document_t>;
+
+		void commit(history_t& h)
+		{
+			if(!h.empty())
+			{ 
+				h.push_back(h.back());
+			}
+		}
+
+		void undo(history_t& h)
+		{
+			if(!h.empty())
+			{ 
+				h.pop_back();
+			}
+		}
+
+		document_t& current(history_t& h) {
+			if(!h.empty())
+				return h.back();
+		}
+
+		TEST(Runtime_Polymorphism, undo_redo)
+		{
+
+			history_t h(1);
+			current(h).push_back(0);
+			current(h).push_back(std::string("hello"));
+
+			draw(current(h), std::cout, 0);
+
+			std::cout << "--------------------------" << std::endl;
+			commit(h);
+
+			current(h)[0]=42.5;
+			current(h)[1]=4;
+			current(h).push_back(std::string("world"));
+			draw(current(h), std::cout, 0);
+
+			std::cout << "--------------------------" << std::endl;
+			undo(h);
+			draw(current(h), std::cout, 0);
 		}
 
 
