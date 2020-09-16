@@ -51,7 +51,7 @@ add_executable(think_in_cxx
 #    test/lang/use_foo.cpp #TO MOVE TO BUILD
 #    test/lang/random.cpp 
 #    test/lang/chrono_test.cpp 
-#    test/lang/static_reflection.cpp  #TO BE VERIFY ,Not work in windows
+    test/lang/static_reflection.cpp  #TO BE VERIFY ,Not work in windows
 #    test/lang/refer_class_member_data.cpp  
 #    test/lang/virtual_non_virtual.cpp  
 #    test/lang/concept_test.cpp  
@@ -64,7 +64,7 @@ add_executable(think_in_cxx
 
 ### design
 #    test/design/dispatch_member.cpp 
-    test/design/runtime_polymorphism.cpp  #sean parent demo
+#    test/design/runtime_polymorphism.cpp  #sean parent demo
 
 ### tools
 #    test/tools/profiler.cpp 
