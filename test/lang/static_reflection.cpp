@@ -35,16 +35,29 @@ namespace reflection_test
 		detect_fileds_count<T>(out, std::make_index_sequence<sizeof...(I) - 1>{});
 	}
 
+	template<typename T, typename U = void,  std::size_t... I>
+	struct detect_fileds_count1
+	{
+		static constexpr size_t value = sizeof...(I) - 1;
+	};
+
+	template<typename T, std::size_t... I>
+	struct detect_fileds_count1<T, std::void_t<decltype(T{ anyT{I}... })>, I...>
+	{
+		static constexpr size_t value= detect_fileds_count1<T, void, sizeof...(I), I...>::value;
+	};
+
 
 
 	template<typename T>
 	constexpr size_t cout_field()
 	{
 		std::size_t  field_count = 0;
-		detect_fileds_count<T, 0, 1, 2, 3, 4, 5,
-			6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17
-		>(field_count, std::make_index_sequence<18>{});
-		return field_count;
+//		detect_fileds_count<T, 0, 1, 2, 3, 4, 5,
+//			6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17
+//		>(field_count, std::make_index_sequence<18>{});
+		return detect_fileds_count1<T>::value;
+	//	return field_count;
 	}
 
 
@@ -106,7 +119,8 @@ namespace reflection_test
 		float c;
 		//std::string d;
 		//std::vector<int> d;
-		B bb;
+
+		//B bb;
 
 	};
 
@@ -130,9 +144,11 @@ namespace reflection_test
 		a.c = 2.;
 		auto r = as_tuple<A>(std::move(a));
 
-//		std::apply([](auto&&... args)
-//			{((std::cout << args << std::endl), ...); }, r
-//		);
+		std::apply([](auto&&... args)
+			{((
+				std::cout << args << std::endl
+				), ...); }, r
+		);
 	}
 
 
