@@ -1,9 +1,10 @@
-#include "gtest/gtest.h"
+#include "gmock/gmock.h"
 
 #include <vector>
 #include <type_traits>
 #include <algorithm>
 
+using namespace testing;
 
 
 
@@ -76,4 +77,29 @@ TEST(StdVectorTest, test_erase_given_element)
 	act.erase(it, act.end());
 	std::vector<int> exp{ 1,3 };
 	EXPECT_EQ(act, exp);
+}
+
+
+TEST(StdVectorTest, resize_will_not_override_with_same_size) 
+{
+	std::vector<int> act{ 1,2,3 };
+	act.resize(3, 0);
+	std::vector<int> exp{ 1,2,3 };
+	EXPECT_EQ(act, exp);
+}
+
+TEST(StdVectorTest, resize_will_not_override_with_different_size) 
+{
+	std::vector<int> act{ 1,2,3 };
+	act.resize(2, 0);
+	std::vector<int> exp{ 1,2 };
+	EXPECT_THAT(act, Eq(exp));
+}
+
+TEST(StdVectorTest, resize_will_init_with_given_value_when_exceed_original_size) 
+{
+	std::vector<int> act{ 1,2 };
+	act.resize(3, 5);
+	std::vector<int> exp{ 1,2 ,5 };
+	EXPECT_THAT(act, Eq(exp));
 }
