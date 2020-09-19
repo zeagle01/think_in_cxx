@@ -75,6 +75,7 @@ add_executable(think_in_cxx
 #    test/template_meta/static_loop.cpp
 #    test/template_meta/event_dispatch.cpp
     test/template_meta/type_list.cpp
+    test/template_meta/multi_method.cpp
 
 ### alg
 #    test/alg/binary_tree.cpp
@@ -129,7 +130,7 @@ add_executable(think_in_cxx
 
 ###Packt fp
 #	test/Packt/tic_tac_toe.cpp
-	test/functional/maybe.cpp
+#	test/functional/maybe.cpp
 
 
 ###dump state
