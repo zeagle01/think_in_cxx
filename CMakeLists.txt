@@ -51,7 +51,7 @@ add_executable(think_in_cxx
 #    test/lang/use_foo.cpp #TO MOVE TO BUILD
 #    test/lang/random.cpp 
 #    test/lang/chrono_test.cpp 
-    test/lang/static_reflection.cpp  
+#    test/lang/static_reflection.cpp  
 #    test/lang/refer_class_member_data.cpp  
 #    test/lang/virtual_non_virtual.cpp  
 #    test/lang/concept_test.cpp  
@@ -73,7 +73,7 @@ add_executable(think_in_cxx
 ### template_meta
 #    test/template_meta/compendium.cpp
 #    test/template_meta/static_loop.cpp
-#    test/template_meta/event_dispatch.cpp
+    test/template_meta/event_dispatch.cpp
     test/template_meta/type_list.cpp
     test/template_meta/multi_method.cpp
 
@@ -106,7 +106,7 @@ add_executable(think_in_cxx
 #    test/design_pattern/Singleton_Test.cpp
 #    test/design_pattern/Factory_Test.cpp
 #    test/design_pattern/Builder_Test.cpp
-#    test/design_pattern/Visitor_Test.cpp 
+    test/design_pattern/Visitor_Test.cpp 
 #    test/design_pattern/acyclic_visitor.cpp ##TODO
 #    test/design_pattern/Open_Closed_Principle_Test.cpp
 #    test/design_pattern/Observer_Test.cpp
