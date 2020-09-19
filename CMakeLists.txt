@@ -51,7 +51,7 @@ add_executable(think_in_cxx
 #    test/lang/use_foo.cpp #TO MOVE TO BUILD
 #    test/lang/random.cpp 
 #    test/lang/chrono_test.cpp 
-    test/lang/static_reflection.cpp  #TO BE VERIFY ,Not work in windows
+    test/lang/static_reflection.cpp  
 #    test/lang/refer_class_member_data.cpp  
 #    test/lang/virtual_non_virtual.cpp  
 #    test/lang/concept_test.cpp  
@@ -74,6 +74,7 @@ add_executable(think_in_cxx
 #    test/template_meta/compendium.cpp
 #    test/template_meta/static_loop.cpp
 #    test/template_meta/event_dispatch.cpp
+    test/template_meta/type_list.cpp
 
 ### alg
 #    test/alg/binary_tree.cpp
