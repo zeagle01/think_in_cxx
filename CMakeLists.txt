@@ -129,6 +129,7 @@ add_executable(think_in_cxx
 
 ###Packt fp
 #	test/Packt/tic_tac_toe.cpp
+	test/functional/maybe.cpp
 
 
 ###dump state
