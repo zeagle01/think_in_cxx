@@ -64,7 +64,7 @@ add_executable(think_in_cxx
 
 ### design
 #    test/design/dispatch_member.cpp 
-#    test/design/runtime_polymorphism.cpp  #sean parent demo
+    test/design/runtime_polymorphism.cpp  #sean parent demo
 
 ### tools
 #    test/tools/profiler.cpp 
