@@ -70,6 +70,21 @@ namespace type_list
 	template<typename L,size_t n> 
 	using get_nth_element = typename get_nth_element_imp<L, n>::type;
 
+	//is_empty
+	template<typename L>
+	struct is_empty_imp
+	{
+		static inline constexpr  bool value = false;
+	};
+
+	template<>
+	struct is_empty_imp<type_list<>>
+	{
+		static inline constexpr  bool value = true;
+	};
+
+	template<typename L>
+	inline constexpr bool is_empty = is_empty_imp<L>::value;
 
 
 
@@ -128,6 +143,18 @@ namespace type_list
 		using exp = float;
 
 		type_is_same<act, exp>();
+    }
+
+	TEST_F(Type_List_Test, empty_list_is_empty)
+    {
+
+		EXPECT_TRUE(is_empty<type_list<>>);
+    }
+
+	TEST_F(Type_List_Test, non_list_not_is_empty)
+    {
+
+		EXPECT_FALSE(is_empty<type_list<int>>);
     }
 
 
