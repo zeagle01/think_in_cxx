@@ -73,7 +73,7 @@ namespace multi_method
 	template<typename L,size_t n> 
 	using get_nth_element = typename get_nth_element_imp<L, n>::type;
 
-	//get_nth_element
+	//is_empty
 	template<typename L>
 	struct is_empty_imp
 	{
