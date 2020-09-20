@@ -107,7 +107,7 @@ namespace type_deduction
 
 		/////////////////////////////
 		template<typename T>
-		struct value_variable
+		struct value
 		{
 			T operator()()
 			{
@@ -117,7 +117,17 @@ namespace type_deduction
 		};
 
 		template<typename T>
-		struct pointer_variable
+		struct const_value
+		{
+			const T operator()()
+			{
+				return a;
+			}
+			T a{};
+		};
+
+		template<typename T>
+		struct pointer
 		{
 			T* operator()()
 			{
@@ -127,7 +137,7 @@ namespace type_deduction
 		};
 
 		template<typename T>
-		struct reference_variable
+		struct reference
 		{
 			T& operator()()
 			{
@@ -137,7 +147,7 @@ namespace type_deduction
 		};
 
 		template<typename T>
-		struct const_reference_variable
+		struct const_reference
 		{
 			const T& operator()() 
 			{
@@ -235,7 +245,7 @@ namespace type_deduction
 
 		}
 
-		template< typename T,template <typename > typename vv,typename vt,template <typename > typename bt >
+		template< typename T, typename vt, template <typename > typename vv, template <typename > typename bt >
 		using test_recored = type_list< vv<T>, vt, bt<T> >;
 
 	};
@@ -244,27 +254,41 @@ namespace type_deduction
 	{
 
 		using test_recoreds = type_list<
-			test_recored<int, value_variable, value_template, bind_to_value>,
-			test_recored<int, value_variable, value_template, bind_to_value>,
-			test_recored<int, pointer_variable, value_template, bind_to_pointer>,
-			test_recored<int, reference_variable, value_template, bind_to_value>,
+			test_recored<int, value_template, value, bind_to_value>,
+			test_recored<int, value_template, pointer, bind_to_pointer>,
+			test_recored<int, value_template, reference, bind_to_value>,
 
-			test_recored<int, value_variable, const_reference_template, bind_to_value>,
-			test_recored<int, reference_variable, reference_template, bind_to_value>,
-			test_recored<int, reference_variable, const_reference_template, bind_to_value>, //top const is dropped
-			test_recored<int, const_reference_variable, reference_template, bind_to_const_value>,
-			test_recored<int, const_reference_variable, const_reference_template, bind_to_value>,
+			test_recored<int, const_reference_template, const_value, bind_to_value>, //!!! still work
+			test_recored<int, const_reference_template, value, bind_to_value>, //!!! still work
+			test_recored<int, const_reference_template, reference, bind_to_value>,
+			test_recored<int, const_reference_template, const_reference, bind_to_value>,
 
-			test_recored<int, value_variable, forward_reference_template, bind_to_value>,
-			test_recored<int, reference_variable, forward_reference_template, bind_to_refence>,
-			test_recored<int, const_reference_variable, forward_reference_template, bind_to_const_refence>,
-			test_recored<int, pointer_variable, forward_reference_template, bind_to_pointer>
+			test_recored<int, reference_template, const_reference, bind_to_const_value>,
+			test_recored<int, reference_template, reference, bind_to_value>,
+			//test_recored<int, reference_template, const_value, bind_to_value>,//dont compile
+			//test_recored<int, reference_template, value, bind_to_value>,//dont compile
+
+			test_recored<int, forward_reference_template, value, bind_to_value>,
+			test_recored<int, forward_reference_template, reference, bind_to_refence>,
+			test_recored<int, forward_reference_template, const_reference, bind_to_const_refence>,
+			test_recored<int, forward_reference_template, pointer, bind_to_pointer>
 		>;
 
 		test_all<test_recoreds>();
 
 	}
 
+
+
+	/**
+	 * template<typename T>
+	 * void f(P(T) expr)
+	 *
+	 *  
+	 *  P in{ pointer/reference  , &&, not first two}
+	 *  E expression type
+	 *  T template parameter
+	 */
 
 
 }
