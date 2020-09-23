@@ -135,6 +135,14 @@ namespace reflection_test
 		EXPECT_THAT(count, Eq(3));
 	}
 
+	TEST(Reflection_, fileds_count_of_int)
+	{
+
+		auto count = cout_field<int>();
+
+		EXPECT_THAT(count, Eq(1));
+	}
+
 	TEST(Reflection_, as_tuple_impl111)
 	{
 
