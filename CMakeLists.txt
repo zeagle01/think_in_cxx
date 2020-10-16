@@ -43,7 +43,7 @@ add_executable(think_in_cxx
 #    test/lang/Cxx_Any_Test.cpp
 #    test/lang/Cxx_Optional_Test.cpp
 #    test/lang/Cxx_Variant_Test.cpp
-#    test/lang/Subclass_Visit_Supclass.cpp
+    test/lang/Subclass_Visit_Supclass.cpp
 #    test/lang/variadic_template.cpp
 #    test/lang/template_concept.cpp
 #    test/lang/template_crtp.cpp
@@ -51,7 +51,7 @@ add_executable(think_in_cxx
 #    test/lang/use_foo.cpp #TO MOVE TO BUILD
 #    test/lang/random.cpp 
 #    test/lang/chrono_test.cpp 
-    test/lang/static_reflection.cpp  
+#    test/lang/static_reflection.cpp  
 #    test/lang/refer_class_member_data.cpp  
 #    test/lang/virtual_non_virtual.cpp  
 #    test/lang/concept_test.cpp  
@@ -64,19 +64,19 @@ add_executable(think_in_cxx
 
 ### design
 #    test/design/dispatch_member.cpp 
-    test/design/runtime_polymorphism.cpp  #sean parent demo
+#    test/design/runtime_polymorphism.cpp  #sean parent demo
 
 ### tools
 #    test/tools/profiler.cpp 
 
 
 ### template_meta
-    test/template_meta/type_deduction.cpp
+#    test/template_meta/type_deduction.cpp
 #    test/template_meta/compendium.cpp
 #    test/template_meta/static_loop.cpp
-    test/template_meta/event_dispatch.cpp
-    test/template_meta/type_list.cpp
-    test/template_meta/multi_method.cpp
+#    test/template_meta/event_dispatch.cpp
+#    test/template_meta/type_list.cpp
+#    test/template_meta/multi_method.cpp
 
 ### alg
 #    test/alg/binary_tree.cpp
