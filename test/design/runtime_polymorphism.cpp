@@ -436,4 +436,188 @@ namespace runtime_polymorphism
 
 	}
 
+	///////////////// my try/////////////////////
+	namespace _Sy_Brand
+	{
+
+		class Base
+		{
+
+		public:
+			std::string apply()
+			{
+				return	_apply();
+			}
+
+			template<typename T>
+			Base(T data) :
+				_data(&data) ,
+				_apply( [this]() { return static_cast<T*>(_data)->apply(); } )
+			{}
+
+		private:
+
+			void* _data;
+			std::function<std::string(void)> _apply;
+			
+		};
+
+		class D1
+		{
+
+		public:
+			std::string apply() {
+				return "in d1";
+			}
+
+		};
+
+		class D2
+		{
+
+		public:
+			std::string apply() {
+				return "in d2";
+			}
+
+		};
+
+		TEST(run_time_polymorphysm, use_subtype)
+		{
+			Base b = D1{};
+
+			EXPECT_THAT(b.apply(),Eq("in d1"));
+
+		}
+
+		TEST(run_time_polymorphysm, use_subtype_vector)
+		{
+			std::vector<Base> bases{ D1{},D2{},D1{} };
+
+			std::vector<std::string> exp{"in d1", "in d2", "in d1"};
+			std::vector<std::string> act;
+			for ( auto& b : bases)
+			{
+				act.push_back(b.apply());
+			}
+			EXPECT_THAT(act,Eq(exp));
+
+		}
+
+	}
+
+	namespace _7
+	{
+
+		class Base
+		{
+
+		public:
+			std::string apply()
+			{
+				return m_imp->apply();
+			}
+
+			template<typename T>
+			Base(T data) :
+				m_imp(std::make_shared<inner_concrete<T>>(std::move(data)))
+			{}
+
+		private:
+
+			struct inner_base
+			{
+				virtual std::string apply() const = 0;
+			};
+
+			template<typename T>
+			struct inner_concrete :public inner_base
+			{
+				inner_concrete(T data) :_data(data) {}
+
+				std::string apply() const override
+				{
+					return _data.apply();
+				}
+
+				T _data;
+			};
+
+			std::shared_ptr<inner_base const>  m_imp;
+		};
+
+		class D1
+		{
+
+		public:
+			std::string apply() const {
+				return "in d1";
+			}
+
+		};
+
+		class D2
+		{
+
+		public:
+			std::string apply() const {
+				return "in d2";
+			}
+
+		};
+
+		TEST(run_time_polymorphysm, use_subtype)
+		{
+			Base b = D1{};
+
+			EXPECT_THAT(b.apply(),Eq("in d1"));
+
+		}
+
+		TEST(run_time_polymorphysm, use_subtype_vector)
+		{
+			std::vector<Base> bases{ D1{},D2{},D1{} };
+
+			std::vector<std::string> exp{"in d1", "in d2", "in d1"};
+			std::vector<std::string> act;
+			for ( auto& b : bases)
+			{
+				act.push_back(b.apply());
+			}
+			EXPECT_THAT(act,Eq(exp));
+
+		}
+
+	}
+
+	namespace property_system
+	{
+
+		class my_property
+		{
+		public:
+			template<typename T>
+			my_property(T data) :_data(&data) 
+			{
+			}
+
+			template<typename T>
+			const T& get() const
+			{
+
+
+			}
+
+			template<typename T>
+			void  set(const T& v)
+			{
+
+			}
+		private:
+			void* _data;
+
+		};
+
+	}
+
 }
