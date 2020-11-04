@@ -53,6 +53,8 @@ namespace reflection_test
 			return detect_fileds_count1<T>::value;
 		}
 
+
+
 		template <typename T>
 		constexpr auto as_tuple(T&& val) noexcept
 		{
@@ -155,6 +157,9 @@ namespace reflection_test
 			size_t dummy;
 			template <typename T>
 			operator T& ();
+
+			template <typename T>
+			operator T* () { return nullptr; }
 		};
 
 		template <typename T, typename I0 = void, size_t... I>
@@ -169,11 +174,103 @@ namespace reflection_test
 			static constexpr size_t value = field_count<T, void, sizeof...(I), I... >::value;
 		};
 
+		template <typename T>
+		constexpr auto as_tuple(T&& val) noexcept
+		{
+
+			constexpr auto count = field_count<T>::value;
+
+			if constexpr (count == 1)
+			{
+
+				auto& [a] = std::forward<T>(val);
+
+				return std::make_tuple(a);
+			}
+			else if constexpr (count == 2)
+			{
+				auto& [a, b] = std::forward<T>(val);
+				return std::make_tuple(a, b);
+			}
+			else if constexpr (count == 3)
+			{
+				auto& [a, b, c] = std::forward<T>(val);
+				return std::make_tuple(a, b, c);
+			}
+			else if constexpr (count == 3)
+			{
+				auto& [a, b, c] = std::forward<T>(val);
+				return std::make_tuple(a, b, c);
+			}
+			else if constexpr (count == 4)
+			{
+				auto& [a, b, c, d] = std::forward<T>(val);
+				return std::make_tuple(a, b, c, d);
+			}
+			else if constexpr (count == 5)
+			{
+				auto& [a, b, c, d, e] = std::forward<T>(val);
+				return std::make_tuple(a, b, c, d, e);
+			}
+			else if constexpr (count == 6)
+			{
+				auto& [a, b, c, d, e, f] = std::forward<T>(val);
+				return std::make_tuple(a, b, c, d, e, f);
+			}
+		}
+
+
+		struct A_with_P
+		{
+			int* a;
+			float* b;
+
+		};
+
+		struct A_pod
+		{
+			int a;
+			float b;
+
+		};
+
+		struct A_Mixed
+		{
+			int a;
+			float b;
+			double* c;
+
+		};
 
 		TEST(filed_count, int_count)
 		{
 			auto act = field_count<int>::value;
 			EXPECT_THAT(act, Eq(1));
+		}
+
+		TEST(filed_count, pod)
+		{
+			auto act = field_count<A_pod>::value;
+			EXPECT_THAT(act, Eq(2));
+		}
+
+		TEST(filed_count, with_pointers)
+		{
+			auto act = field_count<A_with_P>::value;
+			EXPECT_THAT(act, Eq(2));
+		}
+
+
+		TEST(filed_count, mixed_with_pointer)
+		{
+			auto act = field_count<A_Mixed>::value;
+			EXPECT_THAT(act, Eq(3));
+		}
+
+		TEST(filed_count, mixed_with_pointer_as_tuple)
+		{
+			A_Mixed a;
+			auto act = as_tuple(std::move(a));
 		}
 
 	}

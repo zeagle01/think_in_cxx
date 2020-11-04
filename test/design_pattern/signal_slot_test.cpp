@@ -12,23 +12,26 @@ namespace signal_slot_test
 {
 
 
+//	template<typename ...P>
+//	struct slot
+//	{
+//
+//		slot(std::function<void(P...)> f) 
+//		{
+//			m_f = f;
+//		}
+//
+//		void operator()(P&&... p)
+//		{
+//			m_f(std::forward<P>(p)...);
+//		}
+//
+//		std::function<void(P...)> m_f;
+//
+//	};
+
 	template<typename ...P>
-	struct slot
-	{
-
-		slot(std::function<void(P...)> f) 
-		{
-			m_f = f;
-		}
-
-		void operator()(P&&... p)
-		{
-			m_f(std::forward<P>(p)...);
-		}
-
-		std::function<void(P...)> m_f;
-
-	};
+	using slot = std::function<void(P...)>;
 
 
 	template<typename ...P>
@@ -85,6 +88,7 @@ namespace signal_slot_test
 
 		sig.connect(slot);
 		int a = 6;
+		//const int& b = a;
 		sig.emit(a);
 
 		EXPECT_THAT(a, Eq(7));
