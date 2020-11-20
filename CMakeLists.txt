@@ -75,8 +75,9 @@ add_executable(think_in_cxx
 #    test/template_meta/compendium.cpp
 #    test/template_meta/static_loop.cpp
 #    test/template_meta/event_dispatch.cpp
-    test/template_meta/type_list.cpp
-    test/template_meta/multi_method.cpp
+#    test/template_meta/type_list.cpp
+#    test/template_meta/multi_method.cpp
+    test/template_meta/loop_enum.cpp
 
 ### alg
 #    test/alg/binary_tree.cpp
@@ -112,7 +113,7 @@ add_executable(think_in_cxx
 #    test/design_pattern/Open_Closed_Principle_Test.cpp
 #    test/design_pattern/Observer_Test.cpp
 #    test/design_pattern/Type_Erasure_Test.cpp
-    test/design_pattern/signal_slot_test.cpp
+#    test/design_pattern/signal_slot_test.cpp
 
 
 ###c++ primer
