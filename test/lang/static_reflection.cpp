@@ -64,38 +64,38 @@ namespace reflection_test
 			if constexpr (count == 1)
 			{
 
-				auto& [a] = std::forward<T>(val);
+				auto [a] = std::forward<T>(val);
 
 				return std::make_tuple(a);
 			}
 			else if constexpr (count == 2)
 			{
-				auto& [a, b] = std::forward<T>(val);
+				auto [a, b] = std::forward<T>(val);
 				return std::make_tuple(a, b);
 			}
 			else if constexpr (count == 3)
 			{
-				auto& [a, b, c] = std::forward<T>(val);
+				auto [a, b, c] = std::forward<T>(val);
 				return std::make_tuple(a, b, c);
 			}
 			else if constexpr (count == 3)
 			{
-				auto& [a, b, c] = std::forward<T>(val);
+				auto [a, b, c] = std::forward<T>(val);
 				return std::make_tuple(a, b, c);
 			}
 			else if constexpr (count == 4)
 			{
-				auto& [a, b, c, d] = std::forward<T>(val);
+				auto [a, b, c, d] = std::forward<T>(val);
 				return std::make_tuple(a, b, c, d);
 			}
 			else if constexpr (count == 5)
 			{
-				auto& [a, b, c, d, e] = std::forward<T>(val);
+				auto [a, b, c, d, e] = std::forward<T>(val);
 				return std::make_tuple(a, b, c, d, e);
 			}
 			else if constexpr (count == 6)
 			{
-				auto& [a, b, c, d, e, f] = std::forward<T>(val);
+				auto [a, b, c, d, e, f] = std::forward<T>(val);
 				return std::make_tuple(a, b, c, d, e, f);
 			}
 		}
@@ -183,38 +183,38 @@ namespace reflection_test
 			if constexpr (count == 1)
 			{
 
-				auto& [a] = std::forward<T>(val);
+				auto [a] = std::forward<T>(val);
 
 				return std::make_tuple(a);
 			}
 			else if constexpr (count == 2)
 			{
-				auto& [a, b] = std::forward<T>(val);
+				auto [a, b] = std::forward<T>(val);
 				return std::make_tuple(a, b);
 			}
 			else if constexpr (count == 3)
 			{
-				auto& [a, b, c] = std::forward<T>(val);
+				auto [a, b, c] = std::forward<T>(val);
 				return std::make_tuple(a, b, c);
 			}
 			else if constexpr (count == 3)
 			{
-				auto& [a, b, c] = std::forward<T>(val);
+				auto [a, b, c] = std::forward<T>(val);
 				return std::make_tuple(a, b, c);
 			}
 			else if constexpr (count == 4)
 			{
-				auto& [a, b, c, d] = std::forward<T>(val);
+				auto [a, b, c, d] = std::forward<T>(val);
 				return std::make_tuple(a, b, c, d);
 			}
 			else if constexpr (count == 5)
 			{
-				auto& [a, b, c, d, e] = std::forward<T>(val);
+				auto [a, b, c, d, e] = std::forward<T>(val);
 				return std::make_tuple(a, b, c, d, e);
 			}
 			else if constexpr (count == 6)
 			{
-				auto& [a, b, c, d, e, f] = std::forward<T>(val);
+				auto [a, b, c, d, e, f] = std::forward<T>(val);
 				return std::make_tuple(a, b, c, d, e, f);
 			}
 		}
