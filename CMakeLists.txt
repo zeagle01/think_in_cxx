@@ -50,7 +50,7 @@ add_executable(think_in_cxx
 #    test/lang/show_bytes.cpp
 #    test/lang/use_foo.cpp #TO MOVE TO BUILD
 #    test/lang/random.cpp 
-#    test/lang/chrono_test.cpp 
+    test/lang/chrono_test.cpp 
     test/lang/static_reflection.cpp  
 #    test/lang/refer_class_member_data.cpp  
 #    test/lang/virtual_non_virtual.cpp  
@@ -140,7 +140,7 @@ add_executable(think_in_cxx
 #	test/dump_state/Dump_State_Test.cpp
 
     )
-target_compile_features(think_in_cxx PRIVATE cxx_std_20)
+target_compile_features(think_in_cxx PRIVATE cxx_std_17)
 
 
 
@@ -152,35 +152,13 @@ target_compile_features(think_in_cxx PRIVATE cxx_std_20)
 #find_package(Eigen3 CONFIG REQUIRED)
 #target_link_libraries(think_in_cxx Eigen3::Eigen)
 
-################### get newest gtest###################
-include(FetchContent)
 
-FetchContent_Declare(
-  googletest
-  GIT_REPOSITORY ${CMAKE_SOURCE_DIR}/3rd/gtest
-  GIT_TAG        master
-)
+find_package(Eigen3 CONFIG REQUIRED PATHS ${CMAKE_BINARY_DIR})
+target_link_libraries(think_in_cxx PUBLIC Eigen3::Eigen)
 
-# this one is important for windows
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)  
+find_package(GTest CONFIG REQUIRED PATHS ${CMAKE_BINARY_DIR})
+target_link_libraries(think_in_cxx PUBLIC GTest::gmock)
 
-FetchContent_MakeAvailable(googletest)
-
-set_target_properties(gmock_main PROPERTIES EXCLUDE_FROM_ALL TRUE)
-target_link_libraries(think_in_cxx PRIVATE gmock_main)
-################### get newest gtest###################
-
-##################eigen
-FetchContent_Declare(
-  eigen_repo
-  GIT_REPOSITORY ${CMAKE_SOURCE_DIR}/3rd/eigen
-  GIT_TAG        master
-)
-
-FetchContent_MakeAvailable(eigen_repo)
-## turn off build testing option in UI
-target_link_libraries(think_in_cxx PRIVATE Eigen3::Eigen)
-##################eigen
 
 
 set(Qt5_DIR "D:/Qt/5.13.1/msvc2017_64/lib/cmake/Qt5/" CACHE PATH "qt5 cmake path")
