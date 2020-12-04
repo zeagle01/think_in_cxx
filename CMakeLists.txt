@@ -159,6 +159,9 @@ target_link_libraries(think_in_cxx PUBLIC Eigen3::Eigen)
 find_package(GTest CONFIG REQUIRED PATHS ${CMAKE_BINARY_DIR})
 target_link_libraries(think_in_cxx PUBLIC GTest::gmock)
 
+find_package(glm CONFIG REQUIRED PATHS ${CMAKE_BINARY_DIR})
+target_link_libraries(think_in_cxx PUBLIC glm::glm)
+
 
 
 set(Qt5_DIR "D:/Qt/5.13.1/msvc2017_64/lib/cmake/Qt5/" CACHE PATH "qt5 cmake path")
