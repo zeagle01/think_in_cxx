@@ -2,13 +2,6 @@
 
 cmake_minimum_required(VERSION 3.12)
 
-#include(cmake/HunterGate.cmake)
-#
-#HunterGate(
-#    URL "https://github.com/cpp-pm/hunter/archive/v0.23.265.tar.gz"
-#    SHA1 "eae0bb5b7b8aa968e0ff87ec51be51b4255db110"
-#	#LOCAL
-#)
 
 project(think_in_cxx)
 
@@ -141,24 +134,21 @@ add_executable(think_in_cxx
 #	test/dump_state/Dump_State_Test.cpp
 
     )
-target_compile_features(think_in_cxx PRIVATE cxx_std_17)
+target_compile_features(think_in_cxx PRIVATE cxx_std_20)
 
 
 
-#hunter_add_package(GTest)
-#find_package(GMock CONFIG QUIET)
-#target_link_libraries(think_in_cxx PRIVATE GMock::gmock)
-
-#hunter_add_package(Eigen)
-#find_package(Eigen3 CONFIG REQUIRED)
-#target_link_libraries(think_in_cxx Eigen3::Eigen)
 
 
 find_package(Eigen3 CONFIG REQUIRED PATHS ${CMAKE_BINARY_DIR})
 target_link_libraries(think_in_cxx PUBLIC Eigen3::Eigen)
 
-find_package(GTest CONFIG REQUIRED PATHS ${CMAKE_BINARY_DIR})
-target_link_libraries(think_in_cxx PUBLIC GTest::gmock)
+##gtest
+#find_package(GTest CONFIG REQUIRED PATHS ${CMAKE_BINARY_DIR})
+#target_link_libraries(think_in_cxx PUBLIC GTest::gmock)
+include(${CMAKE_SOURCE_DIR}/cmake/gtest.cmake)
+link_to_gtest(think_in_cxx ${CMAKE_SOURCE_DIR}/3rd/gtest)
+
 
 find_package(glm CONFIG REQUIRED PATHS ${CMAKE_BINARY_DIR})
 target_link_libraries(think_in_cxx PUBLIC glm::glm)
