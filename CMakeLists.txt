@@ -36,22 +36,22 @@ add_executable(think_in_cxx
 #    test/lang/ProcessTest.cpp
 #    test/lang/FunctionReturnValueCauseCopy.cpp
 #    test/lang/function_pointer.cpp
-#	 test/inlang/tro_2_alg/qsort_test.cpp
+#    test/inlang/tro_2_alg/qsort_test.cpp
 #    test/lang/StdVectorTest.cpp
 #    test/lang/StdMapTest.cpp
 #    test/lang/Std_Set_Test.cpp
 #    test/lang/Cxx_Any_Test.cpp
 #    test/lang/Cxx_Optional_Test.cpp
 #    test/lang/Cxx_Variant_Test.cpp
-    test/lang/Subclass_Visit_Supclass.cpp
+#    test/lang/Subclass_Visit_Supclass.cpp
 #    test/lang/variadic_template.cpp
 #    test/lang/template_concept.cpp
 #    test/lang/template_crtp.cpp
 #    test/lang/show_bytes.cpp
 #    test/lang/use_foo.cpp #TO MOVE TO BUILD
 #    test/lang/random.cpp 
-    test/lang/chrono_test.cpp 
-    test/lang/static_reflection.cpp  
+#    test/lang/chrono_test.cpp 
+#    test/lang/static_reflection.cpp  
 #    test/lang/refer_class_member_data.cpp  
 #    test/lang/virtual_non_virtual.cpp  
 #    test/lang/concept_test.cpp  
@@ -77,7 +77,7 @@ add_executable(think_in_cxx
 #    test/template_meta/event_dispatch.cpp
 #    test/template_meta/type_list.cpp
 #    test/template_meta/multi_method.cpp
-    test/template_meta/loop_enum.cpp
+#    test/template_meta/loop_enum.cpp
 
 ### alg
 #    test/alg/binary_tree.cpp
@@ -114,6 +114,7 @@ add_executable(think_in_cxx
 #    test/design_pattern/Observer_Test.cpp
 #    test/design_pattern/Type_Erasure_Test.cpp
 #    test/design_pattern/signal_slot_test.cpp
+    test/design_pattern/value_polymorphism.cpp
 
 
 ###c++ primer
