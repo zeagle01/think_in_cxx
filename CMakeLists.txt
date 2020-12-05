@@ -42,7 +42,7 @@ add_executable(think_in_cxx
 #    test/lang/Std_Set_Test.cpp
 #    test/lang/Cxx_Any_Test.cpp
 #    test/lang/Cxx_Optional_Test.cpp
-#    test/lang/Cxx_Variant_Test.cpp
+    test/lang/Cxx_Variant_Test.cpp
 #    test/lang/Subclass_Visit_Supclass.cpp
 #    test/lang/variadic_template.cpp
 #    test/lang/template_concept.cpp
@@ -114,7 +114,7 @@ add_executable(think_in_cxx
 #    test/design_pattern/Observer_Test.cpp
 #    test/design_pattern/Type_Erasure_Test.cpp
 #    test/design_pattern/signal_slot_test.cpp
-    test/design_pattern/value_polymorphism.cpp
+#    test/design_pattern/value_polymorphism.cpp
 
 
 ###c++ primer
