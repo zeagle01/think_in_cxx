@@ -38,7 +38,7 @@ add_executable(think_in_cxx
     test/lang/Cxx_Variant_Test.cpp
 #    test/lang/Subclass_Visit_Supclass.cpp
 #    test/lang/variadic_template.cpp
-#    test/lang/template_concept.cpp
+    test/lang/concept_test.cpp
 #    test/lang/template_crtp.cpp
 #    test/lang/show_bytes.cpp
 #    test/lang/use_foo.cpp #TO MOVE TO BUILD
@@ -47,7 +47,6 @@ add_executable(think_in_cxx
 #    test/lang/static_reflection.cpp  
 #    test/lang/refer_class_member_data.cpp  
 #    test/lang/virtual_non_virtual.cpp  
-#    test/lang/concept_test.cpp  
 
 
 
