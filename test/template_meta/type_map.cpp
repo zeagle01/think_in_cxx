@@ -298,27 +298,100 @@ namespace type_map
 		};
 
 
+
+
+
+
+
+
+
+#define EVAL(...) EVAL256(__VA_ARGS__)
+#define EVAL256(...) EVAL128(EVAL128(__VA_ARGS__))
+#define EVAL128(...) EVAL64(EVAL64(__VA_ARGS__))
+#define EVAL64(...) EVAL32(EVAL32(__VA_ARGS__))
+#define EVAL32(...) EVAL16(EVAL16(__VA_ARGS__))
+#define EVAL16(...) EVAL8(EVAL8(__VA_ARGS__))
+#define EVAL8(...) EVAL4(EVAL4(__VA_ARGS__))
+#define EVAL4(...) EVAL2(EVAL2(__VA_ARGS__))
+#define EVAL2(...) EVAL1(EVAL1(__VA_ARGS__))
+#define EVAL1(...) __VA_ARGS__
+
+
+#define SEQ_1(Mb,M) Mb(1)
+#define SEQ_2(Mb,M) SEQ_1(Mb,M) M(2)
+#define SEQ_3(Mb,M) SEQ_2(Mb,M) M(3)
+#define SEQ_4(Mb,M) SEQ_3(Mb,M) M(4)
+#define SEQ_5(Mb,M) SEQ_4(Mb,M) M(5)
+#define SEQ_6(Mb,M) SEQ_5(Mb,M) M(6)
+#define SEQ_7(Mb,M) SEQ_6(Mb,M) M(7)
+#define SEQ_8(Mb,M) SEQ_7(Mb,M) M(8)
+#define SEQ_9(Mb,M) SEQ_8(Mb,M) M(9)
+#define SEQ_10(Mb,M) SEQ_9(Mb,M) M(10)
+#define SEQ_11(Mb,M) SEQ_10(Mb,M) M(11)
+#define SEQ_12(Mb,M) SEQ_11(Mb,M) M(12)
+#define SEQ_13(Mb,M) SEQ_12(Mb,M) M(13)
+#define SEQ_14(Mb,M) SEQ_13(Mb,M) M(14)
+#define SEQ_15(Mb,M) SEQ_14(Mb,M) M(15)
+#define SEQ_16(Mb,M) SEQ_15(Mb,M) M(16)
+#define SEQ_17(Mb,M) SEQ_16(Mb,M) M(17)
+#define SEQ_18(Mb,M) SEQ_17(Mb,M) M(18)
+#define SEQ_19(Mb,M) SEQ_18(Mb,M) M(19)
+#define SEQ_20(Mb,M) SEQ_19(Mb,M) M(20)
+#define SEQ_21(Mb,M) SEQ_20(Mb,M) M(21)
+#define SEQ_22(Mb,M) SEQ_21(Mb,M) M(22)
+#define SEQ_23(Mb,M) SEQ_22(Mb,M) M(23)
+#define SEQ_24(Mb,M) SEQ_23(Mb,M) M(24)
+#define SEQ_25(Mb,M) SEQ_24(Mb,M) M(25)
+#define SEQ_26(Mb,M) SEQ_25(Mb,M) M(26)
+#define SEQ_27(Mb,M) SEQ_26(Mb,M) M(27)
+#define SEQ_28(Mb,M) SEQ_27(Mb,M) M(28)
+#define SEQ_29(Mb,M) SEQ_28(Mb,M) M(29)
+#define SEQ_30(Mb,M) SEQ_29(Mb,M) M(30)
+
+#define SEQ_N(N,Mb,M) SEQ_##N(Mb,M)
+
+#define _SEQ_N() SEQ_N
+
+#define EMP()
+#define DEFF(m) m EMP()
+
+#define R_SEQ_N(N,Mb,M) DEFF(_SEQ_N)()(N,Mb,M)
+
+
+
+		///////////////////
+#define VV_B(n) v##n
+#define VV(n) ,v##n
+
+#define VAR_LIST(n) R_SEQ_N(n,VV_B,VV)
+
+
+#define IF_BRANCH(num)\
+if constexpr (get_field_num<T>::value ==num){ \
+		auto [VAR_LIST(num)] = T{}; \
+		return std::make_tuple(VAR_LIST(num)); \
+}\
+
+#define ELSE_IF_BRANCH(num)\
+else if constexpr (get_field_num<T>::value ==num){ \
+		auto [VAR_LIST(num)] = T{}; \
+		return std::make_tuple(VAR_LIST(num)); \
+}\
+
+
+
+#define TOTUPLES(n) SEQ_N(n,IF_BRANCH,ELSE_IF_BRANCH)
+
+
+
 		template<typename T>
 		constexpr auto as_tuple()
 		{
-			constexpr int field_count = get_field_num<T>::value;
-
-			if constexpr (field_count == 1)
-			{
-				auto [a] = T{};
-				return std::make_tuple(a);
-			}
-			else if constexpr (field_count == 2)
-			{
-				auto [a, b] = T{};
-				return std::make_tuple(a, b);
-			}
-			else if constexpr (field_count == 3)
-			{
-				auto [a, b, c] = T{};
-				return std::make_tuple(a, b, c);
-			}
+			EVAL( TOTUPLES(30) );
 		}
+
+
+
 
 		template<typename tu>
 		struct extract_tuple_to_type_list;

@@ -47,6 +47,7 @@ add_executable(think_in_cxx
     test/lang/static_reflection.cpp  
 #    test/lang/refer_class_member_data.cpp  
 #    test/lang/virtual_non_virtual.cpp  
+    test/lang/macro.cpp  
 
 
 
