@@ -44,7 +44,7 @@ add_executable(think_in_cxx
 #    test/lang/use_foo.cpp #TO MOVE TO BUILD
 #    test/lang/random.cpp 
 #    test/lang/chrono_test.cpp 
-#    test/lang/static_reflection.cpp  
+    test/lang/static_reflection.cpp  
 #    test/lang/refer_class_member_data.cpp  
 #    test/lang/virtual_non_virtual.cpp  
 
@@ -67,9 +67,10 @@ add_executable(think_in_cxx
 #    test/template_meta/compendium.cpp
 #    test/template_meta/static_loop.cpp
 #    test/template_meta/event_dispatch.cpp
-#    test/template_meta/type_list.cpp
+    test/template_meta/type_list.cpp
 #    test/template_meta/multi_method.cpp
 #    test/template_meta/loop_enum.cpp
+    test/template_meta/type_map.cpp
 
 ### alg
 #    test/alg/binary_tree.cpp
@@ -106,7 +107,7 @@ add_executable(think_in_cxx
 #    test/design_pattern/Observer_Test.cpp
 #    test/design_pattern/Type_Erasure_Test.cpp
 #    test/design_pattern/signal_slot_test.cpp
-#    test/design_pattern/value_polymorphism.cpp
+    test/design_pattern/value_polymorphism.cpp
 
 
 ###c++ primer

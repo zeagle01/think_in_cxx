@@ -20,7 +20,7 @@ namespace value_polymorphism
 			m_storage(obj),
 			getter(
 				[](std::any& a)-> Interface& {
-					return std::any_cast<ConcreteType>(a);
+					return std::any_cast<ConcreteType&>(a);
 				}
 
 			)

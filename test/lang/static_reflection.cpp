@@ -275,4 +275,63 @@ namespace reflection_test
 
 	}
 
+	namespace _3
+	{
+
+
+		struct to_any
+		{
+			template<typename T>
+			operator T* ();
+
+			template<typename T>
+			operator T& ();
+		};
+
+
+
+		template<typename T, typename U = void, typename ... to_any_t>
+		struct get_field_num
+		{
+			static constexpr int value = sizeof...(to_any_t);
+		};
+
+		template<typename T, typename ... to_any_t>
+		struct get_field_num < T, std::void_t<decltype(T{ to_any_t{}... }) > , to_any_t... >
+		{
+			static constexpr int value = get_field_num<T, void, to_any, to_any_t...>::value;
+		};
+
+
+
+
+		class A
+		{
+			int a;
+			int b;
+
+		};
+
+		class B
+		{
+			int a;
+			float* b;
+
+		};
+
+
+		TEST(Static_Reflection_Test, get_field_count)
+		{
+
+			auto act=get_field_num<A>::value;
+
+			EXPECT_THAT(act, Eq(2));
+
+			act = get_field_num<B>::value;
+			EXPECT_THAT(act, Eq(2));
+		}
+		
+
+	}
+
 } // namespace reflection_test
