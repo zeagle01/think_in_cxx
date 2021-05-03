@@ -26,17 +26,14 @@ namespace value_polymorphism
 			)
 		{}
 
-				Interface* operator->()
-				{
-					return &getter(m_storage);
-				}
-
-
+		Interface* operator->()
+		{
+			return &getter(m_storage);
+		}
 
 	private:
 		std::any m_storage;
 		Interface& (*getter)(std::any&);
-
 	};
 
 
@@ -74,7 +71,7 @@ namespace value_polymorphism
 		Implementation<Base> base = A{};
 		auto act = base->f();
 		EXPECT_THAT(act, Eq("A"));
-		base=B{};
+		base = B{};
 		act = base->f();
 		EXPECT_THAT(act, Eq("B"));
 

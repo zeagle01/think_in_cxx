@@ -15,6 +15,18 @@ namespace cxx_any
         int b=-1;
 
     };
+
+    struct Base
+    {
+        int b = 1;
+
+    };
+
+	struct Derived :Base
+    {
+        int d = 2;
+
+    };
 }
 
 //////////any////////
@@ -69,6 +81,18 @@ TEST(CXX_any, test_any_cast_failed)
     );
 }
 
+
+TEST(CXX_any, test_any_cast_to_base)
+{
+
+    EXPECT_THROW(
+        {
+			std::any a = cxx_any::Derived();
+			cxx_any::Base p = std::any_cast<cxx_any::Base>(a);
+        },
+        std::bad_any_cast
+    );
+}
 
 
 

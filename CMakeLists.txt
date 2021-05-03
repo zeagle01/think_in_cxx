@@ -1,6 +1,6 @@
 
 
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.19)
 
 
 project(think_in_cxx)
@@ -33,7 +33,7 @@ add_executable(think_in_cxx
 #    test/lang/StdVectorTest.cpp
 #    test/lang/StdMapTest.cpp
 #    test/lang/Std_Set_Test.cpp
-#    test/lang/Cxx_Any_Test.cpp
+    test/lang/Cxx_Any_Test.cpp
 #    test/lang/Cxx_Optional_Test.cpp
     test/lang/Cxx_Variant_Test.cpp
 #    test/lang/Subclass_Visit_Supclass.cpp
@@ -141,21 +141,24 @@ target_compile_features(think_in_cxx PRIVATE cxx_std_20)
 
 
 
+####### eigen ########
 find_package(Eigen3 CONFIG REQUIRED PATHS ${CMAKE_BINARY_DIR})
 target_link_libraries(think_in_cxx PUBLIC Eigen3::Eigen)
 
-##gtest
+####### gtest ########
 #find_package(GTest CONFIG REQUIRED PATHS ${CMAKE_BINARY_DIR})
 #target_link_libraries(think_in_cxx PUBLIC GTest::gmock)
 include(${CMAKE_SOURCE_DIR}/cmake/gtest.cmake)
 link_to_gtest(think_in_cxx ${CMAKE_SOURCE_DIR}/3rd/gtest)
 
 
+####### glm ########
 find_package(glm CONFIG REQUIRED PATHS ${CMAKE_BINARY_DIR})
 target_link_libraries(think_in_cxx PUBLIC glm::glm)
 
 
 
+####### qt ########
 set(Qt5_DIR "D:/Qt/5.13.1/msvc2017_64/lib/cmake/Qt5/" CACHE PATH "qt5 cmake path")
 set(Qt5_components Core Widgets Gui)
 set(Qt5_link_components)
@@ -180,10 +183,31 @@ endif()
 
 
 
+####### foo ########
 target_link_libraries(think_in_cxx PRIVATE foo)
 
 add_subdirectory(foo_lib)
 
 
+####### cuda ########
+include(FindCUDAToolkit)
+if(CUDAToolkit_FOUND)
+	message("CUDAToolkit_BIN_DIR: ${CUDAToolkit_BIN_DIR}")
+	message("CUDAToolkit_INCLUDE_DIRS: ${CUDAToolkit_INCLUDE_DIRS}")
+	message("CUDAToolkit_LIBRARY_DIR: ${CUDAToolkit_LIBRARY_DIR}")
+	message("CUDAToolkit_TARGET_DIR: ${CUDAToolkit_TARGET_DIR}")
+	message("CUDAToolkit_NVCC_EXECUTABLE: ${CUDAToolkit_NVCC_EXECUTABLE}")
 
+	enable_language(CUDA)
+endif()
+
+
+####### omp ########
+find_package(OpenMP)
+if(OpenMP_CXX_FOUND)
+	message("omp found!")
+    target_link_libraries(think_in_cxx PUBLIC OpenMP::OpenMP_CXX)
+else()
+	message("omp not found!")
+endif()
 
