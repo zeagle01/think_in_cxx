@@ -1,6 +1,7 @@
 
 #include "gmock/gmock.h"
 
+using namespace testing;
 
 namespace macro
 {
@@ -16,64 +17,72 @@ namespace macro
 #define EVAL2(...) EVAL1(EVAL1(__VA_ARGS__))
 #define EVAL1(...) __VA_ARGS__
 
-
-#define SECOND(a,b,...) b
-#define IS_PROBE(...) EVAL1(SECOND(__VA_ARGS__,0))
-#define PROBE() ~,1
-
-#define _NOT_0 PROBE()
-#define NOT(x) IS_PROBE(_NOT_ ## x)
-
-#define CAT(x,y) x##y
-
-#define IF_ELSE_VV(condition) CAT(_IF_,condition )  
-#define IF_ELSE(condition) IF_ELSE_VV(NOT(condition))
-
-#define _IF_1(...) EVAL1(__VA_ARGS__ _IF_1_ELSE)
-#define _IF_0(...)             _IF_0_ELSE
-
-#define _IF_1_ELSE(...)
-#define _IF_0_ELSE(...) __VA_ARGS__
-
-#define EMPTY()
+#define LOOP_0(Mb,M,...) 
+#define LOOP_1(Mb,M,...) LOOP_0(Mb,M,__VA_ARGS__) Mb(0,__VA_ARGS__)
+#define LOOP_2(Mb,M,...) LOOP_1(Mb,M,__VA_ARGS__) M(1,__VA_ARGS__)
+#define LOOP_3(Mb,M,...) LOOP_2(Mb,M,__VA_ARGS__) M(2,__VA_ARGS__)
+#define LOOP_4(Mb,M,...) LOOP_3(Mb,M,__VA_ARGS__) M(3,__VA_ARGS__)
 
 
-#define DEFER1(m) m EMPTY()
-#define DEFER2(m) m EMPTY EMPTY()()
-#define DEFER3(m) m EMPTY EMPTY EMPTY()()()
-#define DEFER4(m) m EMPTY EMPTY EMPTY EMPTY()()()()
+#define LOOP(N,Mb,M,...) LOOP_##N(Mb,M,__VA_ARGS__)
 
-
-
-#define FIRST(a, ...) a
-
-#define HAS_ARGS(...) NOT(FIRST(_END_OF_ARGUMENTS_ __VA_ARGS__)())
-//#define HAS_ARGS_VV(...) EXP(FIRST(_END_OF_ARGUMENTS_ ,__VA_ARGS__)())
-#define _END_OF_ARGUMENTS_() 0
-
-#define MAP(m, first, ...)           \
-  m(first)                           \
-  IF_ELSE(NOT(first))(    \
-    DEFER3(_MAP)()(m, __VA_ARGS__)   \
-  )(                                 \
-    /* Do nothing, just terminate */ \
-  ) \
-
-#define _MAP() MAP
-
-
-
-#define AAA(n)  printf("%d\n",n);
+#define EMP()
+#define DEFF(m) m EMP()
+#define _LOOP() LOOP
+#define INSIDE_LOOP(N,Mb,M,...) DEFF(_LOOP)()(N,Mb,M,__VA_ARGS__)
 
 
 
 
 
 
-	TEST(Macro_Test, loop)
+
+
+
+
+
+
+
+
+
+
+/////////////////test/////////////////
+
+
+
+
+#define PUSH_BACK_LIST(i,v) v.push_back(i);
+
+	TEST(Macro_Test, single_loop_with_index)
 	{
-		EVAL(MAP(AAA, 4, 3, 2, 1, 0))
+		std::vector<int > v;
+		LOOP(3, PUSH_BACK_LIST, PUSH_BACK_LIST, v);
+
+
+		std::vector<int > exp{ 0,1,2 };
+		EXPECT_THAT(v, Eq(exp));
+
 	}
 
+
+
+#define PUSH_BACK_LIST_OF_LIST(i,v) INSIDE_LOOP(i,PUSH_BACK_LIST,PUSH_BACK_LIST,v)
+
+	TEST(Macro_Test, double_loop_with_index)
+	{
+		std::vector<int> v;
+		EVAL(LOOP(4, PUSH_BACK_LIST_OF_LIST, PUSH_BACK_LIST_OF_LIST, v));
+
+
+		std::vector<int> exp
+		{
+			0,
+			0,1 ,
+			0,1 ,2
+		};
+
+		EXPECT_THAT(v, Eq(exp));
+
+	}
 
 }

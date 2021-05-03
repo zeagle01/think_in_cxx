@@ -33,7 +33,7 @@ add_executable(think_in_cxx
 #    test/lang/StdVectorTest.cpp
 #    test/lang/StdMapTest.cpp
 #    test/lang/Std_Set_Test.cpp
-    test/lang/Cxx_Any_Test.cpp
+#    test/lang/Cxx_Any_Test.cpp
 #    test/lang/Cxx_Optional_Test.cpp
     test/lang/Cxx_Variant_Test.cpp
 #    test/lang/Subclass_Visit_Supclass.cpp
