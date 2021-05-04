@@ -17,19 +17,19 @@ namespace macro
 #define EVAL2(...) EVAL1(EVAL1(__VA_ARGS__))
 #define EVAL1(...) __VA_ARGS__
 
-#define LOOP_0(Mb,M,...) 
-#define LOOP_1(Mb,M,...) LOOP_0(Mb,M,__VA_ARGS__) Mb(0,__VA_ARGS__)
-#define LOOP_2(Mb,M,...) LOOP_1(Mb,M,__VA_ARGS__) M(1,__VA_ARGS__)
-#define LOOP_3(Mb,M,...) LOOP_2(Mb,M,__VA_ARGS__) M(2,__VA_ARGS__)
-#define LOOP_4(Mb,M,...) LOOP_3(Mb,M,__VA_ARGS__) M(3,__VA_ARGS__)
+#define LOOP_0(PRE_MACRO,MACRO,...) 
+#define LOOP_1(PRE_MACRO,MACRO,...) LOOP_0(PRE_MACRO,MACRO,__VA_ARGS__) PRE_MACRO(0,__VA_ARGS__)
+#define LOOP_2(PRE_MACRO,MACRO,...) LOOP_1(PRE_MACRO,MACRO,__VA_ARGS__) MACRO(1,__VA_ARGS__)
+#define LOOP_3(PRE_MACRO,MACRO,...) LOOP_2(PRE_MACRO,MACRO,__VA_ARGS__) MACRO(2,__VA_ARGS__)
+#define LOOP_4(PRE_MACRO,MACRO,...) LOOP_3(PRE_MACRO,MACRO,__VA_ARGS__) MACRO(3,__VA_ARGS__)
 
 
-#define LOOP(N,Mb,M,...) LOOP_##N(Mb,M,__VA_ARGS__)
+#define LOOP(LOOP_COUNT,PRE_MACRO,MACRO,...) LOOP_##LOOP_COUNT(PRE_MACRO,MACRO,__VA_ARGS__)
 
 #define EMP()
 #define DEFF(m) m EMP()
 #define _LOOP() LOOP
-#define INSIDE_LOOP(N,Mb,M,...) DEFF(_LOOP)()(N,Mb,M,__VA_ARGS__)
+#define INSIDE_LOOP(LOOP_COUNT,PRE_MACRO,MACRO,...) DEFF(_LOOP)()(LOOP_COUNT,PRE_MACRO,MACRO,__VA_ARGS__)
 
 
 
