@@ -92,12 +92,6 @@ namespace loop_types
 	/////////////////////////type list end///////////////////////
 
 
-	template<typename F, typename ...T>
-	void ForEachTypes(std::vector<std::string >& ret)
-	{
-		(F:: template apply<T>(ret), ...);
-	}
-
 	struct My_Print
 	{
 		template<typename T>
@@ -107,17 +101,43 @@ namespace loop_types
 		}
 	};
 
+	template<typename F, typename L>
+	struct ForEachTypesInner;
 
-	TEST(Loop_Types_Test, loop)
-    {
+	template<typename F, typename ...T>
+	struct ForEachTypesInner<F, type_list<T...>>
+	{
+		static void apply(F&& f)
+		{
+			(f.operator() < T > (), ...);
+		}
+	};
+
+
+	template<typename F, typename L >
+	struct ForEachTypes
+	{
+		template<typename ...P>
+		static void apply(P&&... p)
+		{
+			auto template_funciont_wrapper = [&]<typename T>() {
+				(F:: template apply<T>(std::forward<P>(p)...));
+			};
+			using func_t = decltype(template_funciont_wrapper);
+			ForEachTypesInner<func_t, L>::apply(std::forward<func_t>(template_funciont_wrapper));
+
+		}
+	};
+
+	TEST(Loop_Types_Test, loop_with_params)
+	{
 		std::vector<std::string> act;
-		ForEachTypes<My_Print, int, float>(act);
+		ForEachTypes<My_Print, type_list<int, float>>::apply(act);
 
 		std::vector<std::string> exp{ "int","float" };
 
 		EXPECT_THAT(act, Eq(exp));
-
-    }
+	}
 
 
 
