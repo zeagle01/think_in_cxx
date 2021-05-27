@@ -92,7 +92,7 @@ namespace loop_types
 	/////////////////////////type list end///////////////////////
 
 
-	struct My_Print
+	struct get_type_name
 	{
 		template<typename T>
 		static void apply(std::vector<std::string >& ret)
@@ -102,10 +102,10 @@ namespace loop_types
 	};
 
 	template<typename F, typename L>
-	struct ForEachTypesInner;
+	struct for_each_types_inner;
 
 	template<typename F, typename ...T>
-	struct ForEachTypesInner<F, type_list<T...>>
+	struct for_each_types_inner<F, type_list<T...>>
 	{
 		static void apply(F&& f)
 		{
@@ -113,26 +113,22 @@ namespace loop_types
 		}
 	};
 
-
-	template<typename F, typename L >
-	struct ForEachTypes
+	template< typename L, typename F, typename ...Param >
+	void for_each_type(Param&&... p)
 	{
-		template<typename ...P>
-		static void apply(P&&... p)
+		auto template_function_wrapper = [&]<typename T>()
 		{
-			auto template_funciont_wrapper = [&]<typename T>() {
-				(F:: template apply<T>(std::forward<P>(p)...));
-			};
-			using func_t = decltype(template_funciont_wrapper);
-			ForEachTypesInner<func_t, L>::apply(std::forward<func_t>(template_funciont_wrapper));
+			(F:: template apply<T>(std::forward<Param>(p)...));
+		};
+		using func_t = decltype(template_function_wrapper);
+		for_each_types_inner<func_t, L>::apply(std::forward<func_t>(template_function_wrapper));
 
-		}
 	};
 
 	TEST(Loop_Types_Test, loop_with_params)
 	{
 		std::vector<std::string> act;
-		ForEachTypes<My_Print, type_list<int, float>>::apply(act);
+		for_each_type< type_list<int, float>, get_type_name>(act);
 
 		std::vector<std::string> exp{ "int","float" };
 
