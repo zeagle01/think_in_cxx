@@ -27,14 +27,21 @@ namespace type_map
 			}
 
 			template<typename T>
-			T get()
+			void add()
 			{
 				std::string key = typeid(T).name();
-				if (m_map.count(key))
+				m_map[key] = std::any(T{});
+			}
+
+			template<typename T>
+			T& get()
+			{
+				std::string key = typeid(T).name();
+				if (!m_map.count(key))
 				{
-					return std::any_cast<T>(m_map[key]);
+					add<T>();
 				}
-				return T{};
+				return std::any_cast<T&>(m_map[key]);
 			}
 
 		private:
