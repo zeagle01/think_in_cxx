@@ -13,7 +13,7 @@ add_executable(think_in_cxx
 #    test/lang/WriteFile.cpp
 #    test/lang/Pointer.cpp
 #    test/lang/TestConstructor.cpp
-#    test/lang/TestSharePointer.cpp
+    test/lang/TestSharePointer.cpp
 #    test/lang/TestUniquePointer.cpp
 #    test/lang/ECSSystemTest.cpp
 #    test/lang/Finally.cpp
