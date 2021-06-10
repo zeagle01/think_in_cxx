@@ -138,6 +138,9 @@ add_executable(think_in_cxx
 ### cuda
 	test/cuda/function_pointer.cu
 
+### threading
+ test/threading/basic_use.cpp
+
     )
 target_compile_features(think_in_cxx PRIVATE cxx_std_20)
 
