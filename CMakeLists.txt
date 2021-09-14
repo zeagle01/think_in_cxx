@@ -31,7 +31,7 @@ add_executable(think_in_cxx
 #    test/lang/function_pointer.cpp
 #    test/inlang/tro_2_alg/qsort_test.cpp
 #    test/lang/StdVectorTest.cpp
-#    test/lang/StdMapTest.cpp
+    test/lang/StdMapTest.cpp
 #    test/lang/Std_Set_Test.cpp
 #    test/lang/Cxx_Any_Test.cpp
 #    test/lang/Cxx_Optional_Test.cpp

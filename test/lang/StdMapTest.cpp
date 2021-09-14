@@ -67,3 +67,53 @@ TEST(Std_Map,test_greater_compare)
     auto map_order = fill_map_and_get_order(m, {2, 0, 1});
     EXPECT_THAT(map_order,ElementsAre(2,1,0));
 }
+
+
+namespace with_member_less_map
+{
+
+    struct With_Member_Less
+    {
+        float f;
+        int i;
+
+        //const here is important
+		bool operator<(const With_Member_Less& o) const
+        {
+            return i < o.i;
+        }
+
+		//friend bool operator<(const With_Member_Less& left,const With_Member_Less& right)
+        //{
+        //    return left.i < right.i;
+        //}
+
+    };
+
+
+	TEST(With_Member_Less_Test, test_order)
+	{
+		std::map<With_Member_Less,int > m;
+
+        auto a = With_Member_Less{ 1.0f,1 };
+		m[a] = 0;
+		m[With_Member_Less{ 1.0f,0 }] = 1;
+
+
+		std::vector<int> exp{ 0,1 };
+        std::vector<int> act;
+        for (const auto& it : m)
+        {
+            act.push_back(it.first.i);
+        }
+
+        for (int i = 0; i < exp.size(); i++)
+        {
+            EXPECT_THAT(act[i], Eq(exp[i]));
+        }
+
+	}
+}
+
+
+
