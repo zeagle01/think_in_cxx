@@ -140,6 +140,7 @@ add_executable(think_in_cxx
 
 ### threading
  test/threading/basic_use.cpp
+ test/threading/condition_variable.cpp
 
     )
 target_compile_features(think_in_cxx PRIVATE cxx_std_20)
