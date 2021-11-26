@@ -41,6 +41,7 @@ namespace cuda_function_pointer
 	template<typename T>
 	__device__ kernel_func_t<T> d_pointer_compute_kernel_1 = compute_kernel_1<T>;
 
+
 	TEST(Cuda_Function_Pointer,use)
 	{
 		int num = 100;

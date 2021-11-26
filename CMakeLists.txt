@@ -138,6 +138,7 @@ add_executable(think_in_cxx
 
 ### cuda
 	test/cuda/function_pointer.cu
+	test/cuda/template_kernel.cu
 
 ### threading
  test/threading/basic_use.cpp
