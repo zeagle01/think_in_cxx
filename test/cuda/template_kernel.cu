@@ -27,12 +27,18 @@ namespace template_kernel
 
 
 
+	template<int ... N>
+	static __device__ auto sum()
+	{
+		return sizeof...(N); //variadic template
+	}
 
 
-	template<template<typename, int > typename Vec_Type, typename T, int N>
+
+	template<template<typename, int > typename Vec_Type, typename T, int N> //template template
 	__global__ void vec_add(Vec_Type<T, N>* v)
 	{
-		printf("hello\n");
+		printf("hello %d\n", sum<1, 2, 3>());
 	}
 
 
@@ -42,7 +48,6 @@ namespace template_kernel
 
 		D_Vec<float,3> d;
 		vec_add << <1, 1 >> > (&d);
-
 	}
 
 }
