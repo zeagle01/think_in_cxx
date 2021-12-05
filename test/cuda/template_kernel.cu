@@ -50,4 +50,50 @@ namespace template_kernel
 		vec_add << <1, 1 >> > (&d);
 	}
 
+
+	template<typename T>
+	struct B
+	{
+		T* p;
+		int count;
+	};
+
+	struct A
+	{
+		B<int> p;
+		float* p0;
+		float* p1;
+		float* p2;
+		int n;
+	};
+
+	__global__ void vec_add(A a)
+	{
+		int tid = blockIdx.x * blockDim.x + threadIdx.x;
+		if (tid < a.n)
+		{
+			a.p0[tid] = 2.f;
+			printf("%d %f\n", a.n, a.p0[tid]);
+		}
+
+	}
+
+	TEST(Template_Kernel_Test,pass_struct)
+	{
+		A a;
+
+		a.n = 1;
+
+		cudaMalloc(&a.p0, a.n * sizeof(float));
+
+		vec_add << <1, 1 >> > (a);
+		cudaError_t cudaerr = cudaDeviceSynchronize();
+		if (cudaerr != cudaSuccess)
+		{
+			printf("kernel launch failed with error \"%s\".\n",
+				cudaGetErrorString(cudaerr));
+		}
+
+	}
+
 }
