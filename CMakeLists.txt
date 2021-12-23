@@ -14,6 +14,7 @@ add_executable(think_in_cxx
 #    test/lang/Pointer.cpp
 #    test/lang/TestConstructor.cpp
     test/lang/TestSharePointer.cpp
+    test/lang/reference.cpp
 #    test/lang/TestUniquePointer.cpp
 #    test/lang/ECSSystemTest.cpp
 #    test/lang/Finally.cpp
