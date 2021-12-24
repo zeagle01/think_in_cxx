@@ -79,6 +79,36 @@ namespace cxx_variant
 	}
 
 
+
+	struct Variant_Hoder
+	{
+		Doable data;
+	};
+
+	TEST(Cxx_Variant, test_duck_with_pointer)
+	{
+		std::vector<std::shared_ptr<Variant_Hoder>> doables;
+		doables.push_back(std::make_shared<Variant_Hoder>(A{}));
+		doables.push_back(std::make_shared<Variant_Hoder>(B{}));
+
+		//				won't work if use Doable as argument here
+		//							||	
+		//							\/
+		//auto doable_visitor = [](Doable& doable) { return doable.do_something(); }; 
+
+		auto doable_visitor = [](auto& doable) { return doable.do_something(); };
+
+		std::vector<std::string> act;
+		for (size_t i = 0; i < doables.size(); i++)
+		{
+			act.push_back(std::visit(doable_visitor, doables[i]->data));
+		}
+
+		std::vector<std::string> exp{ "A","B" };
+		EXPECT_THAT(act, Eq(exp));
+	}
+
+
 	template<typename ... Functions>
 	struct Overload :Functions ...
 	{
