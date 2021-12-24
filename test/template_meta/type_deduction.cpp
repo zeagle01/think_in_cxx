@@ -234,7 +234,7 @@ namespace type_deduction
 				using template_t = get_nth_element<test_record, 1>;
 				using exp_t = get_nth_element<test_record, 2>;
 
-				EXPECT_TRUE(template_t::invoke<exp_t>(var()));
+				EXPECT_TRUE(template_t::template invoke<exp_t>(var()));
 
 			}
 			using poped_test_records = pop_front<test_records>;
@@ -289,6 +289,41 @@ namespace type_deduction
 	 *  E expression type
 	 *  T template parameter
 	 */
+
+
+
+
+
+	namespace _1
+	{
+
+		template<typename T, typename U = void>
+		struct has_type :std::false_type {};
+
+		template<typename T >
+		struct has_type<T, std::void_t<typename T::type> > :std::true_type {};
+
+
+		struct With_Type
+		{
+			using type = int;
+		};
+
+		struct Without_Type
+		{
+		};
+
+
+		TEST(_1, test_has_type)
+		{
+			bool a = has_type<With_Type>::value;
+			bool b = has_type<Without_Type>::value;
+			EXPECT_TRUE(has_type<With_Type>::value);
+			EXPECT_FALSE(has_type<Without_Type>::value);
+
+		}
+	}
+
 
 
 }
