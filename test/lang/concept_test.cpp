@@ -126,4 +126,47 @@ namespace concept_test
 
 	}
 
+	namespace string_template
+	{
+
+		template<typename Char,int N> 
+		struct fix_string
+		{
+			Char data[N];
+			constexpr fix_string(const Char(&str)[N]) { std::copy_n(str, N, data); }
+		};
+
+		template<fix_string s>
+		struct print_fix_string
+		{
+			static void print_string(std::vector<std::string>& console)
+			{
+				console.push_back(std::string(s.data));
+			}
+
+		};
+
+		template<fix_string s>
+		constexpr void print_string(std::vector<std::string>& console) //this doesn't work, don't know why
+		{
+			console.push_back(std::string(s.data));
+		}
+
+		TEST(String_Template_Test, test_construct)
+		{
+			fix_string fs("hello");
+		}
+
+		TEST(String_Template_Test, test_print)
+		{
+			constexpr char str[] = "hello";
+			std::vector<std::string> exp{ str };
+			std::vector<std::string> act;
+			print_fix_string<str>::print_string(act);
+			//print_string<str>(act);//this doesn't work, don't know why
+			EXPECT_THAT(exp, act);
+		}
+
+	}
+
 }
