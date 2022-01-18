@@ -70,6 +70,19 @@ namespace type_list
 	template<typename L,size_t n> 
 	using get_nth_element = typename get_nth_element_imp<L, n>::type;
 
+	//merge
+	template<typename tl0,typename tl1>
+	struct merge_list_imp;
+
+	template<typename ...P0, typename... P1>
+	struct merge_list_imp<type_list<P0...>, type_list<P1...>>
+	{
+		using type = type_list<P0..., P1...>;
+	};
+
+	template<typename tl0,typename tl1>
+	using merge_list = merge_list_imp<tl0, tl1>::type;
+
 	//is_empty
 	template<typename L>
 	struct is_empty_imp
@@ -155,6 +168,17 @@ namespace type_list
     {
 
 		EXPECT_FALSE(is_empty<type_list<int>>);
+    }
+
+	TEST_F(Type_List_Test, merge_list_test)
+    {
+		using tl0 = type_list<int>;
+		using tl1 = type_list<float>;
+
+		using act = merge_list<tl0, tl1>;
+		using exp = type_list<int, float>;
+
+		type_is_same<act, exp>();
     }
 
 
