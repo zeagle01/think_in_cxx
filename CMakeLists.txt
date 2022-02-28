@@ -153,18 +153,17 @@ target_compile_features(think_in_cxx PRIVATE cxx_std_20)
 
 
 ####### eigen ########
-find_package(Eigen3 CONFIG REQUIRED PATHS ${CMAKE_BINARY_DIR})
+find_package(Eigen3 CONFIG REQUIRED)
 target_link_libraries(think_in_cxx PUBLIC Eigen3::Eigen)
 
 ####### gtest ########
-#find_package(GTest CONFIG REQUIRED PATHS ${CMAKE_BINARY_DIR})
-#target_link_libraries(think_in_cxx PUBLIC GTest::gmock)
-include(${CMAKE_SOURCE_DIR}/cmake/gtest.cmake)
-link_to_gtest(think_in_cxx ${CMAKE_SOURCE_DIR}/3rd/gtest)
+find_package(GTest CONFIG REQUIRED )
+target_link_libraries(think_in_cxx PUBLIC GTest::gmock_main)
+
 
 
 ####### glm ########
-find_package(glm CONFIG REQUIRED PATHS ${CMAKE_BINARY_DIR})
+find_package(glm CONFIG REQUIRED)
 target_link_libraries(think_in_cxx PUBLIC glm::glm)
 
 
