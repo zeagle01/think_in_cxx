@@ -142,9 +142,11 @@ add_executable(think_in_cxx
 	test/cuda/template_kernel.cu
 
 ### threading
- test/threading/basic_use.cpp
- test/threading/condition_variable.cpp
+	test/threading/basic_use.cpp
+	test/threading/condition_variable.cpp
 
+###  tbb
+	test/tbb/tbb_test.cpp
     )
 target_compile_features(think_in_cxx PRIVATE cxx_std_20)
 
@@ -166,6 +168,9 @@ target_link_libraries(think_in_cxx PUBLIC GTest::gmock_main)
 find_package(glm CONFIG REQUIRED)
 target_link_libraries(think_in_cxx PUBLIC glm::glm)
 
+####### tbb ########
+find_package(TBB CONFIG REQUIRED)
+target_link_libraries(think_in_cxx PUBLIC TBB::tbb)
 
 
 ####### qt ########
