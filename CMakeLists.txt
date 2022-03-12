@@ -65,6 +65,9 @@ add_executable(think_in_cxx
 ### tools
 #    test/tools/profiler.cpp 
 
+### data_structure
+    test/data_structure/heap.cpp 
+
 
 ### template_meta
     test/template_meta/type_deduction.cpp
