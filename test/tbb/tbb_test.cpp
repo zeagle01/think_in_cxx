@@ -2,6 +2,7 @@
 #include "gmock/gmock.h"
 #include "tbb/parallel_for.h"
 #include "tbb/blocked_range.h"
+#include "tbb/task_group.h"
 
 using namespace testing;
 
@@ -33,4 +34,29 @@ namespace tbb_test
 
 	}
 
+
+	TEST(TBB_Test, different_task)
+	{
+		tbb::task_group tg;
+
+		int n = 8;
+		std::vector<int> act(n, -1);
+
+		auto computeFn = [&act](int i) {act[i] = i; };
+
+
+		for (int i = 0; i < n; i++)
+		{
+			tg.run(std::bind(computeFn, i));
+		}
+
+		std::vector<int> exp(n);
+		for (int i = 0; i < n; i++)
+		{
+			exp[i] = i;
+		}
+		EXPECT_THAT(act, Eq(exp));
+
+	}
 }
+
