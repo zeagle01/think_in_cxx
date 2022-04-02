@@ -40,6 +40,7 @@ add_executable(think_in_cxx
     test/lang/Cxx_Variant_Test.cpp
 #    test/lang/Subclass_Visit_Supclass.cpp
 #    test/lang/variadic_template.cpp
+    test/lang/deduction_guide.cpp
     test/lang/concept_test.cpp
 #    test/lang/template_crtp.cpp
 #    test/lang/show_bytes.cpp
