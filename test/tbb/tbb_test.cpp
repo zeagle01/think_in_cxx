@@ -74,5 +74,79 @@ namespace tbb_test
 		EXPECT_THAT(act, Eq(exp));
 
 	}
+
+
+
+	namespace quick_sort
+	{
+
+
+		int partition(std::vector<int>& a, int b, int e)
+		{
+			int i = b - 1;
+			int r = e - 1;
+
+			for (int j = b; j < e - 1; j++)
+			{
+				if (a[j] <= a[r])
+				{
+					i++;
+					std::swap(a[i], a[j]);
+				}
+			}
+
+			std::swap(a[i + 1], a[r]);
+
+			return i + 1;
+		}
+
+
+
+		void quick_sort(std::vector<int>& a, int b, int e)
+		{
+			if (e - b > 1)
+			{
+				auto p = partition(a, b, e);
+				quick_sort(a, b, p);
+				quick_sort(a, p + 1, e);
+			}
+		}
+
+
+		TEST(Quick_Sort_Test, partition_invariance)
+		{
+			std::vector<int> input{ 4,3,2,1 };
+
+			int p = partition(input, 0, input.size());
+
+			for (int i = 0; i <= p; i++)
+			{
+				EXPECT_THAT(input[i], Le(input[p]));
+			}
+
+			for (int i = p + 1; i < input.size(); i++)
+			{
+				EXPECT_THAT(input[i], Gt(input[p]));
+			}
+
+		}
+
+		TEST(Quick_Sort_Test, test_sorted)
+		{
+			std::vector<int> act{ 4,3,2,1 };
+
+			quick_sort(act, 0, act.size());
+
+			std::vector<int> exp{ 1,2,3,4 };
+
+			EXPECT_THAT(act, Eq(exp));
+
+		}
+
+	}
+
+
+
+
 }
 
