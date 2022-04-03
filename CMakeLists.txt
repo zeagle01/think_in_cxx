@@ -45,7 +45,7 @@ add_executable(think_in_cxx
 #    test/lang/template_crtp.cpp
 #    test/lang/show_bytes.cpp
 #    test/lang/use_foo.cpp #TO MOVE TO BUILD
-#    test/lang/random.cpp 
+    test/lang/random.cpp 
 #    test/lang/chrono_test.cpp 
     test/lang/static_reflection.cpp  
 #    test/lang/refer_class_member_data.cpp  
