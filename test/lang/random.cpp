@@ -3,6 +3,8 @@
 #include "gmock/gmock.h"
 
 #include <random>
+#include <numeric> 
+#include <algorithm>
 
 using namespace testing;
 
@@ -55,6 +57,23 @@ namespace random_test
 			EXPECT_THAT(act[i], Ge(0));
 			EXPECT_THAT(act[i], Le(n));
 		}
+	}
+
+	TEST(RandomTest, shuffle_test)
+	{
+
+		int n = 10;
+		std::vector<int> act(n);
+		std::iota(act.begin(), act.end(),0);
+
+		std::shuffle(act.begin(), act.end(), std::default_random_engine{});
+
+		for (int i = 0; i < n; i++)
+		{
+			EXPECT_THAT(act[i], Ge(0));
+			EXPECT_THAT(act[i], Le(n));
+		}
+
 	}
 
 }
