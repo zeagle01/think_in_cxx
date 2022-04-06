@@ -83,7 +83,7 @@ add_executable(think_in_cxx
 
 ### alg
 #    test/alg/binary_tree.cpp
-#    test/alg/bvh.cpp #TODO
+    test/alg/bvh.cpp #TODO
 #    test/alg/sort.cpp #TODO
 
 
