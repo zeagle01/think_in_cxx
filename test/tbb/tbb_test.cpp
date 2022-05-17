@@ -145,6 +145,79 @@ namespace tbb_test
 
 	}
 
+	namespace nest_parallel
+	{
+
+		TEST(Nest_Parallel_Test, groups_of_tasks)
+		{
+
+			int numOfGroups = 8;
+			int numPerGroup = 100;
+			std::vector<std::vector<int>>  datas(numOfGroups);
+
+			for (int i = 0; i < numOfGroups; i++)
+			{
+				datas[i] = std::vector<int>(numPerGroup, 0);
+			}
+
+			tbb::task_group tg;
+			for (int i = 0; i < numOfGroups; i++)
+			{
+				tg.run(
+					[i,&datas,numPerGroup]()
+					{
+						tbb::task_group tg_inner;
+						//stage one
+						for (int j = 0; j < numPerGroup; j++) 
+						{
+							tg_inner.run(
+								[i, j, &datas]()
+								{
+									datas[i][j] = 0;
+									for (int k = 0; k < 5; k++)
+									{
+										datas[i][j]++;
+									}
+
+								}
+							);
+
+						}
+						tg_inner.wait();
+
+						//stage two
+						for (int j = 0; j < numPerGroup; j++) 
+						{
+							tg_inner.run(
+								[i, j, &datas]()
+								{
+									for (int k = 0; k < 5; k++)
+									{
+										datas[i][j] += 2;
+									}
+
+								}
+							);
+						}
+						tg_inner.wait();
+					}
+				);
+			}
+			
+			tg.wait();
+
+
+			for (int i = 0; i < numOfGroups; i++)
+			{
+				for (int j = 0; j < numPerGroup; j++)
+				{
+					EXPECT_THAT(datas[i][j], 15);
+				}
+			}
+
+		}
+
+	}
 
 
 
