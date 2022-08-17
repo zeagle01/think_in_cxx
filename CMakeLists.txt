@@ -152,6 +152,7 @@ add_executable(think_in_cxx
 
 ###  tbb
 	test/tbb/tbb_test.cpp
+	test/tbb/parallel_log.cpp
     )
 target_compile_features(think_in_cxx PRIVATE cxx_std_20)
 
@@ -176,7 +177,6 @@ target_link_libraries(think_in_cxx PUBLIC glm::glm)
 ####### tbb ########
 find_package(TBB CONFIG REQUIRED)
 target_link_libraries(think_in_cxx PUBLIC TBB::tbb)
-
 
 ####### qt ########
 set(Qt5_DIR "D:/Qt/5.13.1/msvc2017_64/lib/cmake/Qt5/" CACHE PATH "qt5 cmake path")
