@@ -1,6 +1,6 @@
 
 
-cmake_minimum_required(VERSION 3.19)
+cmake_minimum_required(VERSION 3.23)
 
 
 project(think_in_cxx)
@@ -231,3 +231,13 @@ else()
 	message("omp not found!")
 endif()
 
+
+##copy dlls
+add_custom_command(TARGET think_in_cxx POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
+	$<TARGET_RUNTIME_DLLS:think_in_cxx> $<TARGET_FILE_DIR:think_in_cxx> 
+	COMMAND_EXPAND_LISTS
+)
+
+add_custom_command(TARGET think_in_cxx POST_BUILD COMMAND ${CMAKE_COMMAND} -E echo 
+	"copy dlls: $<TARGET_RUNTIME_DLLS:think_in_cxx> -> $<TARGET_FILE_DIR:think_in_cxx> "
+)
