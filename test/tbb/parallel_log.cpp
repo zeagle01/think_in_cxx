@@ -8,6 +8,8 @@
 #include <iostream>
 #include <fstream>
 
+#include <omp.h>
+
 namespace parallel_log
 {
 	struct TimeLineRecord
@@ -42,9 +44,14 @@ namespace parallel_log
 			}
 		}
 
+		void set_out_put_file(std::string file_name)
+		{
+			m_file_name = file_name;
+		}
+
 		void flush()
 		{
-			BeginSession("test_time_line.json");
+			BeginSession(m_file_name);
 			for (const auto& it : m_logRecords)
 			{
 				for (int i = 0; i < it.second.size(); i++)
@@ -119,6 +126,7 @@ namespace parallel_log
 		tbb::concurrent_unordered_map<uint32_t, std::vector<TimeLineRecord>> m_logRecords;
 		std::ofstream m_os;
 		int m_recordCount = 0;
+		std::string m_file_name="test_time_line.json";
 
 	};
 
@@ -161,9 +169,12 @@ namespace parallel_log
 	TEST(Parallel_Log, log_within_parallel_for)
 	{
 		int num = 1e4;
-		int work_loads = 1e5;
+		int work_loads = 1e6;
 		std::vector<float> data(num);
 		auto& tl = TimeLine::GetSingleton();
+		tl.set_out_put_file("tbb_parallel_for.json");
+
+		tbb::task_scheduler_init init;
 
 		tbb::parallel_for(
 			0, num,
@@ -177,5 +188,25 @@ namespace parallel_log
 		TimeLine::GetSingleton().EndSession();
 	}
 
+
+	TEST(Parallel_Log, log_within_omp_for)
+	{
+		int num = 1e4;
+		int work_loads = 1e6;
+		std::vector<float> data(num);
+		auto& tl = TimeLine::GetSingleton();
+		tl.set_out_put_file("omp_for.json");
+
+
+//#pragma omp parallel for num_threads(23)
+#pragma omp parallel for 
+		for (int i = 0; i < num; i++)
+		{
+			some_work(data[i], work_loads);
+		}
+
+		TimeLine::GetSingleton().flush();
+		TimeLine::GetSingleton().EndSession();
+	}
 
 }
