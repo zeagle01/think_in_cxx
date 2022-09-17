@@ -241,3 +241,11 @@ add_custom_command(TARGET think_in_cxx POST_BUILD COMMAND ${CMAKE_COMMAND} -E co
 add_custom_command(TARGET think_in_cxx POST_BUILD COMMAND ${CMAKE_COMMAND} -E echo 
 	"copy dlls: $<TARGET_RUNTIME_DLLS:think_in_cxx> -> $<TARGET_FILE_DIR:think_in_cxx> "
 )
+
+
+
+########################## playground projects ##########################
+
+### spinning cube 
+add_executable(spinning_cube playground/spinning_cube/main.cpp)
+target_compile_features(spinning_cube PRIVATE cxx_std_20)
