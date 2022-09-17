@@ -80,7 +80,7 @@ public:
 
 		while (true)
 		{
-			buffer.assign(width * height, '.');
+			buffer.assign(width * height, ' ');
 			zbuffer.assign(width * height, 0.f);
 			for (float cube_x = -cube_width; cube_x < cube_width; cube_x += cube_unit)
 			{
@@ -128,29 +128,6 @@ private:
 		fwrite(buffer.data(), 1, width * height, stdout);
 	}
 
-	float rotation_x(int i, int j, int k)
-	{
-		using namespace std;
-
-		return j * sin(A) * sin(B) * cos(C) - k * cos(A) * sin(B) * cos(C) +
-			j * cos(A) * sin(C) + k * sin(A) * sin(C) + i * cos(B) * cos(C);
-	}
-
-	float rotation_y(int i, int j, int k)
-	{
-		using namespace std;
-
-		return j * cos(A) * cos(C) + k * sin(A) * cos(C) -
-			j * sin(A) * sin(B) * sin(C) + k * cos(A) * sin(B) * sin(C) -
-			i * cos(B) * sin(C);
-	}
-
-	float rotation_z(int i, int j, int k)
-	{
-		using namespace std;
-		return k * cos(A) * cos(B) - j * sin(A) * cos(B) + i * sin(B);
-	}
-
 	void calculate_point(float cubeX, float cubeY, float cubeZ, char ch)
 	{
 
@@ -177,12 +154,14 @@ private:
 		};
 
 		vec3 pos{ cubeX,cubeY,cubeZ };
-		vec3 pos_screen = rz*ry * rx * pos;
+		vec3 pos_screen = rz * ry * rx * pos;
 
+		//view transformatjion
 		float x = pos_screen(0);
 		float y = pos_screen(1);
 		float z = pos_screen(2) + distance_from_camara;
 
+		//projection
 		float ooz = 1 / z;
 		int x_screen = (int)(width / 2 + K1 * ooz * x*2);
 		int y_screen = (int)(height / 2 + K1 * ooz * y);
@@ -190,7 +169,7 @@ private:
 		int idx = x_screen + y_screen * width;
 		if (idx >= 0 && idx < width * height) //on screen range
 		{
-			if (ooz > zbuffer[idx])// depth test only keep the deepest pixel
+			if (ooz > zbuffer[idx])// depth test only keep the nearest pixel
 			{
 				zbuffer[idx] = ooz;
 				buffer[idx] = ch;
@@ -202,7 +181,6 @@ private:
 
 private:
 	std::vector<char > buffer;
-	std::string buffer1;
 	std::vector<float > zbuffer;
 	int width = 60;
 	int height = 30;
@@ -214,7 +192,7 @@ private:
 	float A = 0.f;
 	float B = 0.f;
 	float C = 0.f;
-	float K1 = 40.f;
+	float K1 = 30.f;
 };
 
 int main()
