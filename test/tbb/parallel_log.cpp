@@ -168,8 +168,8 @@ namespace parallel_log
 
 	TEST(Parallel_Log, log_within_parallel_for)
 	{
-		int num = 1e4;
-		int work_loads = 1e6;
+		int num = 1e6;
+		int work_loads = 1e0;
 		std::vector<float> data(num);
 		auto& tl = TimeLine::GetSingleton();
 		tl.set_out_put_file("tbb_parallel_for.json");
@@ -191,8 +191,8 @@ namespace parallel_log
 
 	TEST(Parallel_Log, log_within_omp_for)
 	{
-		int num = 1e4;
-		int work_loads = 1e6;
+		int num = 1e6;
+		int work_loads = 1e0;
 		std::vector<float> data(num);
 		auto& tl = TimeLine::GetSingleton();
 		tl.set_out_put_file("omp_for.json");
@@ -200,6 +200,23 @@ namespace parallel_log
 
 //#pragma omp parallel for num_threads(23)
 #pragma omp parallel for 
+		for (int i = 0; i < num; i++)
+		{
+			some_work(data[i], work_loads);
+		}
+
+		TimeLine::GetSingleton().flush();
+		TimeLine::GetSingleton().EndSession();
+	}
+
+	TEST(Parallel_Log, log_within_serial_for)
+	{
+		int num = 1e6;
+		int work_loads = 1e0;
+		std::vector<float> data(num);
+		auto& tl = TimeLine::GetSingleton();
+		tl.set_out_put_file("serial_for.json");
+
 		for (int i = 0; i < num; i++)
 		{
 			some_work(data[i], work_loads);
