@@ -153,10 +153,17 @@ public:
 	{
 		send_cursor_home_position();
 
+		int step = 0;
 		while (true)
 		{
 			buffer.assign(viewport_width * viewport_height, ' ');
 			zbuffer.assign(viewport_width * viewport_height, 0.f);
+
+			{
+				delta_fov = std::sin(float(step) * 0.1) * 10;
+				fov = fov0 + delta_fov;
+				step++;
+			}
 
 			for (real cube_x = -cube_width; cube_x < cube_width; cube_x += cube_unit)
 			{
@@ -405,6 +412,9 @@ private:
 	real A = 0.f;
 	real B = 0.f;
 	real C = 0.f;
+
+	real fov0 = 60;
+	real delta_fov = 0.f;
 
 };
 
