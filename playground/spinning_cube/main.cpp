@@ -272,12 +272,12 @@ public:
 
 			buffer.flush_out();
 
-			//angle_x += 0.005f;
-			//angle_y += 0.005f;
-			//angle_z += 0.001f;
+			angle_x += 0.02f;
+			angle_y += 0.02f;
+			angle_z += 0.005f;
 
 			using namespace std::chrono_literals;
-			std::this_thread::sleep_for(5ms);
+			std::this_thread::sleep_for(10ms);
 		}
 	}
 
@@ -361,8 +361,8 @@ private:
 		vec3 x_low_from{ -half_space_width,-half_space_height,view_near };
 		vec3 x_high_from{ half_space_width,half_space_height,view_far };
 
-		vec3 x_low_to{ 0,0,view_near };
-		vec3 x_high_to{ width,height,view_far };
+		vec3 x_low_to{ 0,height,view_near };
+		vec3 x_high_to{ width,0,view_far };
 
 		mat4 move_back_to_origin = get_identity<4>();
 		move_back_to_origin.block<3, 1>(0, 3) = -x_low_from;
@@ -435,39 +435,20 @@ private:
 				auto p = vec3{ p_homo(0), p_homo(1), p_homo(2) };
 				auto n = vec3{ n_homo(0), n_homo(1), n_homo(2) };
 				auto e = normalize(-p);
-				//if (n(2) < 0.f)
-				//{
-				//	printf("here\n");
-				//}
 
 				auto l_dir = normalize(l - p);
 				float diffuse = std::max(dot(n, l_dir), 0.f);
 
 				auto h = normalize((l_dir + e));
 
-				float specular = std::max(std::pow(dot(h, n), 2e3f), 0.f);
+				float specular = std::max(std::pow(dot(h, n), 3e2f), 0.f);
 
-				//if (xi == width / 2 && yi == height / 2)
-				//{
-				//	printf(" %f %f %f, %f %f %f, %f %f %f, %f %f %f, %f\n", x(0), x(1), x(2), n(0), n(1), n(2), l_dir(0), l_dir(1), l_dir(2), e(0), e(1), e(2), specular);
-				//}
-
-				float density = std::clamp(0.6f * diffuse + 0.4f * specular, 0.00f, 0.99f);
-				//float density = std::clamp(diffuse, 0.00f, 0.99f);
-				//float density = std::clamp(specular, 0.00f, 0.99f);
+				float density = std::clamp(0.5f * diffuse + 0.5f * specular, 0.00f, 0.99f);
 
 				depth_buffer[idx] = depth;
 
 				auto density_char = get_density_char(density);
-				//buffer(yi, xi) = density_char;
-				if (density_char == '@')
-				{
-					buffer(yi, xi) = c;
-				}
-				else
-				{
-					buffer(yi, xi) = density_char;
-				}
+				buffer(yi, xi) = density_char;
 			}
 		}
 
@@ -496,22 +477,22 @@ private:
 
 	static char get_density_char(float d)
 	{
-		static const char density[] = { '@','#','W','$','9','8','6','5','4','3','2','7','0','?','a','b','c','1','!',';',':','+','=',',','.','_' };
+		static const char density[] = { '@','#','W','$','9','8','6','5','3','2','0','4','7','?','a','b','c','1','!',';',':','+','=',',','.','_' };
 
 		int size = sizeof(density);
 		int p = (int)size * d;
 		return density[p];
 	}
 
-	int width = 60;
-	int height = 30;
+	int width = 90;
+	int height = 45;
 	Screen_Buffer buffer;
 	std::vector<float> depth_buffer;
 
 	float cube_width = 20;
-	float cube_unit = 0.5;
+	float cube_unit = 0.3;
 
-	vec3 light_position{ 0,5,50 };
+	vec3 light_position{ 5,1,20 };
 
 	vec3 up{ 0, 1, 0 };
 	vec3 camara_pos{ 0, 0, 100 };
