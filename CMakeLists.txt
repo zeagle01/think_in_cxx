@@ -152,7 +152,10 @@ add_executable(think_in_cxx
 
 ###  tbb
 	test/tbb/tbb_test.cpp
-	test/tbb/parallel_log.cpp
+	#test/tbb/parallel_log.cpp
+### serializer
+	test/serializer/serializer_test.cpp
+
     )
 target_compile_features(think_in_cxx PRIVATE cxx_std_20)
 
