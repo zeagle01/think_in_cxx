@@ -36,12 +36,6 @@ namespace string_parameter
 	int config<"abc"> = 3;
 
 
-	template<literal_string>
-	struct A
-	{
-
-	};
-
 	TEST(string_parameter, test_string_to_int_map)
 	{
 		EXPECT_THAT(config<"a">, Eq(0));
