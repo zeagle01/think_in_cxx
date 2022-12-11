@@ -80,6 +80,7 @@ add_executable(think_in_cxx
     test/template_meta/loop_enum.cpp
     test/template_meta/type_map.cpp
     test/template_meta/loop_types.cpp
+    test/template_meta/string_parameter.cpp
 
 ### alg
 #    test/alg/binary_tree.cpp
