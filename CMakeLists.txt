@@ -81,6 +81,7 @@ add_executable(think_in_cxx
     test/template_meta/type_map.cpp
     test/template_meta/loop_types.cpp
     test/template_meta/string_parameter.cpp
+    test/template_meta/partial_specalization_to_dispatch.cpp
 
 ### alg
 #    test/alg/binary_tree.cpp
