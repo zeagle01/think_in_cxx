@@ -191,6 +191,79 @@ namespace type_erasure
 
 
     }
+
+    //this one is me writing
+    namespace _2
+    {
+
+
+        class type_erasure
+        {
+        public:
+            template<typename T>
+			type_erasure(std::shared_ptr<T> obj) 
+				:m_interface_obj(std::make_shared<concrete<T>>(obj))
+            {
+                //auto concrete = std::make_shared<concrete<T>>(obj);
+                //m_interface_obj = concrete;
+            }
+
+            std::string say_something()
+            {
+                return m_interface_obj->say_something();
+			}
+
+        private:
+            class interface
+            {
+            public:
+                virtual std::string say_something() = 0;
+            };
+
+			template<typename T>
+            class concrete: public interface
+            {
+
+            public:
+				concrete(std::shared_ptr<T> obj) :m_concrete_obj(obj) {}
+                std::string say_something()override 
+                {
+					return m_concrete_obj->say_something();//T should has a say_something method
+                }
+            private:
+                std::shared_ptr<T> m_concrete_obj;
+            };
+			std::shared_ptr<interface>  m_interface_obj;
+        };
+
+        class A
+        {
+        public:
+			std::string say_something() { return "A"; }
+        };
+
+        class B
+        {
+        public:
+			std::string say_something() { return "B"; }
+        };
+
+        TEST(type_erasure, duck_container)
+        {
+            std::vector<type_erasure> c;
+            c.emplace_back(std::make_shared<A>());
+            c.emplace_back(std::make_shared<B>());
+            std::vector<std::string> act;
+            std::vector<std::string> exp{"A","B"};
+
+            for (int i = 0; i < c.size(); i++)
+            {
+				act.push_back(c[i].say_something());
+            }
+            EXPECT_THAT(act, Eq(exp));
+        }
+
+    }
 }
 
 
