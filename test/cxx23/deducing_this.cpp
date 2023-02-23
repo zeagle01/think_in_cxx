@@ -45,4 +45,23 @@ namespace deducing_this
 
 	}
 
+	TEST(deducing_this_test, recursive_lambda)
+	{
+		auto fn=[](this auto self,int n)
+		{
+			if (n == 1)
+			{
+				return n;
+			}
+			else
+			{
+				return self(n - 1) * n;
+			}
+		};
+
+		EXPECT_THAT(fn(3), Eq(6));
+		EXPECT_THAT(fn(4), Eq(24));
+
+	}
+
 }
