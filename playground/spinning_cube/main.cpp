@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <thread>
+#include <algorithm>
 
 
 template<int N,int M>

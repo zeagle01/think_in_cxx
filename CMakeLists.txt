@@ -53,6 +53,8 @@ add_executable(think_in_cxx
     test/lang/macro.cpp  
 
 
+### cxx23
+    test/cxx23/deducing_this.cpp  
 
 ### tdd
 #    test/little_projects/show_hand.cpp  ##TODO
@@ -159,7 +161,7 @@ add_executable(think_in_cxx
 	test/serializer/serializer_test.cpp
 
     )
-target_compile_features(think_in_cxx PRIVATE cxx_std_20)
+target_compile_features(think_in_cxx PRIVATE cxx_std_23)
 
 
 
