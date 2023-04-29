@@ -50,6 +50,19 @@ namespace share_ptr_test
 		}
 	}
 
+	TEST(TestSharePointer, weak_ptr)
+	{
+		std::shared_ptr<int> p = std::make_shared<int>();
+		std::weak_ptr wp = p;
+		EXPECT_TRUE(wp.lock());
+		{
+
+			std::shared_ptr<int> p1 = std::make_shared<int>();
+			wp = p1;
+		}
+		EXPECT_FALSE(wp.lock());
+	}
+
 	namespace share_ptr_void
 	{
 
