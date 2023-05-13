@@ -24,6 +24,7 @@ add_executable(think_in_cxx
 #    test/lang/UnwindingTest.cpp
 #    test/lang/VariableTest.cpp
     test/lang/MySharedPtr.cpp
+    test/lang/vector.cpp
 #    test/lang/MultiThreadTest.cpp
 #    test/lang/OverloadTest.cpp
 #    test/lang/19_03_21.cpp
