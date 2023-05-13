@@ -15,6 +15,7 @@ add_executable(think_in_cxx
 #    test/lang/TestConstructor.cpp
     test/lang/TestSharePointer.cpp
     test/lang/reference.cpp
+    test/lang/special_methods.cpp
 #    test/lang/TestUniquePointer.cpp
 #    test/lang/ECSSystemTest.cpp
 #    test/lang/Finally.cpp
@@ -87,8 +88,8 @@ add_executable(think_in_cxx
 
 ### alg
 #    test/alg/binary_tree.cpp
-    test/alg/bvh.cpp #TODO
-#    test/alg/sort.cpp #TODO
+#    test/alg/bvh.cpp #TODO
+    test/alg/sort.cpp #TODO
 
 
 ### BS book
@@ -100,6 +101,7 @@ add_executable(think_in_cxx
 ### Eigen
 #	 test/eigen/EigenTest.cpp
 
+### quiz
 #    test/quiz/FileManipulationTest.cpp
 #    test/quiz/ExceptionSafeTest.cpp
 
