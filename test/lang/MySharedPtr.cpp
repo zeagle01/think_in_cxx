@@ -1,6 +1,7 @@
 
-#include "gtest/gtest.h"
+#include "gmock/gmock.h"
 
+using namespace testing;
 
 namespace share_ptr_test 
 {
@@ -18,6 +19,11 @@ namespace share_ptr_test
 	public:
 
 		Shared_ptr() = default;
+
+		T& operator*()
+		{
+			return *data;
+		}
 
 		operator bool() const
 		{
@@ -49,5 +55,12 @@ namespace share_ptr_test
 		Shared_ptr<int> p = make_shared<int>(42);
 
 		EXPECT_TRUE(p);
+	}
+
+	TEST(Share_Ptr_Test, make_shared_value_is_preserved)
+	{
+		Shared_ptr<int> p = make_shared<int>(42);
+
+		EXPECT_THAT(*p, Eq(42));
 	}
 }
