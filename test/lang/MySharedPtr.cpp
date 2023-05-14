@@ -20,7 +20,16 @@ namespace share_ptr_test
 
 		Shared_ptr() = default;
 
-		Shared_ptr<T>& operator=(Shared_ptr<T> other)
+
+		Shared_ptr(const Shared_ptr<T>& other)
+		{
+			m_use_count = other.m_use_count;
+			m_data = other.m_data;
+			(*m_use_count)++;
+		}
+
+
+		Shared_ptr<T>& operator=(const Shared_ptr<T>& other)
 		{
 			m_use_count = other.m_use_count;
 			m_data = other.m_data;
@@ -99,7 +108,7 @@ namespace share_ptr_test
 		EXPECT_THAT(p.use_count(), Eq(1));
 	}
 
-	TEST(Share_Ptr_Test, assign_will_increase_use_count)
+	TEST(Share_Ptr_Test, shared_will_increase_use_count)
 	{
 		Shared_ptr<int> p0 = make_shared<int>(42);
 		Shared_ptr<int> p1 = make_shared<int>(43);
@@ -108,6 +117,29 @@ namespace share_ptr_test
 		EXPECT_THAT(p0.use_count(), Eq(2));
 		EXPECT_THAT(p1.use_count(), Eq(2));
 	}
+
+	TEST(Share_Ptr_Test, copy_constructed_shared_will_increase_use_count)
+	{
+		Shared_ptr<int> p0 = make_shared<int>(42);
+		Shared_ptr<int> p1 = p0;
+
+		EXPECT_THAT(p0.use_count(), Eq(2));
+		EXPECT_THAT(p1.use_count(), Eq(2));
+	}
+
+//	TEST(Share_Ptr_Test, override_will_decrease_use_count)
+//	{
+//		Shared_ptr<int> p0 = make_shared<int>(42);
+//		Shared_ptr<int> p = p0;
+//
+//
+//		Shared_ptr<int> p1 = make_shared<int>(43);
+//		//override 
+//		p = p1;
+//
+//		EXPECT_THAT(p0.use_count(), Eq(1));
+//		EXPECT_THAT(p1.use_count(), Eq(2));
+//	}
 
 
 
