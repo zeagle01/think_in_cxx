@@ -20,19 +20,31 @@ namespace share_ptr_test
 
 		Shared_ptr() = default;
 
+
 		T& operator*()
 		{
-			return *data;
+			return *m_data;
 		}
 
 		operator bool() const
 		{
-			return data != nullptr;
+			return m_data != nullptr;
+		}
+
+		int use_count()
+		{
+			return *m_use_count;
+
 		}
 	private:
-		Shared_ptr(const T& v) { data = new T(v); }
+		Shared_ptr(const T& v) 
+		{ 
+			m_data = new T(v); 
+			m_use_count = new int(1);
+		}
 
-		T* data = nullptr;
+		T* m_data = nullptr;
+		int* m_use_count = nullptr;
 
 	};
 
@@ -62,5 +74,21 @@ namespace share_ptr_test
 		Shared_ptr<int> p = make_shared<int>(42);
 
 		EXPECT_THAT(*p, Eq(42));
+	}
+
+	TEST(Share_Ptr_Test, value_is_really_shared)
+	{
+		Shared_ptr<int> p = make_shared<int>(42);
+		Shared_ptr<int> p1 = p;
+		*p1 = 43;
+
+		EXPECT_THAT(*p, Eq(43));
+	}
+
+	TEST(Share_Ptr_Test, use_count_is_1_when_created)
+	{
+		Shared_ptr<int> p = make_shared<int>(42);
+
+		EXPECT_THAT(p.use_count(), Eq(1));
 	}
 }
