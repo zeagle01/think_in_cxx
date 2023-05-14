@@ -18,6 +18,19 @@ namespace share_ptr_test
 		friend static Shared_ptr<T> make_shared<T>(const T& v); 
 	public:
 
+		~Shared_ptr() 
+		{
+			if (m_use_count)
+			{
+				(*m_use_count)--;
+				if (*m_use_count == 0)
+				{
+					delete m_data;
+					delete m_use_count;
+				}
+			}
+		};
+
 		Shared_ptr() = default;
 
 
@@ -71,6 +84,16 @@ namespace share_ptr_test
 	{
 		return Shared_ptr<T>(v);
 	}
+
+
+	template<typename T>
+	void f(Shared_ptr<T> ptr)
+	{
+
+	}
+
+
+	//-------------------------------------------
 
 
 	TEST(Share_Ptr_Test, default_constructed_one_is_convertable_to_false)
@@ -140,6 +163,16 @@ namespace share_ptr_test
 
 		EXPECT_THAT(p0.use_count(), Eq(1));
 		EXPECT_THAT(p1.use_count(), Eq(2));
+	}
+
+	TEST(Share_Ptr_Test, destruct_properly)
+	{
+		Shared_ptr<int> p = make_shared<int>(42);
+
+		f(p);
+
+		//won't crash to this point
+		EXPECT_TRUE(true);
 	}
 
 
