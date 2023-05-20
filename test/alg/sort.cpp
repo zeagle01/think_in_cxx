@@ -100,7 +100,12 @@ namespace sort
 
 				left.push_back(std::numeric_limits<int>::max());
 				right.push_back(std::numeric_limits<int>::max());
+				return merge(left, right, n);
 
+			}
+		private:
+			std::vector<int> merge(const std::vector<int>& left, const std::vector<int>& right, int n)
+			{
 				std::vector<int> ret(n);
 				int li = 0, ri = 0;
 				for (int i = 0; i < n; i++)
