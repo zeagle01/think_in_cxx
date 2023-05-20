@@ -13,6 +13,26 @@ namespace sort
 	namespace quick_sort
 	{
 
+		class Quick_Sort
+		{
+		public:
+			std::vector<int> operator()(const std::vector<int>& in)
+			{
+				return {};
+			}
+		};
+
+		class Quick_Sort_Test :public Test
+		{
+		protected:
+			Quick_Sort sort;
+		};
+
+		TEST_F(Quick_Sort_Test, call_api)
+		{
+			std::vector<int> in{};
+			std::vector<int>out = sort(in);
+		}
 	}
 
 	namespace merge_sort

@@ -113,7 +113,7 @@ namespace tbb_test
 		}
 
 
-		TEST(Quick_Sort_Test, partition_invariance)
+		TEST(Tbb_Quick_Sort_Test, partition_invariance)
 		{
 			std::vector<int> input{ 4,3,2,1 };
 
@@ -131,7 +131,7 @@ namespace tbb_test
 
 		}
 
-		TEST(Quick_Sort_Test, test_sorted)
+		TEST(Tbb_Quick_Sort_Test, test_sorted)
 		{
 			std::vector<int> act{ 4,3,2,1 };
 
