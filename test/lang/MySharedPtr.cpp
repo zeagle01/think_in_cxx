@@ -175,6 +175,15 @@ namespace share_ptr_test
 		EXPECT_TRUE(true);
 	}
 
+	TEST(Share_Ptr_Test, use_count_wont_change_after_a_function_call)
+	{
+		Shared_ptr<int> p = make_shared<int>(42);
+
+		f(p);
+
+		EXPECT_THAT(p.use_count(), Eq(1));
+	}
+
 
 
 }
