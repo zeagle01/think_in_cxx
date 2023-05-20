@@ -86,7 +86,15 @@ namespace sort
 		public:
 			std::vector<int> operator()(const std::vector<int>& in)
 			{
-				return in;
+				int n = in.size();
+				auto left = std::vector<int>(in.begin(), in.begin() + n / 2);
+				auto right = std::vector<int>(in.begin() + n / 2, in.end());
+
+				std::vector<int> ret;
+				ret.insert(ret.end(), right.begin(), right.end());
+				ret.insert(ret.end(), left.begin(), left.end());
+				return ret;
+
 			}
 
 		};
@@ -119,6 +127,11 @@ namespace sort
 		TEST_F(Merge_Sort_Test, one_element_input_stay_the_same)
 		{
 			expect_with_input({ 2 }, { 2 });
+		}
+
+		TEST_F(Merge_Sort_Test, two_half_sorted_replace_into_right_place)
+		{
+			expect_with_input({ 4,5, 1,2 }, { 1,2,4,5 });
 		}
 
 
