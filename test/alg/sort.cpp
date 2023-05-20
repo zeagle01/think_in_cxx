@@ -10,116 +10,6 @@ using namespace testing;
 namespace sort
 {
 
-	class Insertion_Sort
-	{
-	public:
-		void apply(std::vector<int>& in)
-		{
-			for (int i = 1; i < in.size(); i++)
-			{
-
-				int curr = in[i];
-				int j = i - 1;
-				while (j >= 0 && curr < in[j])
-				{
-					in[j + 1] = in[j];
-					j--;
-				}
-				in[j + 1] = curr;
-			}
-		}
-
-	};
-
-	class Merge_Sort
-	{
-	public:
-		void apply(std::vector<int>& in)
-		{
-			sort_sub(in, 0, in.size());
-		}
-	private:
-		void sort_sub(std::vector<int>& in, int p, int r)
-		{
-			if (r - p > 1)
-			{
-				int q = (p + r) / 2;
-				sort_sub(in, p, q);
-				sort_sub(in, q, r);
-				merge(in, p, q, r);
-			}
-		}
-		void merge(std::vector<int>& in, int p, int q, int r)
-		{
-			std::vector<int> lv(q - p + 1);
-			std::vector<int> rv(r - q + 1);
-			for (int i = 0; i < q - p; i++)
-			{
-				lv[i] = in[p + i];
-			}
-			lv.back() = std::numeric_limits<int>::max();
-			for (int i = 0; i < r - q; i++)
-			{
-				rv[i] = in[q + i];
-			}
-			rv.back() = std::numeric_limits<int>::max();
-
-
-			int li = 0;
-			int ri = 0;
-			for (int i = p; i < r; i++)
-			{
-				if (lv[li] < rv[ri])
-				{
-
-					in[i] = lv[li];
-					li++;
-				}
-				else
-				{
-					in[i] = rv[ri];
-					ri++;
-				}
-
-			}
-
-		}
-	};
-
-
-	TEST(Sort_Test, insertion_sort_321)
-	{
-		std::vector<int> act{ 3,2,1 };
-		Insertion_Sort s;
-		s.apply(act);
-
-		std::vector<int> exp{ 1,2,3 };
-		EXPECT_THAT(act, Eq(exp));
-
-	}
-
-	TEST(Sort_Test, merge_sort_312)
-	{
-		std::vector<int> act{ 3,1,2 };
-		Merge_Sort s;
-		s.apply(act);
-
-		std::vector<int> exp{ 1,2,3 };
-		EXPECT_THAT(act, Eq(exp));
-
-	}
-
-	TEST(Sort_Test, merge_sort_3412)
-	{
-		std::vector<int> act{ 3,4,1,2 };
-		Merge_Sort s;
-		s.apply(act);
-
-		std::vector<int> exp{ 1,2,3 ,4 };
-		EXPECT_THAT(act, Eq(exp));
-
-	}
-
 	namespace quick_sort
 	{
 
@@ -187,6 +77,125 @@ namespace sort
 		}
 
 	}
+
+	namespace merge_sort
+	{
+
+		class Merge_Sort
+		{
+		public:
+			std::vector<int> operator ()(const std::vector<int>& in) 
+			{
+				if (in.size() < 2)
+				{
+					return in;
+				}
+
+				int n = in.size();
+				auto left = std::vector<int>(in.begin(), in.begin() + n / 2);
+				auto right = std::vector<int>(in.begin() + n / 2, in.end());
+
+				auto sorted_left = operator()(left);
+				auto sorted_right = operator()(right);
+
+				return merge(sorted_left, sorted_right);
+			}
+
+			std::vector<int> merge(const std::vector<int>& a, const std::vector<int>& b)
+			{
+				std::vector<int> ret(a.size() + b.size());
+				int i = 0, j = 0, k = 0;
+				while (k < ret.size())
+				{
+					if (i < a.size() && j < b.size())
+					{
+						if (a[i] <= b[j])
+						{
+							ret[k] = a[i];
+							k++;
+							i++;
+						}
+						else
+						{
+							ret[k] = b[j];
+							k++;
+							j++;
+						}
+					}
+					else
+					{
+						if (i < a.size())
+						{
+							ret[k] = a[i];
+							k++;
+							i++;
+						}
+
+						if (j < b.size())
+						{
+							ret[k] = b[j];
+							k++;
+							j++;
+						}
+
+					}
+				}
+				return ret;
+			}
+		};
+
+		class Merge_Sort_Test :public Test
+		{
+		protected:
+			Merge_Sort sort;
+
+			void expect_result_with_input(const std::vector<int>& in, const std::vector<int>& exp)
+			{
+				Merge_Sort sort;
+				auto act = sort(in);
+				EXPECT_THAT(act, Eq(exp));
+			}
+
+			void expect_merge_with_input(const std::vector<int>& a, const std::vector<int>& b, const std::vector<int>& exp)
+			{
+				auto act = sort.merge(a, b);
+				EXPECT_THAT(act, Eq(exp));
+			}
+		};
+
+		TEST_F(Merge_Sort_Test, sort_one_element)
+		{
+			expect_result_with_input({ 1 }, { 1 });
+		}
+
+
+		TEST_F(Merge_Sort_Test, merge_two_singleton_vectors)
+		{
+			expect_merge_with_input({ 1 }, { 2 }, { 1,2 });
+		}
+
+		TEST_F(Merge_Sort_Test, merge_two_vectors_with_interleave_elements)
+		{
+			expect_merge_with_input({ 1,3 }, { 2,4 }, { 1,2, 3,4 });
+		}
+
+		TEST_F(Merge_Sort_Test, sort_two_element_in_reversed_order)
+		{
+			expect_result_with_input({ 2,1 }, { 1,2 });
+		}
+
+		TEST_F(Merge_Sort_Test, sort_more_1)
+		{
+			expect_result_with_input({ 2,1 ,4,5}, { 1,2,4,5 });
+		}
+
+		TEST_F(Merge_Sort_Test, sort_more_2)
+		{
+			expect_result_with_input({ 3,2,1 ,4,5}, { 1,2,3,4,5 });
+		}
+
+	}
+
 }
 
 
