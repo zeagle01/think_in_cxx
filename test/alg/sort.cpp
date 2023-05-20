@@ -87,8 +87,17 @@ namespace sort
 			std::vector<int> operator()(const std::vector<int>& in)
 			{
 				int n = in.size();
+				if (n < 2)
+				{
+					return in;
+				}
+
 				auto left = std::vector<int>(in.begin(), in.begin() + n / 2);
 				auto right = std::vector<int>(in.begin() + n / 2, in.end());
+
+				left = operator()(left);
+				right = operator()(right);
+
 				left.push_back(std::numeric_limits<int>::max());
 				right.push_back(std::numeric_limits<int>::max());
 
@@ -156,6 +165,11 @@ namespace sort
 		TEST_F(Merge_Sort_Test, interleved_two_sorted_half)
 		{
 			expect_with_input({ 1,3,2,4 }, { 1,2,3,4 });
+		}
+
+		TEST_F(Merge_Sort_Test, interleved_two_unsorted_half)
+		{
+			expect_with_input({ 3,1,4,2 }, { 1,2,3,4 });
 		}
 
 
