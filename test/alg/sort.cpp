@@ -86,7 +86,7 @@ namespace sort
 		public:
 			std::vector<int> operator()(const std::vector<int>& in)
 			{
-				return {};
+				return in;
 			}
 		};
 
@@ -101,6 +101,21 @@ namespace sort
 			std::vector<int> in;
 			sort(in);
 		}
+
+		TEST_F(Merge_Sort_Test, size_stay_the_same)
+		{
+			std::vector<int> in{ 1 };
+			auto act = sort(in);
+			EXPECT_THAT(act.size(), Eq(in.size()));
+		}
+
+		TEST_F(Merge_Sort_Test, one_element_input_stay_the_same)
+		{
+			std::vector<int> in{ 2 };
+			auto act = sort(in);
+			EXPECT_THAT(act, Eq(in));
+		}
+
 
 	}
 
