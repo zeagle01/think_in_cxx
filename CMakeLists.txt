@@ -156,6 +156,7 @@ add_executable(think_in_cxx
 ### threading
 	test/threading/basic_use.cpp
 	test/threading/condition_variable.cpp
+	test/threading/thread_pool.cpp
 
 ###  tbb
 	test/tbb/tbb_test.cpp
