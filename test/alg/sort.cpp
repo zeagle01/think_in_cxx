@@ -18,7 +18,22 @@ namespace sort
 		public:
 			std::vector<int> operator()(const std::vector<int>& in)
 			{
-				return {};
+				std::vector<int> ret = in;
+				if (!in.empty())
+				{
+
+					int split = -1;
+					for (int i = 0; i<int(in.size() - 1); i++)
+					{
+						if (ret[i] <= ret.back())
+						{
+							split++;
+							std::swap(ret[i], ret[split]);
+						}
+					}
+					std::swap(ret[split + 1], ret.back());
+				}
+				return ret;
 			}
 		};
 
@@ -32,6 +47,31 @@ namespace sort
 		{
 			std::vector<int> in{};
 			std::vector<int>out = sort(in);
+		}
+
+
+		TEST_F(Quick_Sort_Test, place_last_one_into_right_place)
+		{
+			std::vector<int> in{0,1,2,	4,5,		3 };
+			std::vector<int> out = sort(in);
+			EXPECT_THAT(out[3], Eq(3));
+		}
+
+		TEST_F(Quick_Sort_Test, first_half_is_less_than_last_element)
+		{
+			std::vector<int> in{4,5,	0,1,2,	3 };
+			std::vector<int> out = sort(in);
+			EXPECT_THAT(out[0], Le(out[3]));
+			EXPECT_THAT(out[1], Le(out[3]));
+			EXPECT_THAT(out[2], Le(out[3]));
+		}
+
+		TEST_F(Quick_Sort_Test, second_half_is_greater_than_last_element)
+		{
+			std::vector<int> in{4,5,	0,1,2,	3 };
+			std::vector<int> out = sort(in);
+			EXPECT_THAT(out[4], Gt(out[3]));
+			EXPECT_THAT(out[5], Gt(out[3]));
 		}
 	}
 
