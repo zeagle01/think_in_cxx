@@ -91,8 +91,26 @@ namespace sort
 				auto right = std::vector<int>(in.begin() + n / 2, in.end());
 
 				std::vector<int> ret;
-				ret.insert(ret.end(), right.begin(), right.end());
-				ret.insert(ret.end(), left.begin(), left.end());
+				if (left.empty())
+				{
+					return right;
+				}
+				if (right.empty())
+				{
+					return left;
+				}
+
+				if (left[0] < right[0])
+				{
+					ret.insert(ret.end(), left.begin(), left.end());
+					ret.insert(ret.end(), right.begin(), right.end());
+				}
+				else
+				{
+					ret.insert(ret.end(), right.begin(), right.end());
+					ret.insert(ret.end(), left.begin(), left.end());
+				}
+
 				return ret;
 
 			}
@@ -132,6 +150,11 @@ namespace sort
 		TEST_F(Merge_Sort_Test, two_half_sorted_replace_into_right_place)
 		{
 			expect_with_input({ 4,5, 1,2 }, { 1,2,4,5 });
+		}
+
+		TEST_F(Merge_Sort_Test, two_half_sorted_with_right_place_stay_the_same)
+		{
+			expect_with_input({ 1,2,4,5 }, { 1,2,4,5 });
 		}
 
 
