@@ -88,12 +88,19 @@ namespace sort
 			{
 				return in;
 			}
+
 		};
 
 		class Merge_Sort_Test:public Test
 		{
 		protected:
 			Merge_Sort sort;
+
+			void expect_with_input(const std::vector<int>& in, const std::vector<int>& exp)
+			{
+				auto act = sort(in);
+				EXPECT_THAT(act, Eq(exp));
+			}
 		};
 
 		TEST_F(Merge_Sort_Test, call_api)
@@ -111,9 +118,7 @@ namespace sort
 
 		TEST_F(Merge_Sort_Test, one_element_input_stay_the_same)
 		{
-			std::vector<int> in{ 2 };
-			auto act = sort(in);
-			EXPECT_THAT(act, Eq(in));
+			expect_with_input({ 2 }, { 2 });
 		}
 
 
