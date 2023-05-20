@@ -89,30 +89,26 @@ namespace sort
 				int n = in.size();
 				auto left = std::vector<int>(in.begin(), in.begin() + n / 2);
 				auto right = std::vector<int>(in.begin() + n / 2, in.end());
+				left.push_back(std::numeric_limits<int>::max());
+				right.push_back(std::numeric_limits<int>::max());
 
-				std::vector<int> ret;
-				if (left.empty())
+				std::vector<int> ret(n);
+				int li = 0, ri = 0;
+				for (int i = 0; i < n; i++)
 				{
-					return right;
-				}
-				if (right.empty())
-				{
-					return left;
-				}
+					if (left[li] <= right[ri])
+					{
+						ret[i] = left[li];
+						li++;
+					}
+					else
+					{
+						ret[i] = right[ri];
+						ri++;
+					}
 
-				if (left[0] < right[0])
-				{
-					ret.insert(ret.end(), left.begin(), left.end());
-					ret.insert(ret.end(), right.begin(), right.end());
 				}
-				else
-				{
-					ret.insert(ret.end(), right.begin(), right.end());
-					ret.insert(ret.end(), left.begin(), left.end());
-				}
-
 				return ret;
-
 			}
 
 		};
@@ -155,6 +151,11 @@ namespace sort
 		TEST_F(Merge_Sort_Test, two_half_sorted_with_right_place_stay_the_same)
 		{
 			expect_with_input({ 1,2,4,5 }, { 1,2,4,5 });
+		}
+
+		TEST_F(Merge_Sort_Test, interleved_two_sorted_half)
+		{
+			expect_with_input({ 1,3,2,4 }, { 1,2,3,4 });
 		}
 
 
