@@ -21,20 +21,32 @@ namespace sort
 				std::vector<int> ret = in;
 				if (!in.empty())
 				{
-
-					int split = -1;
-					for (int i = 0; i<int(in.size() - 1); i++)
-					{
-						if (ret[i] <= ret.back())
-						{
-							split++;
-							std::swap(ret[i], ret[split]);
-						}
-					}
-					std::swap(ret[split + 1], ret.back());
+					sort_sub(ret, 0, ret.size() - 1);
 				}
 				return ret;
 			}
+		public:
+			void sort_sub(std::vector<int>& in, int b, int e)
+			{
+				if (b < e)
+				{
+					int split = b - 1;
+					for (int i = b; i < e; i++)
+					{
+						if (in[i] <= in[e])
+						{
+							split++;
+							std::swap(in[i], in[split]);
+						}
+					}
+					split++;
+					std::swap(in[split ], in[e]);
+
+					sort_sub(in, b, split - 1);
+					sort_sub(in, split + 1, e);
+				}
+			}
+
 		};
 
 		class Quick_Sort_Test :public Test
@@ -73,6 +85,22 @@ namespace sort
 			EXPECT_THAT(out[4], Gt(out[3]));
 			EXPECT_THAT(out[5], Gt(out[3]));
 		}
+
+		TEST_F(Quick_Sort_Test, first_half_is_sorted)
+		{
+			std::vector<int> in{2,0,1,	4,5,	3 };
+			std::vector<int> out = sort(in);
+			EXPECT_TRUE(out[0] < out[1]);
+			EXPECT_TRUE(out[1] < out[2]);
+		}
+
+		TEST_F(Quick_Sort_Test, second_half_is_sorted)
+		{
+			std::vector<int> in{2,0,1,	4,5,	3 };
+			std::vector<int> out = sort(in);
+			EXPECT_TRUE(out[4] < out[5]);
+		}
+
 	}
 
 	namespace merge_sort
