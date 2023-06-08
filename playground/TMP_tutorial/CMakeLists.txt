@@ -8,6 +8,7 @@ add_executable(
 	TMP_tutorial 
 	main.cpp
 	meta_function_test.cpp
+	loop_test.cpp
 )
 
 
