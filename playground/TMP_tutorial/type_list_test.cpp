@@ -46,6 +46,20 @@ using Push_Front = Push_Front_Imp<Type, Type_List>::type;
 
 
 
+template<typename Type_List>
+struct For_Each_Types;
+
+template<typename ...Types>
+struct For_Each_Types<Type_List<Types...>>
+{
+	template<typename Functor, typename ...Param>
+	static void Apply(Param&& ... param)
+	{
+		(typename Functor::template Apply<Types>(std::forward<Param>(param)...), ...);
+	}
+};
+
+
 TEST(Type_List_Test, get_front)
 {
 	using my_list = Type_List<float, int>;
@@ -65,5 +79,23 @@ TEST(Type_List_Test, push_front_to_type_list)
 {
 	bool is_type_list_same = std::is_same_v<Push_Front<float, Type_List< int>>, Type_List<float, int>>;
 	EXPECT_TRUE(is_type_list_same);
+
+}
+
+
+struct Get_Type_Size
+{
+	template<typename T>
+	static void Apply(std::vector<int>& sizes)
+	{
+		sizes.push_back(sizeof(T));
+	}
+};
+
+TEST(Type_List_Test, for_each_types_get_size)
+{
+	std::vector<int> sizes;
+	For_Each_Types<Type_List<float, char>>::Apply<Get_Type_Size>(sizes);
+	EXPECT_THAT(sizes, Eq(std::vector<int>{4, 1}));
 
 }
