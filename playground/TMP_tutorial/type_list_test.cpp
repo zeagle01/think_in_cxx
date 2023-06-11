@@ -99,3 +99,20 @@ TEST(Type_List_Test, for_each_types_get_size)
 	EXPECT_THAT(sizes, Eq(std::vector<int>{4, 1}));
 
 }
+
+
+struct My_Type
+{
+	int a = 1;
+	float b = 2.f;
+};
+
+
+TEST(Type_List_Test, structured_binding)
+{
+	My_Type data;
+	auto [x, y] = data;
+	EXPECT_THAT(x, Eq(1));
+	EXPECT_THAT(y, Eq(2.f));
+
+}
