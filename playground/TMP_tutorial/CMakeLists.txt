@@ -9,6 +9,7 @@ add_executable(
 	main.cpp
 	meta_function_test.cpp
 	loop_test.cpp
+	type_list_test.cpp
 )
 
 
