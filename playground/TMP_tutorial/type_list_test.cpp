@@ -116,3 +116,25 @@ TEST(Type_List_Test, structured_binding)
 	EXPECT_THAT(y, Eq(2.f));
 
 }
+
+template<typename Tuple>
+struct Extract_Type_List_Imp;
+
+template<typename ...Type>
+struct Extract_Type_List_Imp<std::tuple<Type...>>
+{
+	using type = Type_List<std::decay_t<Type>...>;
+};
+
+template<typename Tuple>
+using Extract_Type_List = typename Extract_Type_List_Imp<Tuple>::type;
+
+TEST(Type_List_Test, get_type_list_from_tuple)
+{
+	My_Type data;
+	auto [x, y] = data;
+	using my_type_list =  Extract_Type_List<decltype(std::tie(x, y))>;
+	bool is_type_list_same = std::is_same_v<my_type_list, Type_List<int, float>>;
+	EXPECT_TRUE(is_type_list_same);
+
+}
