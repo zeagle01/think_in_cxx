@@ -138,3 +138,32 @@ TEST(Type_List_Test, get_type_list_from_tuple)
 	EXPECT_TRUE(is_type_list_same);
 
 }
+
+//get field count
+struct To_Any
+{
+	template<typename T>
+	operator T();
+};
+
+template<typename T,  typename ...P>
+struct Get_Field_Count_Imp
+{
+	static constexpr int value = sizeof...(P) - 1;
+};
+
+template<typename T, typename ...P>
+requires  requires{T{ P{}... }; }
+struct Get_Field_Count_Imp < T,  P... >
+{
+	static constexpr int value = Get_Field_Count_Imp<T, To_Any, P...>::value;
+};
+
+template<typename L>
+inline constexpr int Field_Count = Get_Field_Count_Imp<L>::value;
+
+TEST(Type_List_Test, get_field_count)
+{
+	//constexpr int field_count = Field_Count<My_Type>;
+	EXPECT_THAT(Field_Count<My_Type>, Eq(2));
+}
