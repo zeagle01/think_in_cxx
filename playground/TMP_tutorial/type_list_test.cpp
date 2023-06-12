@@ -123,7 +123,7 @@ struct Extract_Type_List_Imp;
 template<typename ...Type>
 struct Extract_Type_List_Imp<std::tuple<Type...>>
 {
-	using type = Type_List<std::decay_t<Type>...>;
+	using type = Type_List<std::remove_pointer_t<std::decay_t<Type>>...>;
 };
 
 template<typename Tuple>
@@ -142,8 +142,8 @@ TEST(Type_List_Test, get_type_list_from_tuple)
 //get field count
 struct To_Any
 {
-	template<typename T>
-	operator T();
+	template<typename T> operator T();
+	template<typename T> operator T*();
 };
 
 template<typename T,  typename ...P>
@@ -191,5 +191,67 @@ TEST(Type_List_Test, get_type_list_with_computed_field_count)
 	using my_type_list =  Extract_Type_List<decltype(As_Tuple<My_Type>())>;
 	bool is_type_list_same = std::is_same_v<my_type_list, Type_List<int, float>>;
 	EXPECT_TRUE(is_type_list_same);
+
+}
+
+
+
+class Type_Map
+{
+public:
+	template<typename VarName>
+	auto& GetRef()
+	{
+		auto key = std::string(typeid(VarName).name());
+		return *std::static_pointer_cast<typename VarName::type>(m_datas[key]);
+	}
+
+	template<typename VarName>
+	const auto& GetRef() const 
+	{
+		auto key = std::string(typeid(VarName).name());
+		return  *std::static_pointer_cast<typename VarName::type>(m_datas[key]);
+	}
+
+	template<typename VarGroup>
+	void Build()
+	{
+		using types = Extract_Type_List<decltype(As_Tuple<VarGroup>())>;
+		For_Each_Types<types>::template Apply<AddVar>(m_datas);
+	}
+
+private:
+	using map_t = std::map<std::string, std::shared_ptr<void>>;
+	map_t m_datas;
+
+private:
+	struct AddVar
+	{
+		template<typename VarName>
+		static void Apply(map_t& datas)
+		{
+			auto key = std::string(typeid(VarName).name());
+			datas[key] = std::make_shared<typename VarName::type>();
+		}
+
+	};
+};
+
+
+struct Config_List
+{
+	struct A { using type = int; } *a_var;
+	struct B { using type = float; } *b_var;
+};
+
+
+TEST(Type_List_Test, My_Type_Map)
+{
+	Type_Map datas;
+	datas.Build<Config_List>();
+	datas.GetRef<Config_List::A>() = 42;
+	datas.GetRef<Config_List::B>() = 2.f;
+	EXPECT_THAT(datas.GetRef<Config_List::A>(), Eq(42));
+	EXPECT_THAT(datas.GetRef<Config_List::B>(), Eq(2.f));
 
 }
