@@ -255,3 +255,36 @@ TEST(Type_List_Test, My_Type_Map)
 	EXPECT_THAT(datas.GetRef<Config_List::B>(), Eq(2.f));
 
 }
+
+#define ADD_VARIABLE(name,t,v)  struct name { using type = t; static constexpr type default_value = v; }; name* name##_var; 
+
+struct Variable_With_Default_Value
+{
+	ADD_VARIABLE(A, int, 42);
+	ADD_VARIABLE(B, float, 2.f);
+};
+
+struct Reset_Value
+{
+	template<typename VarName>
+	static void Apply(Type_Map& data)
+	{
+		data.GetRef<VarName>() = VarName::default_value;
+	}
+};
+
+
+TEST(Type_List_Test, reset_all_values_for_type_map)
+{
+	Type_Map datas;
+	datas.Build<Variable_With_Default_Value>();
+	datas.GetRef<Variable_With_Default_Value::A>() = 0;
+	datas.GetRef<Variable_With_Default_Value::B>() = 0.f;
+
+	using variables = Extract_Type_List<decltype(As_Tuple<Variable_With_Default_Value>())>;
+	For_Each_Types<variables>::template Apply<Reset_Value>(datas);
+
+	EXPECT_THAT(datas.GetRef<Variable_With_Default_Value::A>(), Eq(42));
+	EXPECT_THAT(datas.GetRef<Variable_With_Default_Value::B>(), Eq(2.f));
+
+}
