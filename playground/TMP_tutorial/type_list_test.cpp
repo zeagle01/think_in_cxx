@@ -288,3 +288,134 @@ TEST(Type_List_Test, reset_all_values_for_type_map)
 	EXPECT_THAT(datas.GetRef<Variable_With_Default_Value::B>(), Eq(2.f));
 
 }
+
+
+template<typename T>
+struct Atomic_Data
+{
+
+	//thread 1
+	void Set(const T& v)
+	{
+		std::lock_guard lock(m_mutex);
+		m_value = v;
+		m_is_dirty = true;
+	}
+
+	//thread 2
+	void CopyToCache()
+	{
+		std::lock_guard lock(m_mutex);
+		if (m_is_dirty)
+		{
+			m_cache = m_value;
+		}
+	}
+
+	//thread 2
+	bool IsChanged()
+	{
+		std::lock_guard lock(m_mutex);
+		return m_is_dirty;
+	}
+
+	//thread 2
+	const T& GetCache() const
+	{
+		std::lock_guard lock(m_mutex);
+		return m_cache;
+	}
+
+	//thread 2
+	void ResetChange()
+	{
+		std::lock_guard lock(m_mutex);
+		m_is_dirty = false;
+	}
+private:
+	mutable std::mutex m_mutex;
+	bool m_is_dirty = true;
+	T m_value;
+	T m_cache;
+};
+
+
+#define ADD_ATOMIC_DATA(name,t)  struct name { using type = Atomic_Data<t>;}; name* name##_var; 
+
+struct Atomic_Datas
+{
+	struct VarList
+	{
+		ADD_ATOMIC_DATA(A, int);
+		ADD_ATOMIC_DATA(B, float);
+	};
+
+	Atomic_Datas() { m_datas.Build<VarList>(); }
+
+	template<typename VarName,typename T>
+	void Set(const T& v) { m_datas.GetRef<VarName>().Set( v); }
+
+	template<typename VarName>
+	const auto& GetCache() { return m_datas.GetRef<VarName>().GetCache(); }
+
+	template<typename VarName>
+	bool IsChanged() { return m_datas.GetRef<VarName>().IsChanged(); }
+
+	template<typename VarName>
+	void ResetChange() { m_datas.GetRef<VarName>().ResetChange(); }
+
+	template<typename VarName>
+	void CopyToCache() { m_datas.GetRef<VarName>().CopyToCache(); }
+
+private:
+	Type_Map m_datas;
+};
+
+
+struct Capture
+{
+	template<typename VarName>
+	static void Apply(Atomic_Datas& data)
+	{
+		data.CopyToCache<VarName>();
+	}
+};
+
+struct ResetChanges
+{
+	template<typename VarName>
+	static void Apply(Atomic_Datas& data)
+	{
+		data.template ResetChange<VarName>();
+	}
+};
+
+
+TEST(Type_List_Test, atomic_data_captures)
+{
+	Atomic_Datas datas;
+	//thread 1
+	datas.Set<Atomic_Datas::VarList::A>(42);
+	datas.Set<Atomic_Datas::VarList::B>(2.f);
+
+	//thread 2 from now on
+
+	//capture all datas
+	using variables = Extract_Type_List<decltype(As_Tuple<Atomic_Datas::VarList>())>;
+	For_Each_Types<variables>::template Apply<Capture>(datas);
+
+	if(datas.IsChanged<Atomic_Datas::VarList::A>())
+	{
+		//do some computations
+	}
+
+	EXPECT_THAT(datas.GetCache<Atomic_Datas::VarList::A>(), Eq(42));
+	EXPECT_THAT(datas.GetCache<Atomic_Datas::VarList::B>(), Eq(2.f));
+
+	using variables = Extract_Type_List<decltype(As_Tuple<Atomic_Datas::VarList>())>;
+	For_Each_Types<variables>::template Apply<ResetChanges>(datas);
+
+	EXPECT_FALSE(datas.IsChanged<Atomic_Datas::VarList::A>());
+	EXPECT_FALSE(datas.IsChanged<Atomic_Datas::VarList::B>());
+
+}
