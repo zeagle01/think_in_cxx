@@ -170,16 +170,16 @@ TEST(Type_List_Test, get_field_count)
 
 
 template<typename T>
-constexpr auto As_Tuple(T& a)
+constexpr auto As_Tuple()
 {
-	if constexpr (Field_Count<My_Type> == 1)
+	if constexpr (Field_Count<T> == 1)
 	{
-		auto [v0] = a;
+		auto [v0] = T{};
 		return std::tie(v0);
 	}
-	else if constexpr (Field_Count<My_Type> == 2)
+	else if constexpr (Field_Count<T> == 2)
 	{
-		auto [v0,v1] = a;
+		auto [v0, v1] = T{};
 		return std::tie(v0,v1);
 	}
 	//more else if clause ...
@@ -188,8 +188,7 @@ constexpr auto As_Tuple(T& a)
 
 TEST(Type_List_Test, get_type_list_with_computed_field_count)
 {
-	My_Type data;
-	using my_type_list =  Extract_Type_List<decltype(As_Tuple(data))>;
+	using my_type_list =  Extract_Type_List<decltype(As_Tuple<My_Type>())>;
 	bool is_type_list_same = std::is_same_v<my_type_list, Type_List<int, float>>;
 	EXPECT_TRUE(is_type_list_same);
 
