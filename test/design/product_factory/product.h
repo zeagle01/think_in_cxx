@@ -10,7 +10,8 @@
 enum class Product_Type
 {
 	A,
-	B
+	B,
+	Count
 };
 
 class Product
