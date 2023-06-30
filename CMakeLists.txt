@@ -66,6 +66,10 @@ add_executable(think_in_cxx
 #    test/design/dispatch_member.cpp 
 #    test/design/runtime_polymorphism.cpp  #sean parent demo
     test/design/maybe_monad.cpp  #
+    test/design/product_factory.cpp  #
+		test/design/product_factory/product.h  #
+		test/design/product_factory/concrete_product.h  #
+		test/design/product_factory/concrete_product.cpp  #
 
 ### tools
 #    test/tools/profiler.cpp 
