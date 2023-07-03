@@ -2,6 +2,7 @@
 #include "gmock/gmock.h"
 
 #include "product_factory/product.h"
+#include "product_factory/concrete_product.h"
 
 
 using namespace testing;
@@ -38,10 +39,13 @@ namespace product_factory
 		template<int I>
 		static void apply(Product_Type type, std::unique_ptr<Product>& product)
 		{
-			if (int(type) == I)
+			constexpr Product_Type t = static_cast<Product_Type>(I);
+			if constexpr (requires { sizeof(Creator<t>); })
 			{
-				constexpr Product_Type t = static_cast<Product_Type>(I);
-				product = Product::create<t>();
+				if (int(type) == I)
+				{
+					product = Product::create<t>();
+				}
 			}
 
 		}
@@ -65,9 +69,17 @@ namespace product_factory
 
 	TEST(Product_Factory_Test, get_concrte_product_by_parameter)
 	{
+		auto product = create_product(Product_Type::A);
+
+		EXPECT_THAT(product->func(), Eq("A"));
+
+	}
+
+	TEST(Product_Factory_Test, get_concrte_product_by_parameter_dont_exsit)
+	{
 		auto product = create_product(Product_Type::B);
 
-		EXPECT_THAT(product->func(), Eq("B"));
+		EXPECT_FALSE(product);
 
 	}
 }

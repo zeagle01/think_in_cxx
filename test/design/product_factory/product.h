@@ -19,7 +19,10 @@ class Product
 public:
 	virtual std::string func() = 0;
 
+
 	template<Product_Type pt> static std::unique_ptr<Product> create();
 };
+
+template<Product_Type pt> struct Creator;
 
 
