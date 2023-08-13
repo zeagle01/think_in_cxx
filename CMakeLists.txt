@@ -7,6 +7,11 @@ project(think_in_cxx)
 
 message("c++ compiler: ${CMAKE_CXX_COMPILER}")
 
+
+set(partion_files 
+	test/lang/module/math_partition.cpp
+)
+
 add_executable(think_in_cxx 
 	test/main.cpp
 ######language
@@ -54,7 +59,8 @@ add_executable(think_in_cxx
 #    test/lang/virtual_non_virtual.cpp  
     test/lang/macro.cpp  
     test/lang/module.cpp
-
+	test/lang/module/math_imp.cpp
+	${partion_files}
 
 ### cxx23
     test/cxx23/deducing_this.cpp  
@@ -189,9 +195,11 @@ endif()
 target_sources(think_in_cxx PUBLIC
 	FILE_SET cxx_modules
 	TYPE CXX_MODULES
-	FILES test/lang/module/math.ixx
+	FILES 
+	test/lang/module/math.ixx 
 )
 
+set_source_files_properties(${partion_files} PROPERTIES COMPILE_FLAGS "/internalPartition")
 
 target_compile_features(think_in_cxx PRIVATE cxx_std_23)
 
